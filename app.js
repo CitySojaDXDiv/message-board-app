@@ -288,7 +288,7 @@ function isScrolledToBottom() {
 }
 
 // ============= 最下部へスクロール（デバッグ版） =============
-function scrollToBottom(force = false) {
+function scrollToBottom(force = true) {
   const container = document.getElementById('messages-list');
   if (!container) {
     console.error('❌ messages-list が見つかりません');

@@ -281,7 +281,7 @@ function getThreadMessages(rootId, allMessages, messageMap) {
   return threadMessages;
 }
 
-// ============= メッセージ要素作成（返信対応） =============
+// ============= メッセージ要素作成（返信対応 + スマホ対応） =============
 function createMessageElement(msg, messageMap, isReply = false) {
   const messageDiv = document.createElement('div');
   messageDiv.className = 'message' + (isReply ? ' reply' : '');
@@ -307,15 +307,22 @@ function createMessageElement(msg, messageMap, isReply = false) {
     ? `<div class="readers">既読: ${readers.join(', ')}</div>` 
     : '';
   
+  // 返信ボタンの表示制御（返信メッセージには表示しない）
+  const replyButton = !isReply 
+    ? `<button class="reply-btn" onclick="setReplyTo('${msg.id}', '${escapeHtml(msg.name)}', '${escapeHtml(msg.message).replace(/'/g, "\\'")}')">返信</button>` 
+    : '';
+  
   messageDiv.innerHTML = `
     <div class="message-header">
-      <span class="message-name">${escapeHtml(msg.name)}</span>
-      <span class="message-time">${msg.timestamp}</span>
+      <div class="message-info">
+        <span class="message-name">${escapeHtml(msg.name)}</span>
+        <span class="message-time">${msg.timestamp}</span>
+      </div>
     </div>
     ${replyQuote}
     <div class="message-text">${escapeHtml(msg.message)}</div>
     <div class="message-actions">
-      <button class="reply-btn" onclick="setReplyTo('${msg.id}', '${escapeHtml(msg.name)}', '${escapeHtml(msg.message).replace(/'/g, "\\'")}')">返信</button>
+      ${replyButton}
       <button class="read-btn" onclick="markAsRead('${msg.id}')">既読</button>
       <button class="delete-btn" onclick="deleteMessage('${msg.id}')">削除</button>
     </div>

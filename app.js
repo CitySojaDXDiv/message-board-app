@@ -287,20 +287,29 @@ function isScrolledToBottom() {
   return container.scrollHeight - container.clientHeight <= container.scrollTop + threshold;
 }
 
-// ============= 最下部へスクロール =============
+// ============= 最下部へスクロール（デバッグ版） =============
 function scrollToBottom(force = false) {
   const container = document.getElementById('messages-list');
-  if (!container) return;
-  
-  // 強制スクロール（初回表示時など）
-  if (force) {
-    container.scrollTop = container.scrollHeight;
+  if (!container) {
+    console.error('❌ messages-list が見つかりません');
     return;
   }
   
-  // 通常のスクロール（少し遅延）
+  console.log('📊 スクロール情報:');
+  console.log('  scrollHeight:', container.scrollHeight, 'px（全体の高さ）');
+  console.log('  clientHeight:', container.clientHeight, 'px（表示領域の高さ）');
+  console.log('  scrollTop:', container.scrollTop, 'px（現在のスクロール位置）');
+  console.log('  force:', force, '（強制スクロールか？）');
+  
+  if (force) {
+    container.scrollTop = container.scrollHeight;
+    console.log('✅ 強制スクロール実行 → scrollTop =', container.scrollTop);
+    return;
+  }
+  
   setTimeout(() => {
     container.scrollTop = container.scrollHeight;
+    console.log('✅ 通常スクロール実行 → scrollTop =', container.scrollTop);
   }, 100);
 }
 

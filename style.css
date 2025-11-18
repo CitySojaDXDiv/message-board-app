@@ -1,3 +1,4 @@
+/* ============= 基本設定 ============= */
 * {
   margin: 0;
   padding: 0;
@@ -20,6 +21,7 @@ body {
   padding: 30px;
 }
 
+/* ============= ヘッダー ============= */
 header {
   text-align: center;
   margin-bottom: 30px;
@@ -35,10 +37,12 @@ h2 {
   margin-bottom: 15px;
 }
 
+/* ============= セクション ============= */
 section {
   margin-bottom: 30px;
 }
 
+/* ============= フォーム要素 ============= */
 select, input, textarea {
   width: 100%;
   padding: 12px;
@@ -53,6 +57,7 @@ textarea {
   resize: vertical;
 }
 
+/* ============= ボタン ============= */
 button {
   background: #667eea;
   color: white;
@@ -77,13 +82,48 @@ button:hover {
   background: #c0392b;
 }
 
-.post-form {
-  background: #f8f9fa;
-  padding: 20px;
-  border-radius: 10px;
-  margin-bottom: 20px;
+/* ============= メッセージエリア全体（LINE式レイアウト） ============= */
+#message-area {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 200px);
+  max-height: 700px;
+  min-height: 500px;
 }
 
+/* ============= メッセージリスト（スクロール可能） ============= */
+#messages-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 15px;
+  background: #f9f9f9;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  
+  /* スクロールバーのスタイル（Webkit系ブラウザ） */
+  scrollbar-width: thin;
+  scrollbar-color: #ccc #f9f9f9;
+}
+
+#messages-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+#messages-list::-webkit-scrollbar-track {
+  background: #f9f9f9;
+  border-radius: 4px;
+}
+
+#messages-list::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 4px;
+}
+
+#messages-list::-webkit-scrollbar-thumb:hover {
+  background: #999;
+}
+
+/* ============= メッセージカード ============= */
 .message {
   background: #fff;
   border: 2px solid #eee;
@@ -97,31 +137,44 @@ button:hover {
   box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 
+/* ============= メッセージヘッダー ============= */
 .message-header {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 10px;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
+.message-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .message-name {
   font-weight: bold;
+  font-size: 1em;
   color: #667eea;
 }
 
 .message-time {
+  font-size: 0.85em;
   color: #999;
-  font-size: 0.9em;
 }
 
+/* ============= メッセージ本文 ============= */
 .message-text {
   color: #333;
   line-height: 1.6;
   margin-bottom: 10px;
+  word-wrap: break-word;
 }
 
+/* ============= メッセージアクション ============= */
 .message-actions {
   display: flex;
   gap: 10px;
+  flex-wrap: wrap;
 }
 
 .message-actions button {
@@ -129,6 +182,7 @@ button:hover {
   font-size: 14px;
 }
 
+/* ============= ボタンの色分け ============= */
 .delete-btn {
   background: #e74c3c;
 }
@@ -138,11 +192,11 @@ button:hover {
 }
 
 .reply-btn {
-  background: #3498db;
+  background: #2196F3;
 }
 
 .reply-btn:hover {
-  background: #2980b9;
+  background: #1976D2;
 }
 
 .read-btn {
@@ -153,6 +207,7 @@ button:hover {
   background: #27ae60;
 }
 
+/* ============= 既読者リスト ============= */
 .readers {
   margin-top: 10px;
   padding: 10px;
@@ -162,88 +217,133 @@ button:hover {
   color: #2ecc71;
 }
 
-/* 返信メッセージのインデント */
-.message-item.reply {
-    margin-left: 30px;
-    border-left: 3px solid #2196F3;
-    padding-left: 10px;
+/* ============= 返信メッセージのスタイル ============= */
+.message.reply {
+  margin-left: 30px;
+  border-left: 3px solid #2196F3;
+  padding-left: 10px;
+  background: #f0f8ff;
 }
 
-/* 返信ボタン */
-.reply-btn {
-    background: #2196F3;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 0.85em;
-    margin-left: 10px;
-}
-
-.reply-btn:hover {
-    background: #1976D2;
-}
-
-/* 返信先の引用表示 */
+/* ============= 返信先の引用表示 ============= */
 .reply-to-quote {
-    background: #f5f5f5;
-    border-left: 3px solid #9E9E9E;
-    padding: 8px;
-    margin: 8px 0;
-    font-size: 0.9em;
-    color: #666;
-    border-radius: 3px;
+  background: #f5f5f5;
+  border-left: 3px solid #9E9E9E;
+  padding: 8px;
+  margin: 8px 0;
+  font-size: 0.9em;
+  color: #666;
+  border-radius: 3px;
 }
 
 .reply-to-quote strong {
-    color: #333;
-}
-
-/* 返信プレビューエリア */
-#reply-preview {
-    animation: slideDown 0.3s ease;
-}
-
-@keyframes slideDown {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* ============= メッセージヘッダー（スマホ対応） ============= */
-.message-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 8px;
-}
-
-.message-info {
-  display: flex;
-  flex-direction: column; /* 縦並び */
-  gap: 4px;
-}
-
-.message-name {
-  font-weight: bold;
-  font-size: 1em;
   color: #333;
 }
 
-.message-time {
-  font-size: 0.85em;
-  color: #999;
+/* ============= 返信プレビューエリア ============= */
+#reply-preview {
+  flex-shrink: 0;
+  background: #e3f2fd;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  position: relative;
+  animation: slideDown 0.3s ease;
+}
+
+#cancel-reply {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: #ff5252;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#cancel-reply:hover {
+  background: #d32f2f;
+}
+
+#reply-content {
+  margin-top: 5px;
+  font-size: 0.9em;
+  color: #555;
+  padding-right: 30px;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ============= 投稿フォーム（固定位置） ============= */
+.post-form {
+  flex-shrink: 0;
+  background: white;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.post-form input {
+  margin-bottom: 10px;
+}
+
+.post-form textarea {
+  margin-bottom: 10px;
+}
+
+.post-form button {
+  width: 100%;
 }
 
 /* ============= レスポンシブ対応（スマホ） ============= */
 @media screen and (max-width: 600px) {
-  /* メッセージ全体 */
+  body {
+    padding: 10px;
+  }
+  
+  .container {
+    padding: 15px;
+    border-radius: 10px;
+  }
+  
+  h1 {
+    font-size: 1.8em;
+  }
+  
+  h2 {
+    font-size: 1.2em;
+  }
+  
+  /* メッセージエリア */
+  #message-area {
+    height: calc(100vh - 150px);
+    max-height: none;
+    min-height: 400px;
+  }
+  
+  /* メッセージリスト */
+  #messages-list {
+    padding: 10px;
+  }
+  
+  /* メッセージカード */
   .message {
     padding: 12px;
     margin-bottom: 10px;
@@ -269,10 +369,13 @@ button:hover {
   }
   
   /* ボタン */
+  .message-actions {
+    gap: 5px;
+  }
+  
   .message-actions button {
     font-size: 0.75em;
     padding: 6px 10px;
-    margin-right: 4px;
   }
   
   /* 返信メッセージのインデント（スマホでは浅く） */
@@ -312,6 +415,7 @@ button:hover {
   /* 既読者リスト */
   .readers {
     font-size: 0.75em;
+    padding: 8px;
   }
   
   /* 返信先の引用 */
@@ -319,10 +423,25 @@ button:hover {
     font-size: 0.8em;
     padding: 6px;
   }
+  
+  /* 退出ボタン */
+  #leave-team-btn {
+    float: none;
+    width: 100%;
+    margin-top: 10px;
+  }
 }
 
 /* ============= タブレット対応 ============= */
 @media screen and (min-width: 601px) and (max-width: 1024px) {
+  .container {
+    padding: 20px;
+  }
+  
+  #message-area {
+    height: calc(100vh - 180px);
+  }
+  
   .message {
     padding: 14px;
   }
@@ -345,56 +464,13 @@ button:hover {
   }
 }
 
-/* ============= 返信ボタンのスタイル ============= */
-.reply-btn {
-  background: #2196F3;
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 0.85em;
-  margin-right: 5px;
-}
-
-.reply-btn:hover {
-  background: #1976D2;
-}
-
-/* ============= 返信メッセージのスタイル ============= */
-.message.reply {
-  margin-left: 30px;
-  border-left: 3px solid #2196F3;
-  padding-left: 10px;
-}
-
-/* ============= 返信先の引用表示 ============= */
-.reply-to-quote {
-  background: #f5f5f5;
-  border-left: 3px solid #9E9E9E;
-  padding: 8px;
-  margin: 8px 0;
-  font-size: 0.9em;
-  color: #666;
-  border-radius: 3px;
-}
-
-.reply-to-quote strong {
-  color: #333;
-}
-
-/* ============= 返信プレビューエリア ============= */
-#reply-preview {
-  animation: slideDown 0.3s ease;
-}
-
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
+/* ============= 大画面対応 ============= */
+@media screen and (min-width: 1025px) {
+  .container {
+    max-width: 900px;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  
+  #message-area {
+    max-height: 800px;
   }
 }

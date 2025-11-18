@@ -1,11 +1,11 @@
 // ============= 設定 =============
-const GAS_URL = 'https://script.google.com/macros/s/AKfycbxKVr9yY2VIUxBvqnrovrUA-l5ughmDVHD3E5o911DBK-fMEt1Tcxh9GJLJF0jlxTw/exec'; // ★GASのURL
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbxKVr9yY2VIUxBvqnrovrUA-l5ughmDVHD3E5o911DBK-fMEt1Tcxh9GJLJF0jlxTw/exec';
 let currentTeam = '';
 let currentKey = '';
 let userName = '';
 let pollingInterval = null;
 
-// 返信機能用のグローバル変数（新規追加）
+// 返信機能用のグローバル変数
 let replyToId = null;
 let replyToMessage = null;
 
@@ -71,8 +71,6 @@ function setupEventListeners() {
   document.getElementById('verify-key-btn').addEventListener('click', verifyKey);
   document.getElementById('post-btn').addEventListener('click', postMessage);
   document.getElementById('leave-team-btn').addEventListener('click', leaveTeam);
-  
-  // 返信キャンセルボタン（新規追加）
   document.getElementById('cancel-reply').addEventListener('click', cancelReply);
 }
 
@@ -163,7 +161,7 @@ function leaveTeam() {
   stopPolling();
   currentTeam = '';
   currentKey = '';
-  cancelReply(); // 返信状態をリセット
+  cancelReply();
   document.getElementById('message-area').style.display = 'none';
   document.getElementById('team-selection').style.display = 'block';
   document.getElementById('messages-list').innerHTML = '';
@@ -209,14 +207,24 @@ async function loadMessages() {
     }
     
     displayMessages(messages);
+    
+    // 初回表示時のみ最下部へスクロール
+    const container = document.getElementById('messages-list');
+    if (container.children.length <= messages.length) {
+      scrollToBottom();
+    }
   } catch (error) {
     console.error('メッセージ取得エラー:', error);
   }
 }
 
-// ============= メッセージ表示（完全なスレッド対応） =============
+// ============= メッセージ表示（LINE式：古い順） =============
 function displayMessages(messages) {
   const container = document.getElementById('messages-list');
+  
+  // スクロール位置を保存（ユーザーが読んでいる途中の場合）
+  const wasAtBottom = isScrolledToBottom();
+  
   container.innerHTML = '';
   
   if (!Array.isArray(messages) || messages.length === 0) {
@@ -230,6 +238,13 @@ function displayMessages(messages) {
     messageMap[msg.id] = msg;
   });
   
+  // 時系列順にソート（古い順）
+  messages.sort((a, b) => {
+    const dateA = new Date(a.timestamp);
+    const dateB = new Date(b.timestamp);
+    return dateA - dateB;
+  });
+  
   // ルートメッセージ（返信でないもの）を取得
   const rootMessages = messages.filter(msg => !msg.reply_to);
   
@@ -238,7 +253,7 @@ function displayMessages(messages) {
     // ルートメッセージを表示
     container.appendChild(createMessageElement(rootMsg, messageMap, false));
     
-    // このメッセージへのすべての返信を取得（直接・間接問わず）
+    // このメッセージへのすべての返信を取得
     const threadMessages = getThreadMessages(rootMsg.id, messages, messageMap);
     
     // 返信を時系列順に表示
@@ -246,6 +261,30 @@ function displayMessages(messages) {
       container.appendChild(createMessageElement(msg, messageMap, true));
     });
   });
+  
+  // 最下部にいた場合のみ自動スクロール
+  if (wasAtBottom) {
+    scrollToBottom();
+  }
+}
+
+// ============= スクロール位置の判定 =============
+function isScrolledToBottom() {
+  const container = document.getElementById('messages-list');
+  if (!container) return true;
+  
+  const threshold = 50; // 50px以内なら「最下部」と判定
+  return container.scrollHeight - container.clientHeight <= container.scrollTop + threshold;
+}
+
+// ============= 最下部へスクロール =============
+function scrollToBottom() {
+  const container = document.getElementById('messages-list');
+  if (container) {
+    setTimeout(() => {
+      container.scrollTop = container.scrollHeight;
+    }, 100);
+  }
 }
 
 // ============= スレッドのすべてのメッセージを取得 =============
@@ -253,10 +292,6 @@ function getThreadMessages(rootId, allMessages, messageMap) {
   const threadMessages = [];
   const visited = new Set();
   
-  // ルートメッセージへの直接の返信を取得
-  const directReplies = allMessages.filter(msg => msg.reply_to === rootId);
-  
-  // 各返信とその子孫を再帰的に取得
   function collectReplies(messageId) {
     if (visited.has(messageId)) return;
     visited.add(messageId);
@@ -264,24 +299,23 @@ function getThreadMessages(rootId, allMessages, messageMap) {
     const replies = allMessages.filter(msg => msg.reply_to === messageId);
     replies.forEach(reply => {
       threadMessages.push(reply);
-      collectReplies(reply.id); // 再帰的に子孫を取得
+      collectReplies(reply.id);
     });
   }
   
-  // ルートメッセージから開始
   collectReplies(rootId);
   
-  // 時系列順にソート
+  // 時系列順にソート（古い順）
   threadMessages.sort((a, b) => {
     const dateA = new Date(a.timestamp);
     const dateB = new Date(b.timestamp);
-    return dateA - dateB; // 古い順
+    return dateA - dateB;
   });
   
   return threadMessages;
 }
 
-// ============= メッセージ要素作成（返信対応 + スマホ対応） =============
+// ============= メッセージ要素作成 =============
 function createMessageElement(msg, messageMap, isReply = false) {
   const messageDiv = document.createElement('div');
   messageDiv.className = 'message' + (isReply ? ' reply' : '');
@@ -332,12 +366,11 @@ function createMessageElement(msg, messageMap, isReply = false) {
   return messageDiv;
 }
 
-// ============= 返信機能（新規追加） =============
+// ============= 返信機能 =============
 function setReplyTo(messageId, name, message) {
   replyToId = messageId;
   replyToMessage = { name, message };
   
-  // 返信プレビューを表示
   const preview = document.getElementById('reply-preview');
   const content = document.getElementById('reply-content');
   
@@ -345,10 +378,8 @@ function setReplyTo(messageId, name, message) {
   content.innerHTML = `<strong>${escapeHtml(name)}:</strong> ${escapeHtml(shortMsg)}`;
   preview.style.display = 'block';
   
-  // メッセージ入力欄にフォーカス
   document.getElementById('message-text').focus();
   
-  // 返信先メッセージまでスクロール
   const targetMsg = document.getElementById('msg-' + messageId);
   if (targetMsg) {
     targetMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -365,7 +396,7 @@ function cancelReply() {
   document.getElementById('reply-preview').style.display = 'none';
 }
 
-// ============= メッセージ投稿（返信対応） =============
+// ============= メッセージ投稿 =============
 async function postMessage() {
   userName = document.getElementById('user-name').value.trim();
   const messageText = document.getElementById('message-text').value.trim();
@@ -382,13 +413,18 @@ async function postMessage() {
       name: userName,
       message: messageText,
       key: currentKey,
-      reply_to: replyToId || '' // 返信先IDを追加
+      reply_to: replyToId || ''
     });
     
     if (result.status === 'ok') {
       document.getElementById('message-text').value = '';
-      cancelReply(); // 返信状態をリセット
-      loadMessages();
+      cancelReply();
+      await loadMessages();
+      
+      // 投稿後は必ず最下部へスクロール
+      setTimeout(() => {
+        scrollToBottom();
+      }, 200);
     } else {
       alert('エラー: ' + result.message);
     }

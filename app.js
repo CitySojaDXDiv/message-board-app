@@ -1,9 +1,59 @@
 // ============= 設定 =============
-const GAS_URL = 'https://script.google.com/macros/s/AKfycbzWmwrxr-GKoZ2QxHTsWZbdOfFgF08xaqrvndbK7gDYOb8TRql8HqPoOZEHWe5ShWM/exec'; // ★ここにGASのURLを貼り付け
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbxKVr9yY2VIUxBvqnrovrUA-l5ughmDVHD3E5o911DBK-fMEt1Tcxh9GJLJF0jlxTw/exec'; // ★GASのURL
 let currentTeam = '';
 let currentKey = '';
 let userName = '';
 let pollingInterval = null;
+
+// ============= JSONP用ヘルパー関数 =============
+function jsonpRequest(url, params = {}) {
+  return new Promise((resolve, reject) => {
+    const callbackName = 'jsonp_callback_' + Math.random().toString(36).substring(7);
+    
+    window[callbackName] = function(data) {
+      delete window[callbackName];
+      document.body.removeChild(script);
+      resolve(data);
+    };
+    
+    const script = document.createElement('script');
+    const queryParams = new URLSearchParams({...params, callback: callbackName});
+    script.src = `${url}?${queryParams}`;
+    script.onerror = () => {
+      delete window[callbackName];
+      document.body.removeChild(script);
+      reject(new Error('JSONP request failed'));
+    };
+    
+    document.body.appendChild(script);
+  });
+}
+
+function jsonpPost(url, data) {
+  return new Promise((resolve, reject) => {
+    const callbackName = 'jsonp_callback_' + Math.random().toString(36).substring(7);
+    
+    window[callbackName] = function(response) {
+      delete window[callbackName];
+      document.body.removeChild(script);
+      resolve(response);
+    };
+    
+    const script = document.createElement('script');
+    const params = new URLSearchParams({
+      ...data,
+      callback: callbackName
+    });
+    script.src = `${url}?${params}`;
+    script.onerror = () => {
+      delete window[callbackName];
+      document.body.removeChild(script);
+      reject(new Error('JSONP request failed'));
+    };
+    
+    document.body.appendChild(script);
+  });
+}
 
 // ============= 初期化 =============
 document.addEventListener('DOMContentLoaded', () => {
@@ -22,18 +72,19 @@ function setupEventListeners() {
 // ============= チーム管理 =============
 async function loadTeams() {
   try {
-    const response = await fetch(`${GAS_URL}?action=get_teams`);
-    const teams = await response.json();
+    const teams = await jsonpRequest(GAS_URL, { action: 'get_teams' });
     
     const select = document.getElementById('team-select');
     select.innerHTML = '<option value="">-- チームを選択 --</option>';
     
-    teams.forEach(team => {
-      const option = document.createElement('option');
-      option.value = team.name;
-      option.textContent = team.name + (team.is_protected ? ' 🔒' : '');
-      select.appendChild(option);
-    });
+    if (Array.isArray(teams)) {
+      teams.forEach(team => {
+        const option = document.createElement('option');
+        option.value = team.name;
+        option.textContent = team.name + (team.is_protected ? ' 🔒' : '');
+        select.appendChild(option);
+      });
+    }
   } catch (error) {
     alert('チーム一覧の取得に失敗しました: ' + error);
   }
@@ -48,25 +99,16 @@ async function joinTeam() {
   
   currentTeam = teamName;
   
-  // チームが保護されているかチェック
   try {
-    const response = await fetch(GAS_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        action: 'check_team_auth',
-        team: teamName
-      })
+    const result = await jsonpPost(GAS_URL, {
+      action: 'check_team_auth',
+      team: teamName
     });
     
-    const result = await response.json();
-    
     if (result.is_protected) {
-      // キー入力画面を表示
       document.getElementById('team-selection').style.display = 'none';
       document.getElementById('key-input').style.display = 'block';
     } else {
-      // 直接メッセージエリアへ
       showMessageArea();
     }
   } catch (error) {
@@ -83,17 +125,11 @@ async function verifyKey() {
   }
   
   try {
-    const response = await fetch(GAS_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        action: 'verify_team_access',
-        team: currentTeam,
-        key: key
-      })
+    const result = await jsonpPost(GAS_URL, {
+      action: 'verify_team_access',
+      team: currentTeam,
+      key: key
     });
-    
-    const result = await response.json();
     
     if (result.authorized) {
       currentKey = key;
@@ -132,17 +168,11 @@ async function createTeam() {
   const teamKey = prompt('チームキーを設定しますか？（空白=保護なし）:');
   
   try {
-    const response = await fetch(GAS_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        action: 'create_team',
-        team_name: teamName,
-        team_key: teamKey || ''
-      })
+    const result = await jsonpPost(GAS_URL, {
+      action: 'create_team',
+      team_name: teamName,
+      team_key: teamKey || ''
     });
-    
-    const result = await response.json();
     
     if (result.status === 'ok') {
       alert('チームを作成しました！');
@@ -158,9 +188,11 @@ async function createTeam() {
 // ============= メッセージ管理 =============
 async function loadMessages() {
   try {
-    const url = `${GAS_URL}?action=get_messages&team=${encodeURIComponent(currentTeam)}&key=${encodeURIComponent(currentKey)}`;
-    const response = await fetch(url);
-    const messages = await response.json();
+    const messages = await jsonpRequest(GAS_URL, {
+      action: 'get_messages',
+      team: currentTeam,
+      key: currentKey
+    });
     
     if (messages.auth_required) {
       alert('認証が必要です');
@@ -178,7 +210,11 @@ function displayMessages(messages) {
   const container = document.getElementById('messages-list');
   container.innerHTML = '';
   
-  messages.forEach((msg, index) => {
+  if (!Array.isArray(messages)) {
+    return;
+  }
+  
+  messages.forEach((msg) => {
     const messageDiv = document.createElement('div');
     messageDiv.className = 'message';
     
@@ -192,7 +228,7 @@ function displayMessages(messages) {
         <button class="delete-btn" onclick="deleteMessage('${msg.id}')">削除</button>
         <button class="read-btn" onclick="markAsRead('${msg.id}')">既読</button>
       </div>
-      ${msg.readers.length > 0 ? `<div class="readers">既読: ${msg.readers.join(', ')}</div>` : ''}
+      ${msg.readers && msg.readers.length > 0 ? `<div class="readers">既読: ${msg.readers.join(', ')}</div>` : ''}
     `;
     
     container.appendChild(messageDiv);
@@ -209,19 +245,13 @@ async function postMessage() {
   }
   
   try {
-    const response = await fetch(GAS_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        action: 'post_message',
-        team: currentTeam,
-        name: userName,
-        message: messageText,
-        key: currentKey
-      })
+    const result = await jsonpPost(GAS_URL, {
+      action: 'post_message',
+      team: currentTeam,
+      name: userName,
+      message: messageText,
+      key: currentKey
     });
-    
-    const result = await response.json();
     
     if (result.status === 'ok') {
       document.getElementById('message-text').value = '';
@@ -238,18 +268,12 @@ async function deleteMessage(messageId) {
   if (!confirm('このメッセージを削除しますか？')) return;
   
   try {
-    const response = await fetch(GAS_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        action: 'delete_message',
-        message_id: messageId,
-        team: currentTeam,
-        key: currentKey
-      })
+    const result = await jsonpPost(GAS_URL, {
+      action: 'delete_message',
+      message_id: messageId,
+      team: currentTeam,
+      key: currentKey
     });
-    
-    const result = await response.json();
     
     if (result.status === 'ok') {
       loadMessages();
@@ -271,19 +295,13 @@ async function markAsRead(messageId) {
   }
   
   try {
-    const response = await fetch(GAS_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        action: 'mark_as_read',
-        message_id: messageId,
-        reader_name: userName,
-        team: currentTeam,
-        key: currentKey
-      })
+    const result = await jsonpPost(GAS_URL, {
+      action: 'mark_as_read',
+      message_id: messageId,
+      reader_name: userName,
+      team: currentTeam,
+      key: currentKey
     });
-    
-    const result = await response.json();
     
     if (result.status === 'ok') {
       loadMessages();
@@ -299,7 +317,7 @@ async function markAsRead(messageId) {
 function startPolling() {
   pollingInterval = setInterval(() => {
     loadMessages();
-  }, 5000); // 5秒ごと
+  }, 5000);
 }
 
 function stopPolling() {

@@ -100,6 +100,10 @@ button:hover {
   border-radius: 8px;
   margin-bottom: 10px;
   
+  /* ★高さ制限を追加 */
+  max-height: 500px;
+  min-height: 300px;
+  
   /* スクロールバーのスタイル（Webkit系ブラウザ） */
   scrollbar-width: thin;
   scrollbar-color: #ccc #f9f9f9;
@@ -122,6 +126,7 @@ button:hover {
 #messages-list::-webkit-scrollbar-thumb:hover {
   background: #999;
 }
+
 
 /* ============= メッセージカード ============= */
 .message {
@@ -334,12 +339,14 @@ button:hover {
   /* メッセージエリア */
   #message-area {
     height: calc(100vh - 150px);
-    max-height: none;
+    max-height: none; /* スマホでは制限なし */
     min-height: 400px;
   }
   
   /* メッセージリスト */
   #messages-list {
+    max-height: calc(100vh - 300px); /* ★スマホ用の高さ制限 */
+    min-height: 250px;
     padding: 10px;
   }
   

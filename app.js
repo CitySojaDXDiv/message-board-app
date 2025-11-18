@@ -512,7 +512,7 @@ async function markAsRead(messageId) {
 function startPolling() {
   pollingInterval = setInterval(() => {
     loadMessages();
-  }, 2000);
+  }, 1000);
 }
 
 function stopPolling() {

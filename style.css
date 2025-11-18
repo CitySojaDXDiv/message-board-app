@@ -1,0 +1,163 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  padding: 30px;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+h1 {
+  color: #667eea;
+  font-size: 2.5em;
+}
+
+h2 {
+  color: #333;
+  margin-bottom: 15px;
+}
+
+section {
+  margin-bottom: 30px;
+}
+
+select, input, textarea {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 10px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+button {
+  background: #667eea;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+button:hover {
+  background: #5568d3;
+}
+
+#leave-team-btn {
+  background: #e74c3c;
+  float: right;
+}
+
+#leave-team-btn:hover {
+  background: #c0392b;
+}
+
+.post-form {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.message {
+  background: #fff;
+  border: 2px solid #eee;
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 15px;
+  transition: box-shadow 0.3s;
+}
+
+.message:hover {
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.message-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.message-name {
+  font-weight: bold;
+  color: #667eea;
+}
+
+.message-time {
+  color: #999;
+  font-size: 0.9em;
+}
+
+.message-text {
+  color: #333;
+  line-height: 1.6;
+  margin-bottom: 10px;
+}
+
+.message-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.message-actions button {
+  padding: 6px 12px;
+  font-size: 14px;
+}
+
+.delete-btn {
+  background: #e74c3c;
+}
+
+.delete-btn:hover {
+  background: #c0392b;
+}
+
+.reply-btn {
+  background: #3498db;
+}
+
+.reply-btn:hover {
+  background: #2980b9;
+}
+
+.read-btn {
+  background: #2ecc71;
+}
+
+.read-btn:hover {
+  background: #27ae60;
+}
+
+.readers {
+  margin-top: 10px;
+  padding: 10px;
+  background: #e8f5e9;
+  border-radius: 5px;
+  font-size: 0.9em;
+  color: #2ecc71;
+}

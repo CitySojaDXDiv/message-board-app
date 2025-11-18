@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>伝言板アプリ</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>📝 伝言板アプリ</h1>
+    </header>
+
+    <!-- チーム選択 -->
+    <section id="team-selection">
+      <h2>チームを選択</h2>
+      <select id="team-select">
+        <option value="">-- チームを選択 --</option>
+      </select>
+      <button id="join-team-btn">参加</button>
+      <button id="create-team-btn">新規作成</button>
+    </section>
+
+    <!-- キー入力（保護チームの場合） -->
+    <section id="key-input" style="display:none;">
+      <h2>🔒 キーを入力</h2>
+      <input type="password" id="team-key" placeholder="チームキーを入力">
+      <button id="verify-key-btn">認証</button>
+    </section>
+
+    <!-- メッセージエリア -->
+    <section id="message-area" style="display:none;">
+      <h2 id="current-team-name"></h2>
+      <button id="leave-team-btn">チームを退出</button>
+
+      <!-- メッセージ投稿 -->
+      <div class="post-form">
+        <input type="text" id="user-name" placeholder="名前">
+        <textarea id="message-text" placeholder="メッセージを入力"></textarea>
+        <button id="post-btn">投稿</button>
+      </div>
+
+      <!-- メッセージリスト -->
+      <div id="messages-list"></div>
+    </section>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

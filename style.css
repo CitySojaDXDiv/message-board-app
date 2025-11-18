@@ -161,3 +161,57 @@ button:hover {
   font-size: 0.9em;
   color: #2ecc71;
 }
+
+/* 返信メッセージのインデント */
+.message-item.reply {
+    margin-left: 30px;
+    border-left: 3px solid #2196F3;
+    padding-left: 10px;
+}
+
+/* 返信ボタン */
+.reply-btn {
+    background: #2196F3;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.85em;
+    margin-left: 10px;
+}
+
+.reply-btn:hover {
+    background: #1976D2;
+}
+
+/* 返信先の引用表示 */
+.reply-to-quote {
+    background: #f5f5f5;
+    border-left: 3px solid #9E9E9E;
+    padding: 8px;
+    margin: 8px 0;
+    font-size: 0.9em;
+    color: #666;
+    border-radius: 3px;
+}
+
+.reply-to-quote strong {
+    color: #333;
+}
+
+/* 返信プレビューエリア */
+#reply-preview {
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

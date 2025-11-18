@@ -34,15 +34,22 @@
       <h2 id="current-team-name"></h2>
       <button id="leave-team-btn">チームを退出</button>
 
+      <!-- メッセージリスト -->
+      <div id="messages-list"></div>
+
+      <!-- 返信プレビューエリア（新規追加） -->
+      <div id="reply-preview" style="display: none; background: #e3f2fd; padding: 10px; margin: 10px 0; border-radius: 5px; position: relative;">
+        <button id="cancel-reply" style="position: absolute; top: 5px; right: 5px; background: #ff5252; color: white; border: none; border-radius: 50%; width: 25px; height: 25px; cursor: pointer; font-size: 16px; line-height: 1;">×</button>
+        <strong>返信先:</strong>
+        <div id="reply-content" style="margin-top: 5px; font-size: 0.9em; color: #555;"></div>
+      </div>
+
       <!-- メッセージ投稿 -->
       <div class="post-form">
         <input type="text" id="user-name" placeholder="名前">
         <textarea id="message-text" placeholder="メッセージを入力"></textarea>
         <button id="post-btn">投稿</button>
       </div>
-
-      <!-- メッセージリスト -->
-      <div id="messages-list"></div>
     </section>
   </div>
 

@@ -5,6 +5,10 @@ let currentKey = '';
 let userName = '';
 let pollingInterval = null;
 
+// 返信機能用のグローバル変数（新規追加）
+let replyToId = null;
+let replyToMessage = null;
+
 // ============= JSONP用ヘルパー関数 =============
 function jsonpRequest(url, params = {}) {
   return new Promise((resolve, reject) => {
@@ -67,6 +71,9 @@ function setupEventListeners() {
   document.getElementById('verify-key-btn').addEventListener('click', verifyKey);
   document.getElementById('post-btn').addEventListener('click', postMessage);
   document.getElementById('leave-team-btn').addEventListener('click', leaveTeam);
+  
+  // 返信キャンセルボタン（新規追加）
+  document.getElementById('cancel-reply').addEventListener('click', cancelReply);
 }
 
 // ============= チーム管理 =============
@@ -156,6 +163,7 @@ function leaveTeam() {
   stopPolling();
   currentTeam = '';
   currentKey = '';
+  cancelReply(); // 返信状態をリセット
   document.getElementById('message-area').style.display = 'none';
   document.getElementById('team-selection').style.display = 'block';
   document.getElementById('messages-list').innerHTML = '';
@@ -206,35 +214,116 @@ async function loadMessages() {
   }
 }
 
+// ============= メッセージ表示（返信機能対応） =============
 function displayMessages(messages) {
   const container = document.getElementById('messages-list');
   container.innerHTML = '';
   
-  if (!Array.isArray(messages)) {
+  if (!Array.isArray(messages) || messages.length === 0) {
+    container.innerHTML = '<p style="text-align:center; color:#999; padding:20px;">メッセージがありません</p>';
     return;
   }
   
-  messages.forEach((msg) => {
-    const messageDiv = document.createElement('div');
-    messageDiv.className = 'message';
+  // メッセージをIDでマッピング
+  const messageMap = {};
+  messages.forEach(msg => {
+    messageMap[msg.id] = msg;
+  });
+  
+  // ルートメッセージ（返信でないもの）と返信を分離
+  const rootMessages = messages.filter(msg => !msg.reply_to);
+  const replies = messages.filter(msg => msg.reply_to);
+  
+  // ルートメッセージを表示
+  rootMessages.forEach(msg => {
+    container.appendChild(createMessageElement(msg, messageMap, false));
     
-    messageDiv.innerHTML = `
-      <div class="message-header">
-        <span class="message-name">${escapeHtml(msg.name)}</span>
-        <span class="message-time">${msg.timestamp}</span>
-      </div>
-      <div class="message-text">${escapeHtml(msg.message)}</div>
-      <div class="message-actions">
-        <button class="delete-btn" onclick="deleteMessage('${msg.id}')">削除</button>
-        <button class="read-btn" onclick="markAsRead('${msg.id}')">既読</button>
-      </div>
-      ${msg.readers && msg.readers.length > 0 ? `<div class="readers">既読: ${msg.readers.join(', ')}</div>` : ''}
-    `;
-    
-    container.appendChild(messageDiv);
+    // このメッセージへの返信を表示
+    const msgReplies = replies.filter(r => r.reply_to === msg.id);
+    msgReplies.forEach(reply => {
+      container.appendChild(createMessageElement(reply, messageMap, true));
+    });
   });
 }
 
+// ============= メッセージ要素作成（返信対応） =============
+function createMessageElement(msg, messageMap, isReply = false) {
+  const messageDiv = document.createElement('div');
+  messageDiv.className = 'message' + (isReply ? ' reply' : '');
+  messageDiv.id = 'msg-' + msg.id;
+  
+  // 返信先の引用表示
+  let replyQuote = '';
+  if (msg.reply_to && messageMap[msg.reply_to]) {
+    const originalMsg = messageMap[msg.reply_to];
+    const shortMsg = originalMsg.message.length > 50 
+      ? originalMsg.message.substring(0, 50) + '...' 
+      : originalMsg.message;
+    replyQuote = `
+      <div class="reply-to-quote">
+        <strong>↩ ${escapeHtml(originalMsg.name)}:</strong> ${escapeHtml(shortMsg)}
+      </div>
+    `;
+  }
+  
+  // 既読者リスト
+  const readers = msg.readers || [];
+  const readersText = readers.length > 0 
+    ? `<div class="readers">既読: ${readers.join(', ')}</div>` 
+    : '';
+  
+  messageDiv.innerHTML = `
+    <div class="message-header">
+      <span class="message-name">${escapeHtml(msg.name)}</span>
+      <span class="message-time">${msg.timestamp}</span>
+    </div>
+    ${replyQuote}
+    <div class="message-text">${escapeHtml(msg.message)}</div>
+    <div class="message-actions">
+      <button class="reply-btn" onclick="setReplyTo('${msg.id}', '${escapeHtml(msg.name)}', '${escapeHtml(msg.message).replace(/'/g, "\\'")}')">返信</button>
+      <button class="read-btn" onclick="markAsRead('${msg.id}')">既読</button>
+      <button class="delete-btn" onclick="deleteMessage('${msg.id}')">削除</button>
+    </div>
+    ${readersText}
+  `;
+  
+  return messageDiv;
+}
+
+// ============= 返信機能（新規追加） =============
+function setReplyTo(messageId, name, message) {
+  replyToId = messageId;
+  replyToMessage = { name, message };
+  
+  // 返信プレビューを表示
+  const preview = document.getElementById('reply-preview');
+  const content = document.getElementById('reply-content');
+  
+  const shortMsg = message.length > 100 ? message.substring(0, 100) + '...' : message;
+  content.innerHTML = `<strong>${escapeHtml(name)}:</strong> ${escapeHtml(shortMsg)}`;
+  preview.style.display = 'block';
+  
+  // メッセージ入力欄にフォーカス
+  document.getElementById('message-text').focus();
+  
+  // 返信先メッセージまでスクロール
+  const targetMsg = document.getElementById('msg-' + messageId);
+  if (targetMsg) {
+    targetMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    targetMsg.style.background = '#FFF9C4';
+    setTimeout(() => {
+      targetMsg.style.background = '';
+    }, 2000);
+  }
+}
+
+function cancelReply() {
+  replyToId = null;
+  replyToMessage = null;
+  document.getElementById('reply-preview').style.display = 'none';
+}
+
+// ============= メッセージ投稿（返信対応） =============
 async function postMessage() {
   userName = document.getElementById('user-name').value.trim();
   const messageText = document.getElementById('message-text').value.trim();
@@ -250,11 +339,13 @@ async function postMessage() {
       team: currentTeam,
       name: userName,
       message: messageText,
-      key: currentKey
+      key: currentKey,
+      reply_to: replyToId || '' // 返信先IDを追加
     });
     
     if (result.status === 'ok') {
       document.getElementById('message-text').value = '';
+      cancelReply(); // 返信状態をリセット
       loadMessages();
     } else {
       alert('エラー: ' + result.message);

@@ -1,5 +1,5 @@
 // ============= 設定 =============
-const GAS_URL = 'https://script.google.com/macros/s/AKfycbwBtBpexbshVHvhFldo4lpnWBilixKDJWOCG2m-MRYt1HNTiPVCaB7EMYdW8J5DQc0/exec'; // ★ここにGASのURLを貼り付け
+const GAS_URL = 'https://script.google.com/macros/s/AKfycby8R4yCJ0ioCw2Hu9tbgsyeP9K4TIP3rUuOZJWirduB1aM6ty2NGlErtVGmPBuOv-4/exec'; // ★ここにGASのURLを貼り付け
 let currentTeam = '';
 let currentKey = '';
 let userName = '';

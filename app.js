@@ -214,7 +214,7 @@ async function loadMessages() {
   }
 }
 
-// ============= メッセージ表示（返信機能対応） =============
+// ============= メッセージ表示（完全なスレッド対応） =============
 function displayMessages(messages) {
   const container = document.getElementById('messages-list');
   container.innerHTML = '';
@@ -230,20 +230,55 @@ function displayMessages(messages) {
     messageMap[msg.id] = msg;
   });
   
-  // ルートメッセージ（返信でないもの）と返信を分離
+  // ルートメッセージ（返信でないもの）を取得
   const rootMessages = messages.filter(msg => !msg.reply_to);
-  const replies = messages.filter(msg => msg.reply_to);
   
-  // ルートメッセージを表示
-  rootMessages.forEach(msg => {
-    container.appendChild(createMessageElement(msg, messageMap, false));
+  // 各ルートメッセージとそのスレッドを表示
+  rootMessages.forEach(rootMsg => {
+    // ルートメッセージを表示
+    container.appendChild(createMessageElement(rootMsg, messageMap, false));
     
-    // このメッセージへの返信を表示
-    const msgReplies = replies.filter(r => r.reply_to === msg.id);
-    msgReplies.forEach(reply => {
-      container.appendChild(createMessageElement(reply, messageMap, true));
+    // このメッセージへのすべての返信を取得（直接・間接問わず）
+    const threadMessages = getThreadMessages(rootMsg.id, messages, messageMap);
+    
+    // 返信を時系列順に表示
+    threadMessages.forEach(msg => {
+      container.appendChild(createMessageElement(msg, messageMap, true));
     });
   });
+}
+
+// ============= スレッドのすべてのメッセージを取得 =============
+function getThreadMessages(rootId, allMessages, messageMap) {
+  const threadMessages = [];
+  const visited = new Set();
+  
+  // ルートメッセージへの直接の返信を取得
+  const directReplies = allMessages.filter(msg => msg.reply_to === rootId);
+  
+  // 各返信とその子孫を再帰的に取得
+  function collectReplies(messageId) {
+    if (visited.has(messageId)) return;
+    visited.add(messageId);
+    
+    const replies = allMessages.filter(msg => msg.reply_to === messageId);
+    replies.forEach(reply => {
+      threadMessages.push(reply);
+      collectReplies(reply.id); // 再帰的に子孫を取得
+    });
+  }
+  
+  // ルートメッセージから開始
+  collectReplies(rootId);
+  
+  // 時系列順にソート
+  threadMessages.sort((a, b) => {
+    const dateA = new Date(a.timestamp);
+    const dateB = new Date(b.timestamp);
+    return dateA - dateB; // 古い順
+  });
+  
+  return threadMessages;
 }
 
 // ============= メッセージ要素作成（返信対応） =============

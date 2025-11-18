@@ -206,12 +206,15 @@ async function loadMessages() {
       return;
     }
     
+    const isFirstLoad = document.getElementById('messages-list').children.length === 0;
+    
     displayMessages(messages);
     
-    // 初回表示時のみ最下部へスクロール
-    const container = document.getElementById('messages-list');
-    if (container.children.length <= messages.length) {
-      scrollToBottom();
+    // 初回表示時は必ず最下部へスクロール
+    if (isFirstLoad) {
+      setTimeout(() => {
+        scrollToBottom(true);
+      }, 300); // 少し遅延させて確実にスクロール
     }
   } catch (error) {
     console.error('メッセージ取得エラー:', error);
@@ -238,15 +241,22 @@ function displayMessages(messages) {
     messageMap[msg.id] = msg;
   });
   
-  // 時系列順にソート（古い順）
+  // 時系列順にソート（古い順）★ここが重要
   messages.sort((a, b) => {
     const dateA = new Date(a.timestamp);
     const dateB = new Date(b.timestamp);
-    return dateA - dateB;
+    return dateA - dateB; // 古い順
   });
   
   // ルートメッセージ（返信でないもの）を取得
   const rootMessages = messages.filter(msg => !msg.reply_to);
+  
+  // ★ルートメッセージも古い順にソート
+  rootMessages.sort((a, b) => {
+    const dateA = new Date(a.timestamp);
+    const dateB = new Date(b.timestamp);
+    return dateA - dateB; // 古い順
+  });
   
   // 各ルートメッセージとそのスレッドを表示
   rootMessages.forEach(rootMsg => {
@@ -271,20 +281,27 @@ function displayMessages(messages) {
 // ============= スクロール位置の判定 =============
 function isScrolledToBottom() {
   const container = document.getElementById('messages-list');
-  if (!container) return true;
+  if (!container || container.children.length === 0) return true;
   
-  const threshold = 50; // 50px以内なら「最下部」と判定
+  const threshold = 100; // 100px以内なら「最下部」と判定
   return container.scrollHeight - container.clientHeight <= container.scrollTop + threshold;
 }
 
 // ============= 最下部へスクロール =============
-function scrollToBottom() {
+function scrollToBottom(force = false) {
   const container = document.getElementById('messages-list');
-  if (container) {
-    setTimeout(() => {
-      container.scrollTop = container.scrollHeight;
-    }, 100);
+  if (!container) return;
+  
+  // 強制スクロール（初回表示時など）
+  if (force) {
+    container.scrollTop = container.scrollHeight;
+    return;
   }
+  
+  // 通常のスクロール（少し遅延）
+  setTimeout(() => {
+    container.scrollTop = container.scrollHeight;
+  }, 100);
 }
 
 // ============= スレッドのすべてのメッセージを取得 =============
@@ -421,10 +438,10 @@ async function postMessage() {
       cancelReply();
       await loadMessages();
       
-      // 投稿後は必ず最下部へスクロール
+      // 投稿後は必ず最下部へスクロール（強制）
       setTimeout(() => {
-        scrollToBottom();
-      }, 200);
+        scrollToBottom(true);
+      }, 300);
     } else {
       alert('エラー: ' + result.message);
     }

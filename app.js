@@ -681,38 +681,26 @@ async function postMessage() {
   try {
     let result;
     
-    // ★ファイルがある場合（POST方式）
+    // ★ファイルがある場合
     if (selectedFile) {
       const fileData = await fileToBase64(selectedFile);
       
       console.log('ファイルアップロード開始:', selectedFile.name);
       
-      // ★fetch APIを使用してPOSTリクエスト
-      const response = await fetch(GAS_URL, {
-        method: 'POST',
-        mode: 'cors',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          action: 'upload_file',
-          team: currentTeam,
-          name: userName,
-          message: messageText,
-          key: currentKey,
-          reply_to: replyToId || '',
-          segment: selectedSegment,
-          file_data: fileData,
-          file_name: selectedFile.name,
-          file_type: selectedFile.type
-        })
+      // ★iframe方式でPOSTリクエスト
+      result = await uploadFileViaIframe({
+        action: 'upload_file',
+        team: currentTeam,
+        name: userName,
+        message: messageText,
+        key: currentKey,
+        reply_to: replyToId || '',
+        segment: selectedSegment,
+        file_data: fileData,
+        file_name: selectedFile.name,
+        file_type: selectedFile.type
       });
       
-      if (!response.ok) {
-        throw new Error('ファイルのアップロードに失敗しました');
-      }
-      
-      result = await response.json();
       console.log('ファイルアップロード完了:', result);
       
       clearFile();
@@ -1027,4 +1015,79 @@ async function deleteTeam() {
   } catch (error) {
     alert('チーム削除に失敗しました: ' + error);
   }
+}
+
+// ============= iframe方式のファイルアップロード =============
+
+/**
+ * iframe方式でファイルをアップロード
+ */
+function uploadFileViaIframe(data) {
+  return new Promise((resolve, reject) => {
+    // 一意なID生成
+    const iframeId = 'upload-iframe-' + Math.random().toString(36).substring(7);
+    const formId = 'upload-form-' + Math.random().toString(36).substring(7);
+    
+    // iframeを作成
+    const iframe = document.createElement('iframe');
+    iframe.id = iframeId;
+    iframe.name = iframeId;
+    iframe.style.display = 'none';
+    document.body.appendChild(iframe);
+    
+    // フォームを作成
+    const form = document.createElement('form');
+    form.id = formId;
+    form.method = 'POST';
+    form.action = GAS_URL;
+    form.target = iframeId;
+    form.style.display = 'none';
+    
+    // データをフォームに追加
+    for (const key in data) {
+      const input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = key;
+      input.value = data[key];
+      form.appendChild(input);
+    }
+    
+    document.body.appendChild(form);
+    
+    // iframeのロード完了を待つ
+    iframe.onload = () => {
+      try {
+        // iframeの内容を取得
+        const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+        const responseText = iframeDoc.body.textContent;
+        
+        // JSONをパース
+        const result = JSON.parse(responseText);
+        
+        // クリーンアップ
+        document.body.removeChild(iframe);
+        document.body.removeChild(form);
+        
+        resolve(result);
+      } catch (error) {
+        // クリーンアップ
+        document.body.removeChild(iframe);
+        document.body.removeChild(form);
+        
+        reject(error);
+      }
+    };
+    
+    // エラーハンドリング
+    iframe.onerror = () => {
+      // クリーンアップ
+      document.body.removeChild(iframe);
+      document.body.removeChild(form);
+      
+      reject(new Error('ファイルのアップロードに失敗しました'));
+    };
+    
+    // フォームを送信
+    form.submit();
+  });
 }

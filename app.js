@@ -88,6 +88,10 @@ function setupEventListeners() {
 　document.getElementById('edit-team-name-btn').addEventListener('click', editTeamName);
 　document.getElementById('edit-team-key-btn').addEventListener('click', editTeamKey);
 　document.getElementById('delete-team-btn').addEventListener('click', deleteTeam);
+　
+　// ★ファイル関連のイベントリスナーを追加
+  document.getElementById('file-input').addEventListener('change', onFileSelected);
+  document.getElementById('clear-file-btn').addEventListener('click', clearFile);
 }
 
 // ============= チーム管理 =============
@@ -568,6 +572,33 @@ function createMessageElement(msg, messageMap, isReply = false) {
     `;
   }
   
+  // ★ファイル表示
+  let fileDisplay = '';
+  if (msg.file_url && msg.file_name) {
+    const isImage = msg.file_type && msg.file_type.startsWith('image/');
+    
+    if (isImage) {
+      // 画像の場合はサムネイル表示
+      fileDisplay = `
+        <div class="file-attachment">
+          <a href="${msg.file_url}" target="_blank">
+            <img src="${msg.file_url}" alt="${escapeHtml(msg.file_name)}" class="file-thumbnail">
+          </a>
+          <p class="file-name">📎 ${escapeHtml(msg.file_name)}</p>
+        </div>
+      `;
+    } else {
+      // その他のファイルはリンク表示
+      fileDisplay = `
+        <div class="file-attachment">
+          <a href="${msg.file_url}" target="_blank" class="file-link">
+            📎 ${escapeHtml(msg.file_name)}
+          </a>
+        </div>
+      `;
+    }
+  }
+  
   // 既読者リスト
   const readers = msg.readers || [];
   const readersText = readers.length > 0 
@@ -575,7 +606,6 @@ function createMessageElement(msg, messageMap, isReply = false) {
     : '';
   
   // 返信ボタンの表示制御（返信メッセージには表示しない）
-  // ★修正：セグメント情報も渡す
   const replyButton = !isReply 
     ? `<button class="reply-btn" onclick="setReplyTo('${msg.id}', '${escapeHtml(msg.name)}', '${escapeHtml(msg.message).replace(/'/g, "\\'")}', '${msg.segment || 'ALL'}')">返信</button>` 
     : '';
@@ -590,6 +620,7 @@ function createMessageElement(msg, messageMap, isReply = false) {
     </div>
     ${replyQuote}
     <div class="message-text">${escapeHtml(msg.message)}</div>
+    ${fileDisplay}
     <div class="message-actions">
       ${replyButton}
       <button class="read-btn" onclick="markAsRead('${msg.id}')">既読</button>
@@ -658,15 +689,38 @@ async function postMessage() {
   }
   
   try {
-    const result = await jsonpPost(GAS_URL, {
-      action: 'post_message',
-      team: currentTeam,
-      name: userName,
-      message: messageText,
-      key: currentKey,
-      reply_to: replyToId || '',
-      segment: selectedSegment
-    });
+    let result;
+    
+    // ★ファイルがある場合
+    if (selectedFile) {
+      const fileData = await fileToBase64(selectedFile);
+      
+      result = await jsonpPost(GAS_URL, {
+        action: 'upload_file',
+        team: currentTeam,
+        name: userName,
+        message: messageText,
+        key: currentKey,
+        reply_to: replyToId || '',
+        segment: selectedSegment,
+        file_data: fileData,
+        file_name: selectedFile.name,
+        file_type: selectedFile.type
+      });
+      
+      clearFile();
+    } else {
+      // ファイルがない場合は通常投稿
+      result = await jsonpPost(GAS_URL, {
+        action: 'post_message',
+        team: currentTeam,
+        name: userName,
+        message: messageText,
+        key: currentKey,
+        reply_to: replyToId || '',
+        segment: selectedSegment
+      });
+    }
     
     if (result.status === 'ok') {
       document.getElementById('message-text').value = '';
@@ -769,10 +823,62 @@ function formatTimestamp(timestamp) {
   const minutes = String(date.getMinutes()).padStart(2, '0');
   
   return `${month}/${day}(${weekday}) ${hours}:${minutes}`;
-
-
 }
 
+// ============= ファイル添付機能 =============
+
+let selectedFile = null;
+
+/**
+ * ファイル選択時の処理
+ */
+function onFileSelected(event) {
+  const file = event.target.files[0];
+  
+  if (!file) {
+    clearFile();
+    return;
+  }
+  
+  // ファイルサイズチェック（10MB以下）
+  const maxSize = 10 * 1024 * 1024; // 10MB
+  if (file.size > maxSize) {
+    alert('ファイルサイズは10MB以下にしてください');
+    clearFile();
+    return;
+  }
+  
+  selectedFile = file;
+  
+  // ファイル名を表示
+  document.getElementById('file-name-display').textContent = file.name;
+  document.getElementById('clear-file-btn').style.display = 'inline-block';
+}
+
+/**
+ * ファイル選択をクリア
+ */
+function clearFile() {
+  selectedFile = null;
+  document.getElementById('file-input').value = '';
+  document.getElementById('file-name-display').textContent = '';
+  document.getElementById('clear-file-btn').style.display = 'none';
+}
+
+/**
+ * ファイルをBase64にエンコード
+ */
+function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const base64 = reader.result.split(',')[1];
+      resolve(base64);
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
 
 // ============= チーム管理機能 =============
 

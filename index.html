@@ -29,27 +29,70 @@
       <button id="verify-key-btn">認証</button>
     </section>
 
-    <!-- メッセージエリア -->
+    <!-- メッセージエリア（★2カラムレイアウト） -->
     <section id="message-area" style="display:none;">
+      <!-- ヘッダーバー -->
       <div class="message-header-bar">
         <h2 id="current-team-name"></h2>
         <button id="leave-team-btn">チームを退出</button>
       </div>
 
-      <!-- セグメント管理エリア（新規追加） -->
-      <div class="segment-controls">
-        <div class="segment-filter">
-          <label>📂 セグメント:</label>
-          <select id="segment-filter">
-            <option value="ALL">ALL（すべて表示）</option>
-          </select>
+      <!-- ★2カラムレイアウト -->
+      <div class="two-column-layout">
+        <!-- 左カラム: セグメント管理 + 投稿フォーム -->
+        <div class="left-column">
+          <!-- セグメント管理 -->
+          <div class="segment-controls">
+            <div class="segment-filter">
+              <label>📂 セグメント:</label>
+              <select id="segment-filter">
+                <option value="ALL">ALL（すべて表示）</option>
+              </select>
+            </div>
+            <div class="segment-actions">
+              <button id="manage-segments-btn" class="secondary-btn">セグメント管理</button>
+            </div>
+          </div>
+
+          <!-- 投稿フォーム -->
+          <div class="post-form">
+            <h3 class="post-form-title">📝 投稿</h3>
+            
+            <!-- 名前とセグメントを横並びに -->
+            <div class="post-form-row">
+              <div class="name-input">
+                <input type="text" id="user-name" placeholder="名前">
+              </div>
+              <div class="segment-wrapper">
+                <div class="segment-select-wrapper">
+                  <label for="segment-select">📂</label>
+                  <select id="segment-select">
+                    <option value="ALL">ALL</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            
+            <textarea id="message-text" placeholder="メッセージを入力"></textarea>
+            <button id="post-btn">投稿</button>
+          </div>
         </div>
-        <div class="segment-actions">
-          <button id="manage-segments-btn" class="secondary-btn">セグメント管理</button>
+
+        <!-- 右カラム: メッセージリスト -->
+        <div class="right-column">
+          <!-- 返信プレビューエリア -->
+          <div id="reply-preview" style="display: none; background: #e3f2fd; padding: 10px; margin-bottom: 10px; border-radius: 5px; position: relative;">
+            <button id="cancel-reply" style="position: absolute; top: 5px; right: 5px; background: #ff5252; color: white; border: none; border-radius: 50%; width: 25px; height: 25px; cursor: pointer; font-size: 16px; line-height: 1;">×</button>
+            <strong>返信先:</strong>
+            <div id="reply-content" style="margin-top: 5px; font-size: 0.9em; color: #555;"></div>
+          </div>
+
+          <!-- メッセージリスト -->
+          <div id="messages-list"></div>
         </div>
       </div>
 
-      <!-- セグメント管理モーダル（新規追加） -->
+      <!-- セグメント管理モーダル -->
       <div id="segment-modal" class="modal" style="display:none;">
         <div class="modal-content">
           <span class="close-modal" id="close-segment-modal">&times;</span>
@@ -67,37 +110,8 @@
           </div>
         </div>
       </div>
-
-      <!-- メッセージリスト -->
-      <div id="messages-list"></div>
-
-      <!-- 返信プレビューエリア -->
-      <div id="reply-preview" style="display: none; background: #e3f2fd; padding: 10px; margin: 10px 0; border-radius: 5px; position: relative;">
-        <button id="cancel-reply" style="position: absolute; top: 5px; right: 5px; background: #ff5252; color: white; border: none; border-radius: 50%; width: 25px; height: 25px; cursor: pointer; font-size: 16px; line-height: 1;">×</button>
-        <strong>返信先:</strong>
-        <div id="reply-content" style="margin-top: 5px; font-size: 0.9em; color: #555;"></div>
-      </div>
-
-<!-- メッセージ投稿 -->
-<div class="post-form">
-  <!-- ★名前とセグメントを横並びに -->
-  <div class="post-form-row">
-    <div class="name-input">
-      <input type="text" id="user-name" placeholder="名前">
-    </div>
-    <div class="segment-wrapper">
-      <div class="segment-select-wrapper">
-        <label for="segment-select">📂</label>
-        <select id="segment-select">
-          <option value="ALL">ALL</option>
-        </select>
-      </div>
-    </div>
+    </section>
   </div>
-  
-  <textarea id="message-text" placeholder="メッセージを入力"></textarea>
-  <button id="post-btn">投稿</button>
-</div>
 
   <script src="app.js"></script>
 </body>

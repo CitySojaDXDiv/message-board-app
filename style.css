@@ -544,132 +544,176 @@ button:hover {
 /* ============= レスポンシブ対応（スマホ） ============= */
 @media screen and (max-width: 600px) {
   body {
-    padding: 10px;
+    padding: 8px;
   }
   
   .container {
-    padding: 15px;
-    border-radius: 10px;
+    padding: 12px;
+    border-radius: 8px;
   }
   
   h1 {
-    font-size: 1.8em;
+    font-size: 1.6em;
+    margin-bottom: 15px;
   }
   
   h2 {
-    font-size: 1.2em;
+    font-size: 1.1em;
+    margin-bottom: 10px;
   }
   
   /* メッセージエリア */
   #message-area {
-    height: calc(100vh - 150px);
+    height: calc(100vh - 140px);
     max-height: none;
-    min-height: 400px;
+    min-height: 350px;
   }
   
   /* メッセージリスト */
   #messages-list {
-    max-height: calc(100vh - 300px);
-    min-height: 250px;
-    padding: 10px;
+    max-height: calc(100vh - 320px);
+    min-height: 200px;
+    padding: 8px;
   }
   
-  /* メッセージカード */
+  /* メッセージカード（★縦幅を削減） */
   .message {
-    padding: 12px;
-    margin-bottom: 10px;
+    padding: 8px 10px;
+    margin-bottom: 8px;
+    border-radius: 8px;
   }
   
-  /* メッセージヘッダー */
+  /* メッセージヘッダー（★縦幅を削減） */
+  .message-header {
+    margin-bottom: 4px;
+  }
+  
   .message-info {
     gap: 2px;
   }
   
   .message-name {
-    font-size: 0.95em;
+    font-size: 0.9em;
+    line-height: 1.2;
   }
   
   .message-time {
-    font-size: 0.75em;
+    font-size: 0.7em;
+    line-height: 1.2;
   }
   
-  /* メッセージテキスト */
+  /* メッセージテキスト（★縦幅を削減） */
   .message-text {
-    font-size: 0.9em;
-    line-height: 1.5;
+    font-size: 0.85em;
+    line-height: 1.4;
+    margin-bottom: 6px;
   }
   
-  /* ボタン */
+  /* ボタン（★縦幅を削減） */
   .message-actions {
-    gap: 5px;
+    gap: 4px;
   }
   
   .message-actions button {
-    font-size: 0.75em;
-    padding: 6px 10px;
+    font-size: 0.7em;
+    padding: 4px 8px;
+    border-radius: 4px;
   }
   
   /* 返信メッセージのインデント（スマホでは浅く） */
   .message.reply {
-    margin-left: 15px;
-    padding-left: 8px;
+    margin-left: 12px;
+    padding-left: 6px;
+    border-left-width: 2px;
   }
   
-  /* 返信プレビュー */
+  /* 返信プレビュー（★縦幅を削減） */
   #reply-preview {
-    padding: 8px;
-    font-size: 0.85em;
+    padding: 6px 8px;
+    font-size: 0.8em;
+    margin-bottom: 8px;
   }
   
   #cancel-reply {
-    width: 22px;
-    height: 22px;
-    font-size: 14px;
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
+    top: 3px;
+    right: 3px;
   }
   
-  /* 投稿フォーム */
+  #reply-content {
+    padding-right: 25px;
+  }
+  
+  /* 投稿フォーム（★縦幅を削減） */
   .post-form {
-    padding: 10px;
+    padding: 8px;
   }
   
   .post-form input,
   .post-form textarea {
-    font-size: 0.9em;
-    padding: 10px;
+    font-size: 0.85em;
+    padding: 8px;
+    margin-bottom: 6px;
+    border-radius: 6px;
+  }
+  
+  .post-form textarea {
+    min-height: 60px;
   }
   
   .post-form button {
-    font-size: 0.9em;
-    padding: 10px 15px;
+    font-size: 0.85em;
+    padding: 8px 12px;
+    border-radius: 6px;
   }
   
-  /* 既読者リスト */
+  /* 既読者リスト（★縦幅を削減） */
   .readers {
-    font-size: 0.75em;
-    padding: 8px;
+    font-size: 0.7em;
+    padding: 4px 6px;
+    margin-top: 6px;
+    border-radius: 4px;
   }
   
-  /* 返信先の引用 */
+  /* 返信先の引用（★縦幅を削減） */
   .reply-to-quote {
-    font-size: 0.8em;
-    padding: 6px;
+    font-size: 0.75em;
+    padding: 4px 6px;
+    margin: 4px 0;
+    border-radius: 4px;
   }
   
   /* 退出ボタン */
   #leave-team-btn {
     float: none;
     width: 100%;
-    margin-top: 10px;
+    margin-top: 8px;
+    padding: 8px 12px;
+    font-size: 0.85em;
   }
   
-  /* セグメント関連 */
+  /* セグメント関連（★縦幅を削減） */
   .segment-controls {
     flex-direction: column;
     align-items: stretch;
+    padding: 10px;
+    margin-bottom: 10px;
+    gap: 8px;
   }
   
   .segment-filter {
     width: 100%;
+  }
+  
+  .segment-filter label {
+    font-size: 0.85em;
+  }
+  
+  .segment-filter select {
+    font-size: 0.85em;
+    padding: 6px;
   }
   
   .segment-actions {
@@ -678,31 +722,101 @@ button:hover {
   
   .secondary-btn {
     width: 100%;
+    font-size: 0.85em;
+    padding: 6px 12px;
   }
   
   .modal-content {
-    padding: 20px;
+    padding: 15px;
     width: 95%;
   }
   
+  .modal-content h3 {
+    font-size: 1.2em;
+    margin-bottom: 15px;
+  }
+  
+  .modal-content h4 {
+    font-size: 1em;
+    margin-top: 15px;
+    margin-bottom: 8px;
+  }
+  
+  .segment-item {
+    padding: 8px;
+    margin-bottom: 6px;
+  }
+  
+  .segment-name {
+    font-size: 0.9em;
+  }
+  
+  .delete-segment-btn {
+    font-size: 0.75em;
+    padding: 4px 8px;
+  }
+  
+  .segment-create input {
+    font-size: 0.85em;
+    padding: 8px;
+    margin-bottom: 8px;
+  }
+  
+  .segment-create button {
+    font-size: 0.85em;
+    padding: 8px;
+  }
+  
   .segment-select-wrapper {
-    flex-direction: column;
-    align-items: stretch;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 6px;
+  }
+  
+  .segment-select-wrapper label {
+    font-size: 0.85em;
+  }
+  
+  .segment-select-wrapper select {
+    font-size: 0.85em;
+    padding: 6px;
   }
   
   .segment-badge {
-    font-size: 0.7em;
-    padding: 2px 6px;
+    font-size: 0.65em;
+    padding: 2px 5px;
+    margin-left: 4px;
   }
   
   .message-header-bar {
     flex-direction: column;
     align-items: flex-start;
-    gap: 10px;
+    gap: 8px;
+    margin-bottom: 10px;
   }
   
-  #leave-team-btn {
-    width: 100%;
+  .message-header-bar h2 {
+    font-size: 1.1em;
+  }
+  
+  /* フォーム要素（★縦幅を削減） */
+  select, input, textarea {
+    padding: 8px;
+    margin-bottom: 6px;
+    font-size: 0.85em;
+    border-radius: 6px;
+  }
+  
+  /* ボタン全般（★縦幅を削減） */
+  button {
+    padding: 8px 16px;
+    font-size: 0.85em;
+    border-radius: 6px;
+  }
+  
+  /* セクション */
+  section {
+    margin-bottom: 20px;
   }
 }
 

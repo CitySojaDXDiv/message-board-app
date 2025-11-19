@@ -580,7 +580,7 @@ function createMessageElement(msg, messageMap, isReply = false) {
       <div class="message-info">
         <span class="message-name">${escapeHtml(msg.name)}</span>
         ${segmentBadge}
-        <span class="message-time">${msg.timestamp}</span>
+        <span class="message-time">${formatTimestamp(msg.timestamp)}</span>
       </div>
     </div>
     ${replyQuote}
@@ -748,4 +748,20 @@ function escapeHtml(text) {
   const div = document.createElement('div');
   div.textContent = text;
   return div.innerHTML;
+}
+
+
+// ============= 時刻フォーマット関数（追加） =============
+function formatTimestamp(timestamp) {
+  const date = new Date(timestamp);
+  
+  // 月/日(曜日) 時:分 の形式にフォーマット
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  const weekdays = ['日', '月', '火', '水', '木', '金', '土'];
+  const weekday = weekdays[date.getDay()];
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  
+  return `${month}/${day}(${weekday}) ${hours}:${minutes}`;
 }

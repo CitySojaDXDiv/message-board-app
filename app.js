@@ -8,6 +8,7 @@ let pollingInterval = null;
 // 返信機能用のグローバル変数
 let replyToId = null;
 let replyToMessage = null;
+let replyToSegment = null; // ★追加：返信先のセグメント
 
 // セグメント機能用のグローバル変数
 let currentSegment = 'ALL';
@@ -259,10 +260,16 @@ function updateSegmentUI() {
 }
 
 /**
- * セグメントフィルター変更時
+ * セグメントフィルター変更時（★改善：投稿セグメントも連動）
  */
 function onSegmentFilterChange() {
   currentSegment = document.getElementById('segment-filter').value;
+  
+  // ★返信中でない場合のみ、投稿セグメントも連動
+  if (!replyToId) {
+    document.getElementById('segment-select').value = currentSegment;
+  }
+  
   loadMessages();
 }
 
@@ -374,6 +381,7 @@ async function deleteSegment(segmentName) {
       if (currentSegment === segmentName) {
         currentSegment = 'ALL';
         document.getElementById('segment-filter').value = 'ALL';
+        document.getElementById('segment-select').value = 'ALL';
       }
       
       await loadSegments();
@@ -562,8 +570,9 @@ function createMessageElement(msg, messageMap, isReply = false) {
     : '';
   
   // 返信ボタンの表示制御（返信メッセージには表示しない）
+  // ★修正：セグメント情報も渡す
   const replyButton = !isReply 
-    ? `<button class="reply-btn" onclick="setReplyTo('${msg.id}', '${escapeHtml(msg.name)}', '${escapeHtml(msg.message).replace(/'/g, "\\'")}')">返信</button>` 
+    ? `<button class="reply-btn" onclick="setReplyTo('${msg.id}', '${escapeHtml(msg.name)}', '${escapeHtml(msg.message).replace(/'/g, "\\'")}', '${msg.segment || 'ALL'}')">返信</button>` 
     : '';
   
   messageDiv.innerHTML = `
@@ -587,10 +596,11 @@ function createMessageElement(msg, messageMap, isReply = false) {
   return messageDiv;
 }
 
-// ============= 返信機能 =============
-function setReplyTo(messageId, name, message) {
+// ============= 返信機能（★改善：セグメント固定） =============
+function setReplyTo(messageId, name, message, segment) {
   replyToId = messageId;
   replyToMessage = { name, message };
+  replyToSegment = segment || 'ALL'; // ★追加：返信先のセグメントを保存
   
   const preview = document.getElementById('reply-preview');
   const content = document.getElementById('reply-content');
@@ -598,6 +608,11 @@ function setReplyTo(messageId, name, message) {
   const shortMsg = message.length > 100 ? message.substring(0, 100) + '...' : message;
   content.innerHTML = `<strong>${escapeHtml(name)}:</strong> ${escapeHtml(shortMsg)}`;
   preview.style.display = 'block';
+  
+  // ★投稿セグメントを返信先と同じに固定
+  const segmentSelect = document.getElementById('segment-select');
+  segmentSelect.value = replyToSegment;
+  segmentSelect.disabled = true; // ★変更不可にする
   
   document.getElementById('message-text').focus();
   
@@ -614,6 +629,15 @@ function setReplyTo(messageId, name, message) {
 function cancelReply() {
   replyToId = null;
   replyToMessage = null;
+  replyToSegment = null; // ★追加
+  
+  // ★セグメント選択を有効化
+  const segmentSelect = document.getElementById('segment-select');
+  segmentSelect.disabled = false;
+  
+  // ★現在のフィルターに合わせる
+  segmentSelect.value = currentSegment;
+  
   document.getElementById('reply-preview').style.display = 'none';
 }
 

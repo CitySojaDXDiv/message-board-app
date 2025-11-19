@@ -1009,3 +1009,19 @@ function updateSegmentControlsVisibility() {
     document.getElementById('segment-controls-content').classList.remove('collapsed');
   }
 }
+
+
+
+// ============= 投稿フォームの折りたたみ機能（スマホ版） =============
+function togglePostForm() {
+  const content = document.getElementById('post-form-content');
+  const toggle = document.querySelector('.post-form-toggle');
+  
+  if (content.classList.contains('collapsed')) {
+    content.classList.remove('collapsed');
+    toggle.textContent = '▼';
+  } else {
+    content.classList.add('collapsed');
+    toggle.textContent = '▶';
+  }
+}

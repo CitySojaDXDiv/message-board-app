@@ -654,22 +654,22 @@ button:hover {
   background: #c0392b;
 }
 
-/* ============= ファイル添付機能 ============= */
+/* ============= ファイル添付機能（[×] ファイル名形式） ============= */
 
 .file-input-wrapper {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   margin-bottom: 8px;
 }
 
 .file-input-label {
   background: #9E9E9E;
   color: white;
-  padding: 8px 12px;
+  padding: 6px 10px;
   border-radius: 5px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 0.85em;
   transition: background 0.3s;
   white-space: nowrap;
   flex-shrink: 0;
@@ -677,6 +677,24 @@ button:hover {
 
 .file-input-label:hover {
   background: #757575;
+}
+
+/* ★[×]ボタンをテキスト形式に変更 */
+.clear-file-btn-text {
+  background: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  padding: 2px 6px;
+  cursor: pointer;
+  font-size: 1em;
+  font-weight: bold;
+  transition: background 0.3s;
+  flex-shrink: 0;
+}
+
+.clear-file-btn-text:hover {
+  background: #c0392b;
 }
 
 .file-name-display {
@@ -688,63 +706,6 @@ button:hover {
   white-space: nowrap;
 }
 
-/* ★PC版：取り消しボタンを正円に修正 */
-.clear-file-btn {
-  background: #e74c3c;
-  color: white;
-  border: none;
-  border-radius: 50%;
-  width: 24px;
-  height: 24px;
-  min-width: 24px;
-  min-height: 24px;
-  cursor: pointer;
-  font-size: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  padding: 0;
-}
-
-.clear-file-btn:hover {
-  background: #c0392b;
-}
-
-/* ファイル添付表示 */
-.file-attachment {
-  margin: 8px 0;
-  padding: 8px;
-  background: #f5f5f5;
-  border-radius: 5px;
-  border: 1px solid #ddd;
-}
-
-.file-thumbnail {
-  max-width: 100%;
-  max-height: 200px;
-  border-radius: 5px;
-  display: block;
-  margin-bottom: 5px;
-}
-
-.file-link {
-  color: #2196F3;
-  text-decoration: none;
-  font-weight: bold;
-  display: inline-block;
-  padding: 5px 0;
-}
-
-.file-link:hover {
-  text-decoration: underline;
-}
-
-.file-name {
-  font-size: 0.85em;
-  color: #666;
-  margin: 5px 0 0 0;
-}
 
 /* ============= 折りたたみヘッダー（スマホ版） ============= */
 .segment-controls-header {
@@ -777,32 +738,43 @@ button:hover {
   display: none;
 }
 
+/* ============= 投稿フォームの折りたたみヘッダー（スマホ版） ============= */
+.post-form-header {
+  display: none;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  padding: 8px 10px;
+  background: #667eea;
+  color: white;
+  border-radius: 5px 5px 0 0;
+  margin-bottom: 0;
+}
+
+.post-form-toggle-title {
+  margin: 0;
+  font-size: 1em;
+  color: white;
+}
+
+.post-form-toggle {
+  font-size: 1.2em;
+  color: white;
+}
+
+.post-form-content {
+  display: block;
+}
+
+.post-form-content.collapsed {
+  display: none;
+}
+
 /* ============= レスポンシブ対応（スマホ・タブレット） ============= */
 @media screen and (max-width: 1024px) {
-  /* ★スマホ版：投稿UIを画面下に固定 */
-  .two-column-layout {
+  /* ★投稿フォームの折りたたみヘッダーを表示 */
+  .post-form-header {
     display: flex;
-    flex-direction: column;
-    height: auto;
-    max-height: none;
-    position: relative;
-    padding-bottom: 180px; /* 投稿UIの高さ分の余白 */
-  }
-  
-  .left-column {
-    width: 100%;
-    order: 1;
-  }
-  
-  .right-column {
-    width: 100%;
-    order: 2;
-    flex: 1;
-  }
-  
-  #messages-list {
-    height: 400px;
-    max-height: 400px;
   }
   
   /* ★投稿フォームを画面下に固定 */
@@ -812,13 +784,18 @@ button:hover {
     left: 0;
     right: 0;
     margin: 0;
-    padding: 8px;
+    padding: 0;
     border-radius: 0;
     box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
     z-index: 100;
-    max-height: 180px;
+    max-height: 200px;
     overflow-y: auto;
   }
+  
+  .post-form-content {
+    padding: 8px;
+  }
+}
   
   /* ★スマホ版：投稿フォームをコンパクトに */
   .post-form-title {
@@ -1120,3 +1097,5 @@ button:hover {
     max-height: 150px;
   }
 }
+
+

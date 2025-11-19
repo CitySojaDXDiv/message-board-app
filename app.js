@@ -572,31 +572,21 @@ function createMessageElement(msg, messageMap, isReply = false) {
     `;
   }
   
-  // ★ファイル表示
+  // ★ファイル表示（画像サムネイルを非表示）
   let fileDisplay = '';
   if (msg.file_url && msg.file_name) {
     const isImage = msg.file_type && msg.file_type.startsWith('image/');
     
-    if (isImage) {
-      // 画像の場合はサムネイル表示
-      fileDisplay = `
-        <div class="file-attachment">
-          <a href="${msg.file_url}" target="_blank">
-            <img src="${msg.file_url}" alt="${escapeHtml(msg.file_name)}" class="file-thumbnail">
-          </a>
-          <p class="file-name">📎 ${escapeHtml(msg.file_name)}</p>
-        </div>
-      `;
-    } else {
-      // その他のファイルはリンク表示
-      fileDisplay = `
-        <div class="file-attachment">
-          <a href="${msg.file_url}" target="_blank" class="file-link">
-            📎 ${escapeHtml(msg.file_name)}
-          </a>
-        </div>
-      `;
-    }
+    // 画像もその他のファイルも同じようにリンク表示
+    const fileIcon = isImage ? '🖼️' : '📎';
+    
+    fileDisplay = `
+      <div class="file-attachment">
+        <a href="${msg.file_url}" target="_blank" class="file-link">
+          ${fileIcon} ${escapeHtml(msg.file_name)}
+        </a>
+      </div>
+    `;
   }
   
   // 既読者リスト

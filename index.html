@@ -31,13 +31,47 @@
 
     <!-- メッセージエリア -->
     <section id="message-area" style="display:none;">
-      <h2 id="current-team-name"></h2>
-      <button id="leave-team-btn">チームを退出</button>
+      <div class="message-header-bar">
+        <h2 id="current-team-name"></h2>
+        <button id="leave-team-btn">チームを退出</button>
+      </div>
+
+      <!-- セグメント管理エリア（新規追加） -->
+      <div class="segment-controls">
+        <div class="segment-filter">
+          <label>📂 セグメント:</label>
+          <select id="segment-filter">
+            <option value="ALL">ALL（すべて表示）</option>
+          </select>
+        </div>
+        <div class="segment-actions">
+          <button id="manage-segments-btn" class="secondary-btn">セグメント管理</button>
+        </div>
+      </div>
+
+      <!-- セグメント管理モーダル（新規追加） -->
+      <div id="segment-modal" class="modal" style="display:none;">
+        <div class="modal-content">
+          <span class="close-modal" id="close-segment-modal">&times;</span>
+          <h3>📂 セグメント管理</h3>
+          
+          <div class="segment-list">
+            <h4>現在のセグメント</h4>
+            <ul id="segment-list-items"></ul>
+          </div>
+          
+          <div class="segment-create">
+            <h4>新しいセグメントを作成</h4>
+            <input type="text" id="new-segment-name" placeholder="セグメント名（例：会議、住民対応）">
+            <button id="create-segment-btn">作成</button>
+          </div>
+        </div>
+      </div>
 
       <!-- メッセージリスト -->
       <div id="messages-list"></div>
 
-      <!-- 返信プレビューエリア（新規追加） -->
+      <!-- 返信プレビューエリア -->
       <div id="reply-preview" style="display: none; background: #e3f2fd; padding: 10px; margin: 10px 0; border-radius: 5px; position: relative;">
         <button id="cancel-reply" style="position: absolute; top: 5px; right: 5px; background: #ff5252; color: white; border: none; border-radius: 50%; width: 25px; height: 25px; cursor: pointer; font-size: 16px; line-height: 1;">×</button>
         <strong>返信先:</strong>
@@ -47,6 +81,15 @@
       <!-- メッセージ投稿 -->
       <div class="post-form">
         <input type="text" id="user-name" placeholder="名前">
+        
+        <!-- セグメント選択（新規追加） -->
+        <div class="segment-select-wrapper">
+          <label for="segment-select">📂 セグメント:</label>
+          <select id="segment-select">
+            <option value="ALL">ALL</option>
+          </select>
+        </div>
+        
         <textarea id="message-text" placeholder="メッセージを入力"></textarea>
         <button id="post-btn">投稿</button>
       </div>

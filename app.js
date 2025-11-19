@@ -9,6 +9,10 @@ let pollingInterval = null;
 let replyToId = null;
 let replyToMessage = null;
 
+// セグメント機能用のグローバル変数
+let currentSegment = 'ALL';
+let segments = [];
+
 // ============= JSONP用ヘルパー関数 =============
 function jsonpRequest(url, params = {}) {
   return new Promise((resolve, reject) => {
@@ -72,6 +76,12 @@ function setupEventListeners() {
   document.getElementById('post-btn').addEventListener('click', postMessage);
   document.getElementById('leave-team-btn').addEventListener('click', leaveTeam);
   document.getElementById('cancel-reply').addEventListener('click', cancelReply);
+  
+  // セグメント関連のイベントリスナー
+  document.getElementById('segment-filter').addEventListener('change', onSegmentFilterChange);
+  document.getElementById('manage-segments-btn').addEventListener('click', openSegmentModal);
+  document.getElementById('close-segment-modal').addEventListener('click', closeSegmentModal);
+  document.getElementById('create-segment-btn').addEventListener('click', createSegment);
 }
 
 // ============= チーム管理 =============
@@ -147,11 +157,14 @@ async function verifyKey() {
   }
 }
 
-function showMessageArea() {
+async function showMessageArea() {
   document.getElementById('team-selection').style.display = 'none';
   document.getElementById('key-input').style.display = 'none';
   document.getElementById('message-area').style.display = 'block';
   document.getElementById('current-team-name').textContent = `チーム: ${currentTeam}`;
+  
+  // セグメント一覧を読み込み
+  await loadSegments();
   
   loadMessages();
   startPolling();
@@ -161,6 +174,8 @@ function leaveTeam() {
   stopPolling();
   currentTeam = '';
   currentKey = '';
+  currentSegment = 'ALL';
+  segments = [];
   cancelReply();
   document.getElementById('message-area').style.display = 'none';
   document.getElementById('team-selection').style.display = 'block';
@@ -191,13 +206,195 @@ async function createTeam() {
   }
 }
 
+// ============= セグメント管理 =============
+
+/**
+ * セグメント一覧を読み込み
+ */
+async function loadSegments() {
+  try {
+    const result = await jsonpRequest(GAS_URL, {
+      action: 'get_segments',
+      team: currentTeam
+    });
+    
+    if (Array.isArray(result)) {
+      segments = result;
+      updateSegmentUI();
+    }
+  } catch (error) {
+    console.error('セグメント取得エラー:', error);
+  }
+}
+
+/**
+ * セグメントUIを更新
+ */
+function updateSegmentUI() {
+  // フィルタードロップダウンを更新
+  const filterSelect = document.getElementById('segment-filter');
+  filterSelect.innerHTML = '<option value="ALL">ALL（すべて表示）</option>';
+  
+  segments.forEach(seg => {
+    if (seg.name !== 'ALL') {
+      const option = document.createElement('option');
+      option.value = seg.name;
+      option.textContent = seg.name;
+      filterSelect.appendChild(option);
+    }
+  });
+  
+  // 投稿フォームのセグメント選択を更新
+  const postSelect = document.getElementById('segment-select');
+  postSelect.innerHTML = '<option value="ALL">ALL</option>';
+  
+  segments.forEach(seg => {
+    if (seg.name !== 'ALL') {
+      const option = document.createElement('option');
+      option.value = seg.name;
+      option.textContent = seg.name;
+      postSelect.appendChild(option);
+    }
+  });
+}
+
+/**
+ * セグメントフィルター変更時
+ */
+function onSegmentFilterChange() {
+  currentSegment = document.getElementById('segment-filter').value;
+  loadMessages();
+}
+
+/**
+ * セグメント管理モーダルを開く
+ */
+function openSegmentModal() {
+  updateSegmentList();
+  document.getElementById('segment-modal').style.display = 'flex';
+}
+
+/**
+ * セグメント管理モーダルを閉じる
+ */
+function closeSegmentModal() {
+  document.getElementById('segment-modal').style.display = 'none';
+  document.getElementById('new-segment-name').value = '';
+}
+
+/**
+ * セグメント一覧を表示
+ */
+function updateSegmentList() {
+  const listContainer = document.getElementById('segment-list-items');
+  listContainer.innerHTML = '';
+  
+  if (segments.length === 0) {
+    listContainer.innerHTML = '<li>セグメントがありません</li>';
+    return;
+  }
+  
+  segments.forEach(seg => {
+    const li = document.createElement('li');
+    li.className = 'segment-item';
+    
+    const nameSpan = document.createElement('span');
+    nameSpan.textContent = seg.name;
+    nameSpan.className = 'segment-name';
+    
+    li.appendChild(nameSpan);
+    
+    // ALLセグメントは削除不可
+    if (seg.name !== 'ALL') {
+      const deleteBtn = document.createElement('button');
+      deleteBtn.textContent = '削除';
+      deleteBtn.className = 'delete-segment-btn';
+      deleteBtn.onclick = () => deleteSegment(seg.name);
+      li.appendChild(deleteBtn);
+    }
+    
+    listContainer.appendChild(li);
+  });
+}
+
+/**
+ * セグメントを作成
+ */
+async function createSegment() {
+  const segmentName = document.getElementById('new-segment-name').value.trim();
+  
+  if (!segmentName) {
+    alert('セグメント名を入力してください');
+    return;
+  }
+  
+  try {
+    const result = await jsonpPost(GAS_URL, {
+      action: 'create_segment',
+      team: currentTeam,
+      segment_name: segmentName,
+      key: currentKey
+    });
+    
+    if (result.status === 'ok') {
+      alert('セグメントを作成しました！');
+      document.getElementById('new-segment-name').value = '';
+      await loadSegments();
+      updateSegmentList();
+    } else {
+      alert('エラー: ' + result.message);
+    }
+  } catch (error) {
+    alert('セグメント作成に失敗しました: ' + error);
+  }
+}
+
+/**
+ * セグメントを削除
+ */
+async function deleteSegment(segmentName) {
+  const confirmed = confirm(
+    `セグメント「${segmentName}」を削除しますか？\n\nこのセグメントのメッセージもすべて削除されます。`
+  );
+  
+  if (!confirmed) return;
+  
+  try {
+    const result = await jsonpPost(GAS_URL, {
+      action: 'delete_segment',
+      team: currentTeam,
+      segment_name: segmentName,
+      key: currentKey
+    });
+    
+    if (result.status === 'ok') {
+      alert('セグメントを削除しました');
+      
+      // 現在のフィルターが削除されたセグメントの場合、ALLに戻す
+      if (currentSegment === segmentName) {
+        currentSegment = 'ALL';
+        document.getElementById('segment-filter').value = 'ALL';
+      }
+      
+      await loadSegments();
+      updateSegmentList();
+      loadMessages();
+    } else {
+      alert('エラー: ' + result.message);
+    }
+  } catch (error) {
+    alert('セグメント削除に失敗しました: ' + error);
+  }
+}
+
 // ============= メッセージ管理 =============
 async function loadMessages() {
   try {
     const messages = await jsonpRequest(GAS_URL, {
       action: 'get_messages',
       team: currentTeam,
-      key: currentKey
+      key: currentKey,
+      segment: currentSegment
     });
     
     if (messages.auth_required) {
@@ -214,7 +411,7 @@ async function loadMessages() {
     if (isFirstLoad) {
       setTimeout(() => {
         scrollToBottom(true);
-      }, 300); // 少し遅延させて確実にスクロール
+      }, 300);
     }
   } catch (error) {
     console.error('メッセージ取得エラー:', error);
@@ -241,21 +438,21 @@ function displayMessages(messages) {
     messageMap[msg.id] = msg;
   });
   
-  // 時系列順にソート（古い順）★ここが重要
+  // 時系列順にソート（古い順）
   messages.sort((a, b) => {
     const dateA = new Date(a.timestamp);
     const dateB = new Date(b.timestamp);
-    return dateA - dateB; // 古い順
+    return dateA - dateB;
   });
   
   // ルートメッセージ（返信でないもの）を取得
   const rootMessages = messages.filter(msg => !msg.reply_to);
   
-  // ★ルートメッセージも古い順にソート
+  // ルートメッセージも古い順にソート
   rootMessages.sort((a, b) => {
     const dateA = new Date(a.timestamp);
     const dateB = new Date(b.timestamp);
-    return dateA - dateB; // 古い順
+    return dateA - dateB;
   });
   
   // 各ルートメッセージとそのスレッドを表示
@@ -283,11 +480,11 @@ function isScrolledToBottom() {
   const container = document.getElementById('messages-list');
   if (!container || container.children.length === 0) return true;
   
-  const threshold = 100; // 100px以内なら「最下部」と判定
+  const threshold = 100;
   return container.scrollHeight - container.clientHeight <= container.scrollTop + threshold;
 }
 
-// ============= 最下部へスクロール（デバッグ版） =============
+// ============= 最下部へスクロール =============
 function scrollToBottom(force = true) {
   const container = document.getElementById('messages-list');
   if (!container) {
@@ -295,21 +492,13 @@ function scrollToBottom(force = true) {
     return;
   }
   
-  console.log('📊 スクロール情報:');
-  console.log('  scrollHeight:', container.scrollHeight, 'px（全体の高さ）');
-  console.log('  clientHeight:', container.clientHeight, 'px（表示領域の高さ）');
-  console.log('  scrollTop:', container.scrollTop, 'px（現在のスクロール位置）');
-  console.log('  force:', force, '（強制スクロールか？）');
-  
   if (force) {
     container.scrollTop = container.scrollHeight;
-    console.log('✅ 強制スクロール実行 → scrollTop =', container.scrollTop);
     return;
   }
   
   setTimeout(() => {
     container.scrollTop = container.scrollHeight;
-    console.log('✅ 通常スクロール実行 → scrollTop =', container.scrollTop);
   }, 100);
 }
 
@@ -347,6 +536,11 @@ function createMessageElement(msg, messageMap, isReply = false) {
   messageDiv.className = 'message' + (isReply ? ' reply' : '');
   messageDiv.id = 'msg-' + msg.id;
   
+  // セグメントバッジ
+  const segmentBadge = msg.segment && msg.segment !== 'ALL' 
+    ? `<span class="segment-badge">${escapeHtml(msg.segment)}</span>` 
+    : '';
+  
   // 返信先の引用表示
   let replyQuote = '';
   if (msg.reply_to && messageMap[msg.reply_to]) {
@@ -376,6 +570,7 @@ function createMessageElement(msg, messageMap, isReply = false) {
     <div class="message-header">
       <div class="message-info">
         <span class="message-name">${escapeHtml(msg.name)}</span>
+        ${segmentBadge}
         <span class="message-time">${msg.timestamp}</span>
       </div>
     </div>
@@ -426,6 +621,7 @@ function cancelReply() {
 async function postMessage() {
   userName = document.getElementById('user-name').value.trim();
   const messageText = document.getElementById('message-text').value.trim();
+  const selectedSegment = document.getElementById('segment-select').value;
   
   if (!userName || !messageText) {
     alert('名前とメッセージを入力してください');
@@ -439,7 +635,8 @@ async function postMessage() {
       name: userName,
       message: messageText,
       key: currentKey,
-      reply_to: replyToId || ''
+      reply_to: replyToId || '',
+      segment: selectedSegment
     });
     
     if (result.status === 'ok') {
@@ -512,7 +709,7 @@ async function markAsRead(messageId) {
 function startPolling() {
   pollingInterval = setInterval(() => {
     loadMessages();
-  }, 1000);
+  }, 2000);
 }
 
 function stopPolling() {

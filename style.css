@@ -677,10 +677,18 @@ button:hover {
     padding: 8px;
   }
   
-  /* ★スマホでは縦並び */
+  /* ★スマホでも横並び */
   .post-form-row {
-    flex-direction: column;
+    flex-direction: row;
     gap: 6px;
+  }
+  
+  .post-form-row .name-input {
+    flex: 1.2;
+  }
+  
+  .post-form-row .segment-wrapper {
+    flex: 0.8;
   }
   
   .post-form-row input,
@@ -801,15 +809,15 @@ button:hover {
   }
   
   .segment-select-wrapper {
-    gap: 6px;
+    gap: 4px;
   }
   
   .segment-select-wrapper label {
-    font-size: 0.85em;
+    font-size: 0.8em;
   }
   
   .segment-select-wrapper select {
-    font-size: 0.85em;
+    font-size: 0.8em;
     padding: 6px;
   }
   

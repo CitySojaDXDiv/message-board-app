@@ -681,13 +681,16 @@ async function postMessage() {
   try {
     let result;
     
-    // ★ファイルがある場合（POST方式に変更）
+    // ★ファイルがある場合（POST方式）
     if (selectedFile) {
       const fileData = await fileToBase64(selectedFile);
+      
+      console.log('ファイルアップロード開始:', selectedFile.name);
       
       // ★fetch APIを使用してPOSTリクエスト
       const response = await fetch(GAS_URL, {
         method: 'POST',
+        mode: 'cors',
         headers: {
           'Content-Type': 'application/json'
         },
@@ -705,11 +708,17 @@ async function postMessage() {
         })
       });
       
+      if (!response.ok) {
+        throw new Error('ファイルのアップロードに失敗しました');
+      }
+      
       result = await response.json();
+      console.log('ファイルアップロード完了:', result);
+      
       clearFile();
       
     } else {
-      // ファイルがない場合は通常投稿
+      // ファイルがない場合は通常投稿（JSONP）
       result = await jsonpPost(GAS_URL, {
         action: 'post_message',
         team: currentTeam,
@@ -734,7 +743,8 @@ async function postMessage() {
       alert('エラー: ' + result.message);
     }
   } catch (error) {
-    alert('投稿に失敗しました: ' + error);
+    console.error('投稿エラー:', error);
+    alert('投稿に失敗しました: ' + error.message);
   }
 }
 

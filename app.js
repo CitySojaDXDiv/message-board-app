@@ -83,6 +83,11 @@ function setupEventListeners() {
   document.getElementById('manage-segments-btn').addEventListener('click', openSegmentModal);
   document.getElementById('close-segment-modal').addEventListener('click', closeSegmentModal);
   document.getElementById('create-segment-btn').addEventListener('click', createSegment);
+　document.getElementById('manage-team-btn').addEventListener('click', openTeamModal);
+　document.getElementById('close-team-modal').addEventListener('click', closeTeamModal);
+　document.getElementById('edit-team-name-btn').addEventListener('click', editTeamName);
+　document.getElementById('edit-team-key-btn').addEventListener('click', editTeamKey);
+　document.getElementById('delete-team-btn').addEventListener('click', deleteTeam);
 }
 
 // ============= チーム管理 =============
@@ -764,4 +769,147 @@ function formatTimestamp(timestamp) {
   const minutes = String(date.getMinutes()).padStart(2, '0');
   
   return `${month}/${day}(${weekday}) ${hours}:${minutes}`;
+
+
+}
+
+
+// ============= チーム管理機能 =============
+
+/**
+ * チーム管理モーダルを開く
+ */
+function openTeamModal() {
+  document.getElementById('team-info-name').textContent = currentTeam;
+  
+  // 保護状態を確認
+  jsonpRequest(GAS_URL, {
+    action: 'check_team_auth',
+    team: currentTeam
+  }).then(result => {
+    const protectedText = result.is_protected ? '🔒 保護されています' : '🔓 保護されていません';
+    document.getElementById('team-info-protected').textContent = protectedText;
+  });
+  
+  document.getElementById('team-modal').style.display = 'flex';
+}
+
+/**
+ * チーム管理モーダルを閉じる
+ */
+function closeTeamModal() {
+  document.getElementById('team-modal').style.display = 'none';
+  document.getElementById('new-team-name').value = '';
+  document.getElementById('new-team-key').value = '';
+}
+
+/**
+ * チーム名を変更
+ */
+async function editTeamName() {
+  const newTeamName = document.getElementById('new-team-name').value.trim();
+  
+  if (!newTeamName) {
+    alert('新しいチーム名を入力してください');
+    return;
+  }
+  
+  if (!confirm(`チーム名を「${newTeamName}」に変更しますか？`)) {
+    return;
+  }
+  
+  try {
+    const result = await jsonpPost(GAS_URL, {
+      action: 'edit_team_name',
+      old_team_name: currentTeam,
+      new_team_name: newTeamName,
+      key: currentKey
+    });
+    
+    if (result.status === 'ok') {
+      alert('チーム名を変更しました！');
+      currentTeam = newTeamName;
+      document.getElementById('current-team-name').textContent = `チーム: ${currentTeam}`;
+      document.getElementById('new-team-name').value = '';
+      closeTeamModal();
+      loadTeams();
+    } else {
+      alert('エラー: ' + result.message);
+    }
+  } catch (error) {
+    alert('チーム名の変更に失敗しました: ' + error);
+  }
+}
+
+/**
+ * チームキーを変更
+ */
+async function editTeamKey() {
+  const newTeamKey = document.getElementById('new-team-key').value;
+  
+  const message = newTeamKey 
+    ? `チームキーを変更しますか？\n\n新しいキー: ${newTeamKey}` 
+    : 'チームの保護を解除しますか？';
+  
+  if (!confirm(message)) {
+    return;
+  }
+  
+  try {
+    const result = await jsonpPost(GAS_URL, {
+      action: 'edit_team_key',
+      team_name: currentTeam,
+      new_team_key: newTeamKey,
+      key: currentKey
+    });
+    
+    if (result.status === 'ok') {
+      alert('チームキーを変更しました！');
+      currentKey = newTeamKey;
+      document.getElementById('new-team-key').value = '';
+      closeTeamModal();
+      loadTeams();
+    } else {
+      alert('エラー: ' + result.message);
+    }
+  } catch (error) {
+    alert('チームキーの変更に失敗しました: ' + error);
+  }
+}
+
+/**
+ * チームを削除
+ */
+async function deleteTeam() {
+  const confirmed = confirm(
+    `チーム「${currentTeam}」を削除しますか？\n\n⚠️ すべてのメッセージとセグメントも削除されます。\n\nこの操作は取り消せません。`
+  );
+  
+  if (!confirmed) return;
+  
+  // 二重確認
+  const doubleConfirmed = confirm(
+    `本当に削除しますか？\n\nチーム名: ${currentTeam}\n\nもう一度確認してください。`
+  );
+  
+  if (!doubleConfirmed) return;
+  
+  try {
+    const result = await jsonpPost(GAS_URL, {
+      action: 'delete_team',
+      team_name: currentTeam,
+      key: currentKey
+    });
+    
+    if (result.status === 'ok') {
+      alert('チームを削除しました');
+      closeTeamModal();
+      leaveTeam();
+      loadTeams();
+    } else {
+      alert('エラー: ' + result.message);
+    }
+  } catch (error) {
+    alert('チーム削除に失敗しました: ' + error);
+  }
 }

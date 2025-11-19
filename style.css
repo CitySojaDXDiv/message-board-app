@@ -577,6 +577,84 @@ button:hover {
   margin-left: 6px;
 }
 
+/* ============= チーム管理モーダル ============= */
+
+.team-info {
+  margin-bottom: 20px;
+  padding: 12px;
+  background: #f9f9f9;
+  border-radius: 5px;
+}
+
+.team-info p {
+  margin: 8px 0;
+  font-size: 0.95em;
+}
+
+.team-edit {
+  margin-bottom: 20px;
+}
+
+.team-edit h4 {
+  margin-bottom: 10px;
+  color: #333;
+  font-size: 1em;
+}
+
+.team-edit input {
+  width: 100%;
+  padding: 9px;
+  margin-bottom: 8px;
+  border: 2px solid #ddd;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.team-edit button {
+  width: 100%;
+  background: #667eea;
+  color: white;
+  border: none;
+  padding: 9px;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.team-edit button:hover {
+  background: #5568d3;
+}
+
+.team-delete {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 2px solid #eee;
+}
+
+.team-delete h4 {
+  margin-bottom: 10px;
+  color: #e74c3c;
+  font-size: 1em;
+}
+
+.delete-team-btn {
+  width: 100%;
+  background: #e74c3c;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.3s;
+  font-weight: bold;
+}
+
+.delete-team-btn:hover {
+  background: #c0392b;
+}
+
 /* ============= レスポンシブ対応（スマホ・タブレット） ============= */
 @media screen and (max-width: 1024px) {
   /* スマホ・タブレットでは縦並び */

@@ -51,6 +51,8 @@
             </div>
             <div class="segment-actions">
               <button id="manage-segments-btn" class="secondary-btn">セグメント管理</button>
+              <!-- ★チーム管理ボタンを追加 -->
+              <button id="manage-team-btn" class="secondary-btn">チーム管理</button>
             </div>
           </div>
 
@@ -107,6 +109,38 @@
             <h4>新しいセグメントを作成</h4>
             <input type="text" id="new-segment-name" placeholder="セグメント名（例：会議、住民対応）">
             <button id="create-segment-btn">作成</button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- チーム管理モーダル（新規追加） -->
+      <div id="team-modal" class="modal" style="display:none;">
+        <div class="modal-content">
+          <span class="close-modal" id="close-team-modal">&times;</span>
+          <h3>⚙️ チーム管理</h3>
+    
+          <div class="team-info">
+            <h4>チーム情報</h4>
+            <p><strong>チーム名:</strong> <span id="team-info-name"></span></p>
+            <p><strong>保護状態:</strong> <span id="team-info-protected"></span></p>
+          </div>
+    
+          <div class="team-edit">
+            <h4>チーム名を変更</h4>
+            <input type="text" id="new-team-name" placeholder="新しいチーム名">
+            <button id="edit-team-name-btn">変更</button>
+          </div>
+    
+          <div class="team-edit">
+            <h4>チームキーを変更</h4>
+            <input type="password" id="new-team-key" placeholder="新しいチームキー（空白=保護解除）">
+            <button id="edit-team-key-btn">変更</button>
+          </div>
+    
+          <div class="team-delete">
+            <h4>チームを削除</h4>
+            <p style="color: #e74c3c; font-size: 0.9em;">⚠️ チームを削除すると、すべてのメッセージとセグメントも削除されます。</p>
+            <button id="delete-team-btn" class="delete-team-btn">チームを削除</button>
           </div>
         </div>
       </div>

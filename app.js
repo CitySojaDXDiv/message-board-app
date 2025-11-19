@@ -980,3 +980,32 @@ function uploadFileViaIframe(data) {
     form.submit();
   });
 }
+
+// ============= 折りたたみ機能（スマホ版） =============
+function toggleSegmentControls() {
+  const content = document.getElementById('segment-controls-content');
+  const toggle = document.querySelector('.segment-controls-toggle');
+  
+  if (content.classList.contains('collapsed')) {
+    content.classList.remove('collapsed');
+    toggle.textContent = '▼';
+  } else {
+    content.classList.add('collapsed');
+    toggle.textContent = '▶';
+  }
+}
+
+// ★スマホ版の場合、折りたたみヘッダーを表示
+window.addEventListener('resize', updateSegmentControlsVisibility);
+window.addEventListener('load', updateSegmentControlsVisibility);
+
+function updateSegmentControlsVisibility() {
+  const header = document.querySelector('.segment-controls-header');
+  
+  if (window.innerWidth <= 1024) {
+    header.style.display = 'flex';
+  } else {
+    header.style.display = 'none';
+    document.getElementById('segment-controls-content').classList.remove('collapsed');
+  }
+}

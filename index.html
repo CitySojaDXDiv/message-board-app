@@ -41,27 +41,28 @@
       <div class="two-column-layout">
         <!-- 左カラム: セグメント管理 + 投稿フォーム -->
         <div class="left-column">
-            <!-- セグメント管理 -->
-            <div class="segment-controls">
-              <!-- ★折りたたみヘッダーを追加（スマホのみ表示） -->
-              <div class="segment-controls-header" onclick="toggleSegmentControls()" style="display: none;">
-                <h3>📂 セグメント・チーム管理</h3>
-                <span class="segment-controls-toggle">▼</span>
-              </div>
+<!-- セグメント管理 -->
+<div class="segment-controls">
+  <!-- ★折りたたみヘッダーを追加（スマホのみ表示） -->
+  <div class="segment-controls-header" onclick="toggleSegmentControls()">
+    <h3>📂 セグメント・チーム管理</h3>
+    <span class="segment-controls-toggle">▼</span>
+  </div>
   
-              <div class="segment-controls-content" id="segment-controls-content">
-                <div class="segment-filter">
-                  <label>📂 セグメント:</label>
-                  <select id="segment-filter">
-                    <option value="ALL">ALL（すべて表示）</option>
-                  </select>
-                </div>
-                <div class="segment-actions">
-                  <button id="manage-segments-btn" class="secondary-btn">セグメント管理</button>
-                  <button id="manage-team-btn" class="secondary-btn">チーム管理</button>
-                </div>
-              </div>
-            </div>
+  <div class="segment-controls-content" id="segment-controls-content">
+    <div class="segment-filter">
+      <label>📂 セグメント:</label>
+      <select id="segment-filter">
+        <option value="ALL">ALL（すべて表示）</option>
+      </select>
+    </div>
+    <div class="segment-actions">
+      <button id="manage-segments-btn" class="secondary-btn">セグメント管理</button>
+      <button id="manage-team-btn" class="secondary-btn">チーム管理</button>
+    </div>
+  </div>
+</div>
+
 
         <!-- 投稿フォーム -->
         <div class="post-form">

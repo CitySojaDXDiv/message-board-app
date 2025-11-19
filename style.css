@@ -672,6 +672,7 @@ button:hover {
   font-size: 14px;
   transition: background 0.3s;
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .file-input-label:hover {
@@ -695,9 +696,10 @@ button:hover {
   border-radius: 50%;
   width: 24px;
   height: 24px;
+  min-width: 24px;
+  min-height: 24px;
   cursor: pointer;
   font-size: 14px;
-  line-height: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -744,6 +746,37 @@ button:hover {
   margin: 5px 0 0 0;
 }
 
+/* ============= 折りたたみヘッダー（スマホ版） ============= */
+.segment-controls-header {
+  display: none;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  padding: 10px;
+  background: #e0e0e0;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.segment-controls-header h3 {
+  margin: 0;
+  font-size: 1em;
+  color: #333;
+}
+
+.segment-controls-toggle {
+  font-size: 1.2em;
+  color: #666;
+}
+
+.segment-controls-content {
+  display: block;
+}
+
+.segment-controls-content.collapsed {
+  display: none;
+}
+
 /* ============= レスポンシブ対応（スマホ・タブレット） ============= */
 @media screen and (max-width: 1024px) {
   /* ★スマホ版：投稿UIを画面下に固定 */
@@ -753,7 +786,7 @@ button:hover {
     height: auto;
     max-height: none;
     position: relative;
-    padding-bottom: 280px; /* 投稿UIの高さ分の余白 */
+    padding-bottom: 180px; /* 投稿UIの高さ分の余白 */
   }
   
   .left-column {
@@ -779,46 +812,83 @@ button:hover {
     left: 0;
     right: 0;
     margin: 0;
+    padding: 8px;
     border-radius: 0;
     box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
     z-index: 100;
-    max-height: 280px;
+    max-height: 180px;
     overflow-y: auto;
+  }
+  
+  /* ★スマホ版：投稿フォームをコンパクトに */
+  .post-form-title {
+    display: none; /* タイトルを非表示 */
+  }
+  
+  .post-form-row {
+    flex-direction: row;
+    gap: 6px;
+    margin-bottom: 6px;
+  }
+  
+  .post-form-row .name-input {
+    flex: 1;
+  }
+  
+  .post-form-row .segment-wrapper {
+    flex: 1;
+  }
+  
+  .post-form-row input,
+  .post-form-row select {
+    font-size: 0.85em;
+    padding: 6px;
+    margin-bottom: 0;
+  }
+  
+  .post-form textarea {
+    font-size: 0.85em;
+    padding: 6px;
+    margin-bottom: 6px;
+    min-height: 50px;
+  }
+  
+  .file-input-wrapper {
+    flex-direction: row;
+    gap: 6px;
+    margin-bottom: 6px;
+  }
+  
+  .file-input-label {
+    font-size: 0.75em;
+    padding: 6px 10px;
+  }
+  
+  .file-name-display {
+    font-size: 0.75em;
+  }
+  
+  .clear-file-btn {
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+    min-height: 20px;
+    font-size: 12px;
+  }
+  
+  .post-form button {
+    font-size: 0.85em;
+    padding: 6px 12px;
+  }
+  
+  /* ★折りたたみヘッダーを表示 */
+  .segment-controls-header {
+    display: flex;
   }
   
   /* ★セグメントコントロールを折りたたみ可能に */
   .segment-controls {
     margin-bottom: 15px;
-  }
-  
-  .segment-controls-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    cursor: pointer;
-    padding: 10px;
-    background: #e0e0e0;
-    border-radius: 5px;
-    margin-bottom: 10px;
-  }
-  
-  .segment-controls-header h3 {
-    margin: 0;
-    font-size: 1em;
-    color: #333;
-  }
-  
-  .segment-controls-toggle {
-    font-size: 1.2em;
-    color: #666;
-  }
-  
-  .segment-controls-content {
-    display: block;
-  }
-  
-  .segment-controls-content.collapsed {
-    display: none;
   }
 }
 
@@ -910,40 +980,6 @@ button:hover {
   
   #reply-content {
     padding-right: 25px;
-  }
-  
-  /* 投稿フォーム */
-  .post-form {
-    padding: 8px;
-  }
-  
-  .post-form-title {
-    font-size: 1em;
-    margin-bottom: 10px;
-  }
-  
-  .post-form-row {
-    flex-direction: column;
-    gap: 6px;
-  }
-  
-  .post-form-row input,
-  .post-form-row select {
-    font-size: 0.85em;
-    padding: 8px;
-  }
-  
-  .post-form textarea {
-    font-size: 0.85em;
-    padding: 8px;
-    margin-bottom: 6px;
-    min-height: 60px;
-  }
-  
-  .post-form button {
-    font-size: 0.85em;
-    padding: 8px 12px;
-    border-radius: 6px;
   }
   
   /* 既読者リスト */
@@ -1078,28 +1114,6 @@ button:hover {
   /* セクション */
   section {
     margin-bottom: 20px;
-  }
-  
-  /* ファイル添付 */
-  .file-input-wrapper {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 6px;
-  }
-  
-  .file-input-label {
-    text-align: center;
-    padding: 8px;
-    font-size: 0.85em;
-  }
-  
-  .file-name-display {
-    font-size: 0.8em;
-    text-align: center;
-  }
-  
-  .clear-file-btn {
-    align-self: center;
   }
   
   .file-thumbnail {

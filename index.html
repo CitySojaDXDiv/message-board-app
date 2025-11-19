@@ -37,84 +37,84 @@
         <button id="leave-team-btn">チームを退出</button>
       </div>
 
-      <!-- ★2カラムレイアウト -->
-      <div class="two-column-layout">
-        <!-- 左カラム: セグメント管理 + 投稿フォーム -->
-        <div class="left-column">
-<!-- セグメント管理 -->
-<div class="segment-controls">
-  <!-- ★折りたたみヘッダーを追加（スマホのみ表示） -->
-  <div class="segment-controls-header" onclick="toggleSegmentControls()">
-    <h3>📂 セグメント・チーム管理</h3>
-    <span class="segment-controls-toggle">▼</span>
-  </div>
-  
-  <div class="segment-controls-content" id="segment-controls-content">
-    <div class="segment-filter">
-      <label>📂 セグメント:</label>
-      <select id="segment-filter">
-        <option value="ALL">ALL（すべて表示）</option>
-      </select>
-    </div>
-    <div class="segment-actions">
-      <button id="manage-segments-btn" class="secondary-btn">セグメント管理</button>
-      <button id="manage-team-btn" class="secondary-btn">チーム管理</button>
-    </div>
-  </div>
-</div>
-
-
-<!-- 投稿フォーム -->
-<div class="post-form">
-  <!-- ★折りたたみヘッダーを追加（スマホのみ表示） -->
-  <div class="post-form-header" onclick="togglePostForm()">
-    <h3 class="post-form-toggle-title">📝 投稿</h3>
-    <span class="post-form-toggle">▼</span>
-  </div>
-  
-  <div class="post-form-content" id="post-form-content">
-    <!-- 名前とセグメントを横並びに -->
-    <div class="post-form-row">
-      <div class="name-input">
-        <input type="text" id="user-name" placeholder="名前">
+<!-- ★2カラムレイアウト -->
+<div class="two-column-layout">
+  <!-- 左カラム: セグメント管理 + 投稿フォーム -->
+  <div class="left-column">
+    <!-- セグメント管理 -->
+    <div class="segment-controls">
+      <!-- ★折りたたみヘッダーを追加（スマホのみ表示） -->
+      <div class="segment-controls-header" onclick="toggleSegmentControls()">
+        <h3>📂 セグメント・チーム管理</h3>
+        <span class="segment-controls-toggle">▼</span>
       </div>
-      <div class="segment-wrapper">
-        <div class="segment-select-wrapper">
-          <label for="segment-select">📂</label>
-          <select id="segment-select">
-            <option value="ALL">ALL</option>
+      
+      <div class="segment-controls-content" id="segment-controls-content">
+        <div class="segment-filter">
+          <label>📂 セグメント:</label>
+          <select id="segment-filter">
+            <option value="ALL">ALL（すべて表示）</option>
           </select>
         </div>
-      </div>
-    </div>
-    
-    <textarea id="message-text" placeholder="メッセージを入力"></textarea>
-    
-    <!-- ★ファイル選択ボタンを追加（[×] ファイル名形式） -->
-    <div class="file-input-wrapper">
-      <label for="file-input" class="file-input-label">📎 ファイルを添付</label>
-      <input type="file" id="file-input" accept="*/*" style="display: none;">
-      <button id="clear-file-btn" class="clear-file-btn-text" style="display: none;">×</button>
-      <span id="file-name-display" class="file-name-display"></span>
-    </div>
-    
-    <button id="post-btn">投稿</button>
-  </div>
-</div>
-
-        <!-- 右カラム: メッセージリスト -->
-        <div class="right-column">
-          <!-- 返信プレビューエリア -->
-          <div id="reply-preview" style="display: none; background: #e3f2fd; padding: 10px; margin-bottom: 10px; border-radius: 5px; position: relative;">
-            <button id="cancel-reply" style="position: absolute; top: 5px; right: 5px; background: #ff5252; color: white; border: none; border-radius: 50%; width: 25px; height: 25px; cursor: pointer; font-size: 16px; line-height: 1;">×</button>
-            <strong>返信先:</strong>
-            <div id="reply-content" style="margin-top: 5px; font-size: 0.9em; color: #555;"></div>
-          </div>
-
-          <!-- メッセージリスト -->
-          <div id="messages-list"></div>
+        <div class="segment-actions">
+          <button id="manage-segments-btn" class="secondary-btn">セグメント管理</button>
+          <button id="manage-team-btn" class="secondary-btn">チーム管理</button>
         </div>
       </div>
+    </div>
+
+    <!-- 投稿フォーム -->
+    <div class="post-form">
+      <!-- ★折りたたみヘッダーを追加（スマホのみ表示） -->
+      <div class="post-form-header" onclick="togglePostForm()">
+        <h3 class="post-form-toggle-title">📝 投稿</h3>
+        <span class="post-form-toggle">▼</span>
+      </div>
+      
+      <div class="post-form-content" id="post-form-content">
+        <!-- 名前とセグメントを横並びに -->
+        <div class="post-form-row">
+          <div class="name-input">
+            <input type="text" id="user-name" placeholder="名前">
+          </div>
+          <div class="segment-wrapper">
+            <div class="segment-select-wrapper">
+              <label for="segment-select">📂</label>
+              <select id="segment-select">
+                <option value="ALL">ALL</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        
+        <textarea id="message-text" placeholder="メッセージを入力"></textarea>
+        
+        <!-- ★ファイル選択ボタンを追加（[×] ファイル名形式） -->
+        <div class="file-input-wrapper">
+          <label for="file-input" class="file-input-label">📎</label>
+          <input type="file" id="file-input" accept="*/*" style="display: none;">
+          <button id="clear-file-btn" class="clear-file-btn-text" style="display: none;">×</button>
+          <span id="file-name-display" class="file-name-display"></span>
+        </div>
+        
+        <button id="post-btn">投稿</button>
+      </div>
+    </div>
+  </div> <!-- ★left-columnの閉じタグをここに移動 -->
+
+  <!-- 右カラム: メッセージリスト -->
+  <div class="right-column">
+    <!-- 返信プレビューエリア -->
+    <div id="reply-preview" style="display: none; background: #e3f2fd; padding: 10px; margin-bottom: 10px; border-radius: 5px; position: relative;">
+      <button id="cancel-reply" style="position: absolute; top: 5px; right: 5px; background: #ff5252; color: white; border: none; border-radius: 50%; width: 25px; height: 25px; cursor: pointer; font-size: 16px; line-height: 1;">×</button>
+      <strong>返信先:</strong>
+      <div id="reply-content" style="margin-top: 5px; font-size: 0.9em; color: #555;"></div>
+    </div>
+
+    <!-- メッセージリスト -->
+    <div id="messages-list"></div>
+  </div>
+</div>
 
       <!-- セグメント管理モーダル -->
       <div id="segment-modal" class="modal" style="display:none;">

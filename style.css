@@ -666,10 +666,10 @@ button:hover {
 .file-input-label {
   background: #9E9E9E;
   color: white;
-  padding: 6px 10px;
+  padding: 8px 12px;
   border-radius: 5px;
   cursor: pointer;
-  font-size: 0.85em;
+  font-size: 0.9em;
   transition: background 0.3s;
   white-space: nowrap;
   flex-shrink: 0;
@@ -679,18 +679,20 @@ button:hover {
   background: #757575;
 }
 
-/* ★[×]ボタンをテキスト形式に変更 */
+/* ★[×]ボタンをテキスト形式に変更（正方形に近い形） */
 .clear-file-btn-text {
   background: #e74c3c;
   color: white;
   border: none;
-  border-radius: 3px;
-  padding: 2px 6px;
+  border-radius: 4px;
+  padding: 4px 8px;
   cursor: pointer;
-  font-size: 1em;
+  font-size: 0.9em;
   font-weight: bold;
   transition: background 0.3s;
   flex-shrink: 0;
+  min-width: 30px;
+  text-align: center;
 }
 
 .clear-file-btn-text:hover {
@@ -706,6 +708,26 @@ button:hover {
   white-space: nowrap;
 }
 
+/* ファイル添付表示 */
+.file-attachment {
+  margin: 8px 0;
+  padding: 8px;
+  background: #f5f5f5;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+
+.file-link {
+  color: #2196F3;
+  text-decoration: none;
+  font-weight: bold;
+  display: inline-block;
+  padding: 5px 0;
+}
+
+.file-link:hover {
+  text-decoration: underline;
+}
 
 /* ============= 折りたたみヘッダー（スマホ版） ============= */
 .segment-controls-header {
@@ -744,7 +766,7 @@ button:hover {
   justify-content: space-between;
   align-items: center;
   cursor: pointer;
-  padding: 8px 10px;
+  padding: 10px;
   background: #667eea;
   color: white;
   border-radius: 5px 5px 0 0;
@@ -772,9 +794,30 @@ button:hover {
 
 /* ============= レスポンシブ対応（スマホ・タブレット） ============= */
 @media screen and (max-width: 1024px) {
-  /* ★投稿フォームの折りたたみヘッダーを表示 */
-  .post-form-header {
+  /* ★スマホ版：投稿UIを画面下に固定 */
+  .two-column-layout {
     display: flex;
+    flex-direction: column;
+    height: auto;
+    max-height: none;
+    position: relative;
+    padding-bottom: 200px; /* 投稿UIの高さ分の余白 */
+  }
+  
+  .left-column {
+    width: 100%;
+    order: 1;
+  }
+  
+  .right-column {
+    width: 100%;
+    order: 2;
+    flex: 1;
+  }
+  
+  #messages-list {
+    height: 400px;
+    max-height: 400px;
   }
   
   /* ★投稿フォームを画面下に固定 */
@@ -788,20 +831,20 @@ button:hover {
     border-radius: 0;
     box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
     z-index: 100;
-    max-height: 200px;
+    max-height: 250px;
     overflow-y: auto;
   }
   
-  .post-form-content {
-    padding: 8px;
+  /* ★投稿フォームの折りたたみヘッダーを表示 */
+  .post-form-header {
+    display: flex;
   }
-}
+  
+  .post-form-content {
+    padding: 10px;
+  }
   
   /* ★スマホ版：投稿フォームをコンパクトに */
-  .post-form-title {
-    display: none; /* タイトルを非表示 */
-  }
-  
   .post-form-row {
     flex-direction: row;
     gap: 6px;
@@ -819,15 +862,15 @@ button:hover {
   .post-form-row input,
   .post-form-row select {
     font-size: 0.85em;
-    padding: 6px;
+    padding: 8px;
     margin-bottom: 0;
   }
   
   .post-form textarea {
     font-size: 0.85em;
-    padding: 6px;
+    padding: 8px;
     margin-bottom: 6px;
-    min-height: 50px;
+    min-height: 60px;
   }
   
   .file-input-wrapper {
@@ -837,25 +880,22 @@ button:hover {
   }
   
   .file-input-label {
-    font-size: 0.75em;
+    font-size: 0.85em;
     padding: 6px 10px;
   }
   
   .file-name-display {
-    font-size: 0.75em;
+    font-size: 0.8em;
   }
   
-  .clear-file-btn {
-    width: 20px;
-    height: 20px;
-    min-width: 20px;
-    min-height: 20px;
-    font-size: 12px;
+  .clear-file-btn-text {
+    font-size: 0.85em;
+    padding: 4px 8px;
   }
   
   .post-form button {
-    font-size: 0.85em;
-    padding: 6px 12px;
+    font-size: 0.9em;
+    padding: 8px 12px;
   }
   
   /* ★折りたたみヘッダーを表示 */
@@ -868,6 +908,7 @@ button:hover {
     margin-bottom: 15px;
   }
 }
+
 
 @media screen and (max-width: 600px) {
   body {

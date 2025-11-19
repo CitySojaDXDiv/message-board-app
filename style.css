@@ -18,42 +18,44 @@ body {
   background: white;
   border-radius: 15px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-  padding: 30px;
+  padding: 25px;
 }
 
 /* ============= ヘッダー ============= */
 header {
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 25px;
 }
 
 h1 {
   color: #667eea;
-  font-size: 2.5em;
+  font-size: 2.2em;
+  margin-bottom: 10px;
 }
 
 h2 {
   color: #333;
-  margin-bottom: 15px;
+  margin-bottom: 12px;
+  font-size: 1.3em;
 }
 
 /* ============= セクション ============= */
 section {
-  margin-bottom: 30px;
+  margin-bottom: 25px;
 }
 
 /* ============= フォーム要素 ============= */
 select, input, textarea {
   width: 100%;
-  padding: 12px;
-  margin-bottom: 10px;
+  padding: 10px;
+  margin-bottom: 8px;
   border: 2px solid #ddd;
   border-radius: 8px;
-  font-size: 16px;
+  font-size: 15px;
 }
 
 textarea {
-  min-height: 100px;
+  min-height: 80px;
   resize: vertical;
 }
 
@@ -62,9 +64,9 @@ button {
   background: #667eea;
   color: white;
   border: none;
-  padding: 12px 24px;
+  padding: 10px 20px;
   border-radius: 8px;
-  font-size: 16px;
+  font-size: 15px;
   cursor: pointer;
   transition: background 0.3s;
 }
@@ -95,16 +97,14 @@ button:hover {
 #messages-list {
   flex: 1;
   overflow-y: auto;
-  padding: 15px;
+  padding: 12px;
   background: #f9f9f9;
   border-radius: 8px;
   margin-bottom: 10px;
   
-  /* ★高さ制限を追加 */
   max-height: 500px;
   min-height: 300px;
   
-  /* スクロールバーのスタイル（Webkit系ブラウザ） */
   scrollbar-width: thin;
   scrollbar-color: #ccc #f9f9f9;
 }
@@ -127,13 +127,13 @@ button:hover {
   background: #999;
 }
 
-/* ============= メッセージカード ============= */
+/* ============= メッセージカード（★縦幅を削減） ============= */
 .message {
   background: #fff;
   border: 2px solid #eee;
-  border-radius: 10px;
-  padding: 15px;
-  margin-bottom: 15px;
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 10px;
   transition: box-shadow 0.3s;
 }
 
@@ -141,49 +141,52 @@ button:hover {
   box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 
-/* ============= メッセージヘッダー ============= */
+/* ============= メッセージヘッダー（★縦幅を削減） ============= */
 .message-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .message-info {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 3px;
 }
 
 .message-name {
   font-weight: bold;
-  font-size: 1em;
+  font-size: 0.95em;
   color: #667eea;
+  line-height: 1.2;
 }
 
 .message-time {
-  font-size: 0.85em;
+  font-size: 0.8em;
   color: #999;
+  line-height: 1.2;
 }
 
-/* ============= メッセージ本文 ============= */
+/* ============= メッセージ本文（★縦幅を削減） ============= */
 .message-text {
   color: #333;
-  line-height: 1.6;
-  margin-bottom: 10px;
+  line-height: 1.5;
+  margin-bottom: 8px;
   word-wrap: break-word;
+  font-size: 0.95em;
 }
 
-/* ============= メッセージアクション ============= */
+/* ============= メッセージアクション（★縦幅を削減） ============= */
 .message-actions {
   display: flex;
-  gap: 10px;
+  gap: 8px;
   flex-wrap: wrap;
 }
 
 .message-actions button {
-  padding: 6px 12px;
-  font-size: 14px;
+  padding: 5px 10px;
+  font-size: 13px;
 }
 
 /* ============= ボタンの色分け ============= */
@@ -211,31 +214,31 @@ button:hover {
   background: #27ae60;
 }
 
-/* ============= 既読者リスト ============= */
+/* ============= 既読者リスト（★縦幅を削減） ============= */
 .readers {
-  margin-top: 10px;
-  padding: 10px;
+  margin-top: 8px;
+  padding: 6px 8px;
   background: #e8f5e9;
   border-radius: 5px;
-  font-size: 0.9em;
+  font-size: 0.85em;
   color: #2ecc71;
 }
 
 /* ============= 返信メッセージのスタイル ============= */
 .message.reply {
-  margin-left: 30px;
+  margin-left: 25px;
   border-left: 3px solid #2196F3;
   padding-left: 10px;
   background: #f0f8ff;
 }
 
-/* ============= 返信先の引用表示 ============= */
+/* ============= 返信先の引用表示（★縦幅を削減） ============= */
 .reply-to-quote {
   background: #f5f5f5;
   border-left: 3px solid #9E9E9E;
-  padding: 8px;
-  margin: 8px 0;
-  font-size: 0.9em;
+  padding: 6px 8px;
+  margin: 6px 0;
+  font-size: 0.85em;
   color: #666;
   border-radius: 3px;
 }
@@ -244,12 +247,12 @@ button:hover {
   color: #333;
 }
 
-/* ============= 返信プレビューエリア ============= */
+/* ============= 返信プレビューエリア（★縦幅を削減） ============= */
 #reply-preview {
   flex-shrink: 0;
   background: #e3f2fd;
-  padding: 10px;
-  margin-bottom: 10px;
+  padding: 8px 10px;
+  margin-bottom: 8px;
   border-radius: 5px;
   position: relative;
   animation: slideDown 0.3s ease;
@@ -263,10 +266,10 @@ button:hover {
   color: white;
   border: none;
   border-radius: 50%;
-  width: 25px;
-  height: 25px;
+  width: 22px;
+  height: 22px;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 14px;
   line-height: 1;
   display: flex;
   align-items: center;
@@ -279,7 +282,7 @@ button:hover {
 
 #reply-content {
   margin-top: 5px;
-  font-size: 0.9em;
+  font-size: 0.85em;
   color: #555;
   padding-right: 30px;
 }
@@ -295,38 +298,57 @@ button:hover {
   }
 }
 
-/* ============= 投稿フォーム（固定位置） ============= */
+/* ============= 投稿フォーム（固定位置）（★縦幅を削減） ============= */
 .post-form {
   flex-shrink: 0;
   background: white;
-  padding: 15px;
+  padding: 12px;
   border-radius: 10px;
   box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
 }
 
-.post-form input {
-  margin-bottom: 10px;
+/* ★名前とセグメントを横並びに */
+.post-form-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.post-form-row .name-input {
+  flex: 1;
+  min-width: 0;
+}
+
+.post-form-row .segment-wrapper {
+  flex: 1;
+  min-width: 0;
+}
+
+.post-form-row input,
+.post-form-row select {
+  width: 100%;
+  margin-bottom: 0;
 }
 
 .post-form textarea {
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .post-form button {
   width: 100%;
 }
 
-/* ============= セグメント機能のスタイル ============= */
+/* ============= セグメント機能のスタイル（★縦幅を削減） ============= */
 
 /* セグメントコントロールエリア */
 .segment-controls {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px;
+  padding: 12px;
   background: #f5f5f5;
   border-radius: 8px;
-  margin-bottom: 15px;
+  margin-bottom: 12px;
   flex-wrap: wrap;
   gap: 10px;
 }
@@ -343,11 +365,12 @@ button:hover {
   font-weight: bold;
   color: #333;
   white-space: nowrap;
+  font-size: 0.9em;
 }
 
 .segment-filter select {
   flex: 1;
-  padding: 8px;
+  padding: 7px;
   border: 2px solid #ddd;
   border-radius: 5px;
   font-size: 14px;
@@ -363,7 +386,7 @@ button:hover {
   background: #9E9E9E;
   color: white;
   border: none;
-  padding: 8px 16px;
+  padding: 7px 14px;
   border-radius: 5px;
   font-size: 14px;
   cursor: pointer;
@@ -390,7 +413,7 @@ button:hover {
 
 .modal-content {
   background-color: white;
-  padding: 30px;
+  padding: 25px;
   border-radius: 10px;
   width: 90%;
   max-width: 500px;
@@ -404,7 +427,7 @@ button:hover {
   position: absolute;
   top: 10px;
   right: 15px;
-  font-size: 28px;
+  font-size: 26px;
   font-weight: bold;
   color: #aaa;
   cursor: pointer;
@@ -416,19 +439,21 @@ button:hover {
 }
 
 .modal-content h3 {
-  margin-bottom: 20px;
+  margin-bottom: 18px;
   color: #667eea;
+  font-size: 1.4em;
 }
 
 .modal-content h4 {
-  margin-top: 20px;
+  margin-top: 18px;
   margin-bottom: 10px;
   color: #333;
+  font-size: 1.1em;
 }
 
 /* セグメント一覧 */
 .segment-list {
-  margin-bottom: 20px;
+  margin-bottom: 18px;
 }
 
 #segment-list-items {
@@ -441,23 +466,24 @@ button:hover {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px;
+  padding: 8px 10px;
   background: #f9f9f9;
   border: 1px solid #ddd;
   border-radius: 5px;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .segment-name {
   font-weight: bold;
   color: #333;
+  font-size: 0.95em;
 }
 
 .delete-segment-btn {
   background: #e74c3c;
   color: white;
   border: none;
-  padding: 5px 10px;
+  padding: 4px 8px;
   border-radius: 5px;
   font-size: 12px;
   cursor: pointer;
@@ -470,13 +496,13 @@ button:hover {
 
 /* セグメント作成フォーム */
 .segment-create {
-  margin-top: 20px;
+  margin-top: 18px;
 }
 
 .segment-create input {
   width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
+  padding: 9px;
+  margin-bottom: 8px;
   border: 2px solid #ddd;
   border-radius: 5px;
   font-size: 14px;
@@ -487,7 +513,7 @@ button:hover {
   background: #667eea;
   color: white;
   border: none;
-  padding: 10px;
+  padding: 9px;
   border-radius: 5px;
   font-size: 14px;
   cursor: pointer;
@@ -498,23 +524,23 @@ button:hover {
   background: #5568d3;
 }
 
-/* 投稿フォームのセグメント選択 */
+/* 投稿フォームのセグメント選択（★横並び用） */
 .segment-select-wrapper {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 10px;
+  gap: 8px;
 }
 
 .segment-select-wrapper label {
   font-weight: bold;
   color: #333;
   white-space: nowrap;
+  font-size: 0.9em;
 }
 
 .segment-select-wrapper select {
   flex: 1;
-  padding: 8px;
+  padding: 7px;
   border: 2px solid #ddd;
   border-radius: 5px;
   font-size: 14px;
@@ -526,11 +552,11 @@ button:hover {
   display: inline-block;
   background: #2196F3;
   color: white;
-  padding: 3px 8px;
+  padding: 2px 6px;
   border-radius: 3px;
-  font-size: 0.75em;
+  font-size: 0.7em;
   font-weight: bold;
-  margin-left: 8px;
+  margin-left: 6px;
 }
 
 /* メッセージヘッダーバー */
@@ -538,7 +564,7 @@ button:hover {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 15px;
+  margin-bottom: 12px;
 }
 
 /* ============= レスポンシブ対応（スマホ） ============= */
@@ -554,7 +580,7 @@ button:hover {
   
   h1 {
     font-size: 1.6em;
-    margin-bottom: 15px;
+    margin-bottom: 12px;
   }
   
   h2 {
@@ -576,14 +602,14 @@ button:hover {
     padding: 8px;
   }
   
-  /* メッセージカード（★縦幅を削減） */
+  /* メッセージカード */
   .message {
     padding: 8px 10px;
     margin-bottom: 8px;
     border-radius: 8px;
   }
   
-  /* メッセージヘッダー（★縦幅を削減） */
+  /* メッセージヘッダー */
   .message-header {
     margin-bottom: 4px;
   }
@@ -602,14 +628,14 @@ button:hover {
     line-height: 1.2;
   }
   
-  /* メッセージテキスト（★縦幅を削減） */
+  /* メッセージテキスト */
   .message-text {
     font-size: 0.85em;
     line-height: 1.4;
     margin-bottom: 6px;
   }
   
-  /* ボタン（★縦幅を削減） */
+  /* ボタン */
   .message-actions {
     gap: 4px;
   }
@@ -620,14 +646,14 @@ button:hover {
     border-radius: 4px;
   }
   
-  /* 返信メッセージのインデント（スマホでは浅く） */
+  /* 返信メッセージのインデント */
   .message.reply {
     margin-left: 12px;
     padding-left: 6px;
     border-left-width: 2px;
   }
   
-  /* 返信プレビュー（★縦幅を削減） */
+  /* 返信プレビュー */
   #reply-preview {
     padding: 6px 8px;
     font-size: 0.8em;
@@ -646,20 +672,27 @@ button:hover {
     padding-right: 25px;
   }
   
-  /* 投稿フォーム（★縦幅を削減） */
+  /* 投稿フォーム */
   .post-form {
     padding: 8px;
   }
   
-  .post-form input,
+  /* ★スマホでは縦並び */
+  .post-form-row {
+    flex-direction: column;
+    gap: 6px;
+  }
+  
+  .post-form-row input,
+  .post-form-row select {
+    font-size: 0.85em;
+    padding: 8px;
+  }
+  
   .post-form textarea {
     font-size: 0.85em;
     padding: 8px;
     margin-bottom: 6px;
-    border-radius: 6px;
-  }
-  
-  .post-form textarea {
     min-height: 60px;
   }
   
@@ -669,7 +702,7 @@ button:hover {
     border-radius: 6px;
   }
   
-  /* 既読者リスト（★縦幅を削減） */
+  /* 既読者リスト */
   .readers {
     font-size: 0.7em;
     padding: 4px 6px;
@@ -677,7 +710,7 @@ button:hover {
     border-radius: 4px;
   }
   
-  /* 返信先の引用（★縦幅を削減） */
+  /* 返信先の引用 */
   .reply-to-quote {
     font-size: 0.75em;
     padding: 4px 6px;
@@ -694,7 +727,7 @@ button:hover {
     font-size: 0.85em;
   }
   
-  /* セグメント関連（★縦幅を削減） */
+  /* セグメント関連 */
   .segment-controls {
     flex-direction: column;
     align-items: stretch;
@@ -768,9 +801,7 @@ button:hover {
   }
   
   .segment-select-wrapper {
-    flex-direction: row;
-    align-items: center;
-    margin-bottom: 6px;
+    gap: 6px;
   }
   
   .segment-select-wrapper label {
@@ -799,7 +830,7 @@ button:hover {
     font-size: 1.1em;
   }
   
-  /* フォーム要素（★縦幅を削減） */
+  /* フォーム要素 */
   select, input, textarea {
     padding: 8px;
     margin-bottom: 6px;
@@ -807,7 +838,7 @@ button:hover {
     border-radius: 6px;
   }
   
-  /* ボタン全般（★縦幅を削減） */
+  /* ボタン全般 */
   button {
     padding: 8px 16px;
     font-size: 0.85em;
@@ -831,24 +862,24 @@ button:hover {
   }
   
   .message {
-    padding: 14px;
+    padding: 12px;
   }
   
   .message-name {
-    font-size: 0.98em;
+    font-size: 0.96em;
   }
   
   .message-time {
-    font-size: 0.8em;
+    font-size: 0.78em;
   }
   
   .message-text {
-    font-size: 0.95em;
+    font-size: 0.93em;
   }
   
   .message-actions button {
-    font-size: 0.8em;
-    padding: 7px 12px;
+    font-size: 0.78em;
+    padding: 6px 11px;
   }
 }
 

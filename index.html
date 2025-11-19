@@ -78,23 +78,26 @@
         <div id="reply-content" style="margin-top: 5px; font-size: 0.9em; color: #555;"></div>
       </div>
 
-      <!-- メッセージ投稿 -->
-      <div class="post-form">
-        <input type="text" id="user-name" placeholder="名前">
-        
-        <!-- セグメント選択（新規追加） -->
-        <div class="segment-select-wrapper">
-          <label for="segment-select">📂 セグメント:</label>
-          <select id="segment-select">
-            <option value="ALL">ALL</option>
-          </select>
-        </div>
-        
-        <textarea id="message-text" placeholder="メッセージを入力"></textarea>
-        <button id="post-btn">投稿</button>
+<!-- メッセージ投稿 -->
+<div class="post-form">
+  <!-- ★名前とセグメントを横並びに -->
+  <div class="post-form-row">
+    <div class="name-input">
+      <input type="text" id="user-name" placeholder="名前">
+    </div>
+    <div class="segment-wrapper">
+      <div class="segment-select-wrapper">
+        <label for="segment-select">📂</label>
+        <select id="segment-select">
+          <option value="ALL">ALL</option>
+        </select>
       </div>
-    </section>
+    </div>
   </div>
+  
+  <textarea id="message-text" placeholder="メッセージを入力"></textarea>
+  <button id="post-btn">投稿</button>
+</div>
 
   <script src="app.js"></script>
 </body>

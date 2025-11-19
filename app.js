@@ -681,24 +681,33 @@ async function postMessage() {
   try {
     let result;
     
-    // ★ファイルがある場合
+    // ★ファイルがある場合（POST方式に変更）
     if (selectedFile) {
       const fileData = await fileToBase64(selectedFile);
       
-      result = await jsonpPost(GAS_URL, {
-        action: 'upload_file',
-        team: currentTeam,
-        name: userName,
-        message: messageText,
-        key: currentKey,
-        reply_to: replyToId || '',
-        segment: selectedSegment,
-        file_data: fileData,
-        file_name: selectedFile.name,
-        file_type: selectedFile.type
+      // ★fetch APIを使用してPOSTリクエスト
+      const response = await fetch(GAS_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          action: 'upload_file',
+          team: currentTeam,
+          name: userName,
+          message: messageText,
+          key: currentKey,
+          reply_to: replyToId || '',
+          segment: selectedSegment,
+          file_data: fileData,
+          file_name: selectedFile.name,
+          file_type: selectedFile.type
+        })
       });
       
+      result = await response.json();
       clearFile();
+      
     } else {
       // ファイルがない場合は通常投稿
       result = await jsonpPost(GAS_URL, {
@@ -830,7 +839,7 @@ function onFileSelected(event) {
     return;
   }
   
-  // ファイルサイズチェック（10MB以下）
+  // ★ファイルサイズチェック（10MBに設定）
   const maxSize = 10 * 1024 * 1024; // 10MB
   if (file.size > maxSize) {
     alert('ファイルサイズは10MB以下にしてください');

@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>伝言板アプリ - 使い方マニュアル</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      padding: 40px;
+    }
+
+    h1 {
+      color: #667eea;
+      font-size: 2.5em;
+      margin-bottom: 10px;
+      text-align: center;
+      border-bottom: 3px solid #667eea;
+      padding-bottom: 15px;
+    }
+
+    h2 {
+      color: #667eea;
+      font-size: 1.8em;
+      margin-top: 40px;
+      margin-bottom: 15px;
+      border-left: 5px solid #667eea;
+      padding-left: 15px;
+    }
+
+    h3 {
+      color: #333;
+      font-size: 1.4em;
+      margin-top: 25px;
+      margin-bottom: 10px;
+    }
+
+    p {
+      margin-bottom: 15px;
+      color: #555;
+      font-size: 1.05em;
+    }
+
+    ul, ol {
+      margin-left: 25px;
+      margin-bottom: 15px;
+    }
+
+    li {
+      margin-bottom: 10px;
+      color: #555;
+      font-size: 1.05em;
+    }
+
+    .note {
+      background: #fff3cd;
+      border-left: 5px solid #ffc107;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 5px;
+    }
+
+    .note strong {
+      color: #856404;
+    }
+
+    .warning {
+      background: #f8d7da;
+      border-left: 5px solid #dc3545;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 5px;
+    }
+
+    .warning strong {
+      color: #721c24;
+    }
+
+    .tip {
+      background: #d1ecf1;
+      border-left: 5px solid #17a2b8;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 5px;
+    }
+
+    .tip strong {
+      color: #0c5460;
+    }
+
+    code {
+      background: #f5f5f5;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: 'Courier New', monospace;
+      color: #e74c3c;
+    }
+
+    .button-example {
+      display: inline-block;
+      background: #667eea;
+      color: white;
+      padding: 8px 16px;
+      border-radius: 5px;
+      text-decoration: none;
+      margin: 5px;
+      font-weight: bold;
+    }
+
+    .button-example.danger {
+      background: #e74c3c;
+    }
+
+    .button-example.success {
+      background: #2ecc71;
+    }
+
+    .button-example.info {
+      background: #2196F3;
+    }
+
+    .screenshot {
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      margin: 20px 0;
+      padding: 10px;
+      background: #f9f9f9;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 50px;
+      padding-top: 20px;
+      border-top: 2px solid #eee;
+      color: #999;
+      font-size: 0.9em;
+    }
+
+    @media screen and (max-width: 600px) {
+      .container {
+        padding: 20px;
+      }
+
+      h1 {
+        font-size: 1.8em;
+      }
+
+      h2 {
+        font-size: 1.4em;
+      }
+
+      h3 {
+        font-size: 1.2em;
+      }
+
+      p, li {
+        font-size: 0.95em;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>📝 伝言板アプリ - 使い方マニュアル</h1>
+
+    <p style="text-align: center; color: #999; margin-bottom: 40px;">
+      バージョン 2.0 | 最終更新: 2025年11月19日
+    </p>
+
+    ---
+
+    <h2>📖 目次</h2>
+    <ol>
+      <li><a href="#about">伝言板アプリとは</a></li>
+      <li><a href="#getting-started">はじめに</a></li>
+      <li><a href="#team-management">チーム管理</a></li>
+      <li><a href="#segment-management">セグメント管理</a></li>
+      <li><a href="#posting-messages">メッセージの投稿</a></li>
+      <li><a href="#file-attachment">ファイル添付</a></li>
+      <li><a href="#reply-function">返信機能</a></li>
+      <li><a href="#read-function">既読機能</a></li>
+      <li><a href="#troubleshooting">トラブルシューティング</a></li>
+    </ol>
+
+    ---
+
+    <h2 id="about">📖 伝言板アプリとは</h2>
+
+    <p>
+      <strong>伝言板アプリ</strong>は、チーム内でメッセージを共有するためのシンプルな伝言板システムです。
+    </p>
+
+    <h3>✨ 主な機能</h3>
+    <ul>
+      <li>📂 <strong>チーム機能</strong> - 複数のチームを作成・管理</li>
+      <li>🔒 <strong>チームキー保護</strong> - パスワードでチームを保護</li>
+      <li>📁 <strong>セグメント機能</strong> - チーム内でメッセージをカテゴリ分け</li>
+      <li>💬 <strong>返信機能</strong> - メッセージにスレッド形式で返信</li>
+      <li>✅ <strong>既読機能</strong> - メッセージを既読にする</li>
+      <li>📎 <strong>ファイル添付</strong> - 画像やPDFなどのファイルを添付</li>
+      <li>🔄 <strong>自動更新</strong> - 2秒ごとに自動的にメッセージを更新</li>
+    </ul>
+
+    <div class="tip">
+      <strong>💡 ヒント:</strong> スマホ・タブレット・PCのどのデバイスからでもアクセスできます！
+    </div>
+
+    ---
+
+    <h2 id="getting-started">🚀 はじめに</h2>
+
+    <h3>1️⃣ チームを選択</h3>
+    <ol>
+      <li>アプリを開くと、<strong>チーム選択画面</strong>が表示されます</li>
+      <li>ドロップダウンから参加したいチームを選択</li>
+      <li><span class="button-example">参加</span>ボタンをクリック</li>
+    </ol>
+
+    <div class="note">
+      <strong>📌 注意:</strong> 🔒マークが付いているチームは保護されています。キーの入力が必要です。
+    </div>
+
+    <h3>2️⃣ チームキーの入力（保護チームの場合）</h3>
+    <ol>
+      <li>保護されたチームを選択すると、<strong>キー入力画面</strong>が表示されます</li>
+      <li>チームキーを入力</li>
+      <li><span class="button-example">認証</span>ボタンをクリック</li>
+    </ol>
+
+    <div class="warning">
+      <strong>⚠️ 注意:</strong> チームキーを忘れた場合、チーム作成者に確認してください。
+    </div>
+
+    <h3>3️⃣ チームを新規作成</h3>
+    <ol>
+      <li><span class="button-example">新規作成</span>ボタンをクリック</li>
+      <li>チーム名を入力（例：「〇〇課」「イベント名」）</li>
+      <li>チームキーを設定（空白にすると保護なし）</li>
+      <li>確認ダイアログで「OK」をクリック</li>
+    </ol>
+
+    <div class="tip">
+      <strong>💡 ヒント:</strong> チームキーを設定すると、キーを知っている人だけがアクセスできます。
+    </div>
+
+    ---
+
+    <h2 id="team-management">⚙️ チーム管理</h2>
+
+    <p>
+      チーム作成者（チームキーを持っている人）は、チームの設定を変更できます。
+    </p>
+
+    <h3>チーム管理画面を開く</h3>
+    <ol>
+      <li>チームに参加後、<span class="button-example" style="background: #9E9E9E;">チーム管理</span>ボタンをクリック</li>
+      <li>チーム管理モーダルが表示されます</li>
+    </ol>
+
+    <h3>🔧 チーム名を変更</h3>
+    <ol>
+      <li>「新しいチーム名」欄に新しい名前を入力</li>
+      <li><span class="button-example">変更</span>ボタンをクリック</li>
+      <li>確認ダイアログで「OK」をクリック</li>
+    </ol>
+
+    <h3>🔑 チームキーを変更</h3>
+    <ol>
+      <li>「新しいチームキー」欄に新しいキーを入力</li>
+      <li><span class="button-example">変更</span>ボタンをクリック</li>
+      <li>確認ダイアログで「OK」をクリック</li>
+    </ol>
+
+    <div class="note">
+      <strong>📌 注意:</strong> チームキーを空白にすると、保護が解除されます。
+    </div>
+
+    <h3>🗑️ チームを削除</h3>
+    <ol>
+      <li><span class="button-example danger">チームを削除</span>ボタンをクリック</li>
+      <li>確認ダイアログで「OK」をクリック（2回確認されます）</li>
+    </ol>
+
+    <div class="warning">
+      <strong>⚠️ 警告:</strong> チームを削除すると、すべてのメッセージとセグメントも削除されます。この操作は取り消せません。
+    </div>
+
+    ---
+
+    <h2 id="segment-management">📂 セグメント管理</h2>
+
+    <p>
+      <strong>セグメント</strong>は、チーム内でメッセージをカテゴリ分けする機能です。
+    </p>
+
+    <h3>セグメントの例</h3>
+    <ul>
+      <li>📂 <strong>ALL</strong> - すべてのメッセージ（デフォルト）</li>
+      <li>📂 <strong>会議</strong> - 会議に関するメッセージ</li>
+      <li>📂 <strong>住民対応</strong> - 住民対応に関するメッセージ</li>
+      <li>📂 <strong>個別周知</strong> - 個別の連絡事項</li>
+    </ul>
+
+    <h3>セグメント管理画面を開く</h3>
+    <ol>
+      <li><span class="button-example" style="background: #9E9E9E;">セグメント管理</span>ボタンをクリック</li>
+      <li>セグメント管理モーダルが表示されます</li>
+    </ol>
+
+    <h3>➕ セグメントを作成</h3>
+    <ol>
+      <li>「新しいセグメントを作成」欄にセグメント名を入力</li>
+      <li><span class="button-example">作成</span>ボタンをクリック</li>
+    </ol>
+
+    <div class="note">
+      <strong>📌 注意:</strong> セグメントの作成・削除にはチームキーが必要です。
+    </div>
+
+    <h3>🗑️ セグメントを削除</h3>
+    <ol>
+      <li>削除したいセグメントの<span class="button-example danger">削除</span>ボタンをクリック</li>
+      <li>確認ダイアログで「OK」をクリック</li>
+    </ol>
+
+    <div class="warning">
+      <strong>⚠️ 警告:</strong> セグメントを削除すると、そのセグメントのメッセージもすべて削除されます。
+    </div>
+
+    <h3>🔍 セグメントでフィルタリング</h3>
+    <ol>
+      <li>「📂 セグメント」ドロップダウンから表示したいセグメントを選択</li>
+      <li>選択したセグメントのメッセージのみが表示されます</li>
+    </ol>
+
+    <div class="tip">
+      <strong>💡 ヒント:</strong> 「ALL」を選択すると、すべてのセグメントのメッセージが表示されます。
+    </div>
+
+    ---
+
+    <h2 id="posting-messages">💬 メッセージの投稿</h2>
+
+    <h3>基本的な投稿方法</h3>
+    <ol>
+      <li>「名前」欄に自分の名前を入力</li>
+      <li>「セグメント」を選択（デフォルトは「ALL」）</li>
+      <li>「メッセージを入力」欄にメッセージを入力</li>
+      <li><span class="button-example">投稿</span>ボタンをクリック</li>
+    </ol>
+
+    <div class="tip">
+      <strong>💡 ヒント:</strong> セグメントフィルターを変更すると、投稿先のセグメントも自動的に変更されます。
+    </div>
+
+    <h3>🗑️ メッセージを削除</h3>
+    <ol>
+      <li>削除したいメッセージの<span class="button-example danger">削除</span>ボタンをクリック</li>
+      <li>確認ダイアログで「OK」をクリック</li>
+    </ol>
+
+    <div class="note">
+      <strong>📌 注意:</strong> 削除したメッセージは復元できません。
+    </div>
+
+    ---
+
+    <h2 id="file-attachment">📎 ファイル添付</h2>
+
+    <p>
+      メッセージにファイルを添付できます。画像、PDF、Officeファイルなど、さまざまなファイル形式に対応しています。
+    </p>
+
+    <h3>ファイルを添付する</h3>
+    <ol>
+      <li><span class="button-example" style="background: #9E9E9E;">📎</span>ボタンをクリック</li>
+      <li>ファイルを選択</li>
+      <li>ファイル名が表示されます</li>
+      <li>メッセージを入力して<span class="button-example">投稿</span>ボタンをクリック</li>
+    </ol>
+
+    <div class="note">
+      <strong>📌 注意:</strong> ファイルサイズは<strong>10MB以下</strong>にしてください。
+    </div>
+
+    <h3>ファイルの添付を取り消す</h3>
+    <ol>
+      <li>ファイル名の横にある<span class="button-example danger">×</span>ボタンをクリック</li>
+      <li>ファイルの選択が解除されます</li>
+    </ol>
+
+    <h3>添付されたファイルを開く</h3>
+    <ol>
+      <li>メッセージに表示されているファイル名をクリック</li>
+      <li>Googleドライブで開きます</li>
+    </ol>
+
+    <div class="tip">
+      <strong>💡 ヒント:</strong> 画像ファイルは🖼️アイコン、その他のファイルは📎アイコンで表示されます。
+    </div>
+
+    ---
+
+    <h2 id="reply-function">↩️ 返信機能</h2>
+
+    <p>
+      メッセージに対してスレッド形式で返信できます。
+    </p>
+
+    <h3>メッセージに返信する</h3>
+    <ol>
+      <li>返信したいメッセージの<span class="button-example info">返信</span>ボタンをクリック</li>
+      <li>返信先のプレビューが表示されます</li>
+      <li>メッセージを入力して<span class="button-example">投稿</span>ボタンをクリック</li>
+    </ol>
+
+    <div class="note">
+      <strong>📌 注意:</strong> 返信時は、元のメッセージと同じセグメントに投稿されます（変更不可）。
+    </div>
+
+    <h3>返信をキャンセル</h3>
+    <ol>
+      <li>返信プレビューの右上にある<span class="button-example danger">×</span>ボタンをクリック</li>
+      <li>返信がキャンセルされます</li>
+    </ol>
+
+    ---
+
+    <h2 id="read-function">✅ 既読機能</h2>
+
+    <p>
+      メッセージを既読にすることで、誰が読んだかを確認できます。
+    </p>
+
+    <h3>メッセージを既読にする</h3>
+    <ol>
+      <li>メッセージの<span class="button-example success">既読</span>ボタンをクリック</li>
+      <li>自分の名前が既読者リストに追加されます</li>
+    </ol>
+
+    <div class="tip">
+      <strong>💡 ヒント:</strong> 既読者リストは、メッセージの下部に「既読: 名前1, 名前2」と表示されます。
+    </div>
+
+    ---
+
+    <h2 id="troubleshooting">🔧 トラブルシューティング</h2>
+
+    <h3>❓ メッセージが表示されない</h3>
+    <ul>
+      <li>✅ チームに正しく参加しているか確認</li>
+      <li>✅ セグメントフィルターが「ALL」になっているか確認</li>
+      <li>✅ ブラウザをリロード（F5キー）</li>
+    </ul>
+
+    <h3>❓ チームキーを忘れた</h3>
+    <ul>
+      <li>✅ チーム作成者に確認してください</li>
+      <li>✅ チームキーは変更できません（チーム作成者のみ変更可能）</li>
+    </ul>
+
+    <h3>❓ ファイルがアップロードできない</h3>
+    <ul>
+      <li>✅ ファイルサイズが10MB以下か確認</li>
+      <li>✅ インターネット接続を確認</li>
+      <li>✅ ブラウザを変更（Google Chrome推奨）</li>
+    </ul>
+
+    <h3>❓ スマホで動作しない</h3>
+    <ul>
+      <li>✅ ブラウザを最新版に更新</li>
+      <li>✅ Google Chromeを使用（推奨）</li>
+      <li>✅ Safari/Firefoxの場合、トラッキング防止を無効にする</li>
+    </ul>
+
+    <div class="note">
+      <strong>📌 推奨ブラウザ:</strong>
+      <ul>
+        <li>⭐⭐⭐⭐⭐ Google Chrome</li>
+        <li>⭐⭐⭐⭐ Microsoft Edge</li>
+        <li>⭐⭐ Firefox（トラッキング防止を無効にする必要あり）</li>
+        <li>⭐⭐ Safari（トラッキング防止を無効にする必要あり）</li>
+      </ul>
+    </div>
+
+    ---
+
+    <h2>📱 スマホ版の使い方</h2>
+
+    <h3>折りたたみ機能</h3>
+    <p>
+      スマホ版では、画面を広く使うために<strong>折りたたみ機能</strong>があります。
+    </p>
+
+    <h4>📂 セグメント・チーム管理を折りたたむ</h4>
+    <ol>
+      <li>「📂 セグメント・チーム管理」の<strong>▼</strong>をタップ</li>
+      <li>セグメント管理UIが折りたたまれます</li>
+      <li>もう一度タップすると展開されます</li>
+    </ol>
+
+    <h4>📝 投稿UIを折りたたむ</h4>
+    <ol>
+      <li>画面下部の「📝 投稿」の<strong>▼</strong>をタップ</li>
+      <li>投稿UIが折りたたまれます</li>
+      <li>もう一度タップすると展開されます</li>
+    </ol>
+
+    <div class="tip">
+      <strong>💡 ヒント:</strong> メッセージを読むときは投稿UIを折りたたむと、画面が広く使えます！
+    </div>
+
+    ---
+
+    <h2>🎯 よくある質問（FAQ）</h2>
+
+    <h3>Q1. チームキーは後から変更できますか？</h3>
+    <p>
+      <strong>A.</strong> はい、チーム作成者（チームキーを持っている人）は、チーム管理画面から変更できます。
+    </p>
+
+    <h3>Q2. メッセージは何件まで投稿できますか？</h3>
+    <p>
+      <strong>A.</strong> 制限はありません。ただし、Googleスプレッドシートの行数制限（500万行）があります。
+    </p>
+
+    <h3>Q3. メッセージは自動的に更新されますか？</h3>
+    <p>
+      <strong>A.</strong> はい、2秒ごとに自動的に更新されます。
+    </p>
+
+    <h3>Q4. 複数のチームに同時に参加できますか？</h3>
+    <p>
+      <strong>A.</strong> いいえ、一度に1つのチームにしか参加できません。チームを切り替えるには、「チームを退出」ボタンをクリックしてください。
+    </p>
+
+    ---
+
+    <h2>✉ お問い合わせ</h2>
+
+    <p>
+      ご不明な点やバグ報告は、以下までご連絡ください：
+    </p>
+
+    <ul>
+      <li>📧 メール: <strong>digital@city.soja.okayama.jp</strong></li>
+      <li>🏢 担当部署: <strong>あたたか市民部デジタル推進課</strong></li>
+    </ul>
+
+    ---
+
+    <div class="footer">
+      <p>© 2025 総社市デジタル推進課 | 効果検証用　伝言板アプリ v2.0</p>
+      <p>GitHub Pages + Google Apps Script + Googleスプレッドシート</p>
+    </div>
+  </div>
+</body>
+</html>

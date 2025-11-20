@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>（効果検証用）伝言板アプリ - 使い方マニュアル</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      padding: 40px;
+    }
+
+    h1 {
+      color: #667eea;
+      font-size: 2em;
+      margin-bottom: 10px;
+      text-align: center;
+      border-bottom: 3px solid #667eea;
+      padding-bottom: 15px;
+    }
+
+    h2 {
+      color: #667eea;
+      font-size: 1.5em;
+      margin-top: 40px;
+      margin-bottom: 15px;
+      border-left: 5px solid #667eea;
+      padding-left: 15px;
+    }
+
+    h3 {
+      color: #333;
+      font-size: 1.2em;
+      margin-top: 25px;
+      margin-bottom: 10px;
+    }
+
+    h4 {
+      color: #555;
+      font-size: 1.05em;
+      margin-top: 20px;
+      margin-bottom: 8px;
+    }
+
+    p {
+      margin-bottom: 15px;
+      color: #555;
+      font-size: 0.95em;
+    }
+
+    ul, ol {
+      margin-left: 25px;
+      margin-bottom: 15px;
+    }
+
+    li {
+      margin-bottom: 10px;
+      color: #555;
+      font-size: 0.95em;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 0.9em;
+    }
+
+    table th {
+      background: #667eea;
+      color: white;
+      padding: 10px;
+      text-align: left;
+      font-weight: bold;
+    }
+
+    table td {
+      padding: 10px;
+      border: 1px solid #ddd;
+      color: #555;
+    }
+
+    table tr:nth-child(even) {
+      background: #f9f9f9;
+    }
+
+    .note {
+      background: #fff3cd;
+      border-left: 5px solid #ffc107;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 5px;
+      font-size: 0.9em;
+    }
+
+    .note strong {
+      color: #856404;
+    }
+
+    .warning {
+      background: #f8d7da;
+      border-left: 5px solid #dc3545;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 5px;
+      font-size: 0.9em;
+    }
+
+    .warning strong {
+      color: #721c24;
+    }
+
+    .danger {
+      background: #ffe5e5;
+      border: 3px solid #dc3545;
+      padding: 20px;
+      margin: 30px 0;
+      border-radius: 10px;
+      font-size: 0.9em;
+    }
+
+    .danger h3 {
+      color: #dc3545;
+      margin-top: 0;
+    }
+
+    .tip {
+      background: #d1ecf1;
+      border-left: 5px solid #17a2b8;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 5px;
+      font-size: 0.9em;
+    }
+
+    .tip strong {
+      color: #0c5460;
+    }
+
+    .important {
+      background: #e3f2fd;
+      border: 3px solid #2196F3;
+      padding: 20px;
+      margin: 30px 0;
+      border-radius: 10px;
+      font-size: 0.9em;
+    }
+
+    .important h3 {
+      color: #2196F3;
+      margin-top: 0;
+    }
+
+    .success {
+      background: #d4edda;
+      border-left: 5px solid #28a745;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 5px;
+      font-size: 0.9em;
+    }
+
+    .success strong {
+      color: #155724;
+    }
+
+    code {
+      background: #f5f5f5;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: 'Courier New', monospace;
+      color: #e74c3c;
+      font-size: 0.9em;
+    }
+
+    .button-example {
+      display: inline-block;
+      background: #667eea;
+      color: white;
+      padding: 6px 12px;
+      border-radius: 5px;
+      text-decoration: none;
+      margin: 5px;
+      font-weight: bold;
+      font-size: 0.9em;
+    }
+
+    .button-example.danger {
+      background: #e74c3c;
+    }
+
+    .button-example.success {
+      background: #2ecc71;
+    }
+
+    .button-example.info {
+      background: #2196F3;
+    }
+
+    .button-example.yellow {
+      background: #FFF9C4;
+      color: #333;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 50px;
+      padding-top: 20px;
+      border-top: 2px solid #eee;
+      color: #999;
+      font-size: 0.85em;
+    }
+
+    @media screen and (max-width: 600px) {
+      .container {
+        padding: 20px;
+      }
+
+      h1 {
+        font-size: 1.6em;
+      }
+
+      h2 {
+        font-size: 1.3em;
+      }
+
+      h3 {
+        font-size: 1.1em;
+      }
+
+      p, li {
+        font-size: 0.9em;
+      }
+
+      table {
+        font-size: 0.8em;
+      }
+
+      table th, table td {
+        padding: 6px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>📝 伝言板アプリ - 使い方マニュアル</h1>
+
+    <p style="text-align: center; color: #999; margin-bottom: 40px;">
+      バージョン 2.1.2 | 最終更新: 2025年11月20日
+    </p>
+
+    ---
+
+    <!-- ============= 重要な注意事項 ============= -->
+    <div class="danger">
+      <h3>⚠️ 【重要】試験運用中のアプリです</h3>
+      <p>
+        本アプリは<strong>試験運用</strong>として導入されており、<strong>本格運用するにはセキュリティリスクが高い</strong>状況です。
+      </p>
+      <p>
+        <strong>以下の事項を必ず守ってください：</strong>
+      </p>
+      <ul>
+        <li>❌ <strong>個人情報を含むメッセージの投稿禁止</strong></li>
+        <li>❌ <strong>機密情報を含むファイルの添付禁止</strong></li>
+        <li>❌ <strong>URLを外部に共有することを禁止</strong></li>
+        <li>❌ <strong>業務以外の目的での利用禁止</strong></li>
+      </ul>
+      <p>
+        <strong>違反した場合、情報漏洩や不正アクセスのリスクが高まります。</strong>
+      </p>
+    </div>
+
+    <div class="danger">
+      <h3>🚫 【厳守】外部との連絡には使用禁止</h3>
+      <p>
+        本アプリは、<strong>総社市役所職員間での連絡にのみ使用</strong>してください。
+      </p>
+      <p>
+        <strong>以下の利用は厳禁です：</strong>
+      </p>
+      <ul>
+        <li>❌ <strong>外部業者との連絡</strong></li>
+        <li>❌ <strong>市民との連絡</strong></li>
+        <li>❌ <strong>他自治体職員との連絡</strong></li>
+        <li>❌ <strong>その他、市役所職員以外との連絡</strong></li>
+      </ul>
+      <p>
+        <strong>外部との連絡に使用した場合、直ちに試験運用を終了します。</strong>
+      </p>
+    </div>
+
+    <div class="important">
+      <h3>🔐 セキュリティリスクについて</h3>
+      <p>
+        本アプリは以下のセキュリティリスクがあります：
+      </p>
+      <ul>
+        <li>🔓 <strong>認証機能が簡易的</strong>（チームキーのみ）</li>
+        <li>🔓 <strong>データがGoogleスプレッドシートに平文で保存</strong></li>
+        <li>🔓 <strong>URLを知っていれば誰でもアクセス可能</strong></li>
+        <li>🔓 <strong>アクセスログの記録なし</strong></li>
+      </ul>
+      <p>
+        <strong>試験運用期間中は、これらのリスクを理解した上で利用してください。</strong>
+      </p>
+    </div>
+
+    ---
+
+    <h2>📖 目次</h2>
+    <ol>
+      <li><a href="#about">伝言板アプリとは</a></li>
+      <li><a href="#cost-comparison">コスト比較（Slack・Teams等との比較）</a></li>
+      <li><a href="#system-architecture">システムの仕組みと制約</a></li>
+      <li><a href="#security">セキュリティについて</a></li>
+      <li><a href="#getting-started">はじめに</a></li>
+      <li><a href="#team-management">チーム管理</a></li>
+      <li><a href="#segment-management">セグメント管理</a></li>
+      <li><a href="#posting-messages">メッセージの投稿</a></li>
+      <li><a href="#file-attachment">ファイル添付</a></li>
+      <li><a href="#reply-function">返信機能</a></li>
+      <li><a href="#read-function">既読機能</a></li>
+      <li><a href="#mobile-ui">スマホ版の使い方</a></li>
+      <li><a href="#troubleshooting">トラブルシューティング</a></li>
+    </ol>
+
+    ---
+
+    <h2 id="about">📖 伝言板アプリとは</h2>
+
+    <p>
+      <strong>伝言板アプリ</strong>は、チーム内でメッセージを共有するためのシンプルな伝言板システムです。
+    </p>
+
+    <h3>✨ 主な機能</h3>
+    <ul>
+      <li>📂 <strong>チーム機能</strong> - 複数のチームを作成・管理</li>
+      <li>🔒 <strong>チームキー保護</strong> - パスワードでチームを保護</li>
+      <li>📁 <strong>セグメント機能</strong> - チーム内でメッセージをカテゴリ分け</li>
+      <li>💬 <strong>返信機能</strong> - メッセージにスレッド形式で返信</li>
+      <li>✅ <strong>既読機能</strong> - メッセージを既読にする</li>
+      <li>📎 <strong>ファイル添付</strong> - 画像やPDFなどのファイルを添付</li>
+      <li>🔄 <strong>自動更新</strong> - 2秒ごとに自動的にメッセージを更新</li>
+    </ul>
+
+    <div class="tip">
+      <strong>💡 ヒント:</strong> スマホ・タブレット・PCのどのデバイスからでもアクセスできます！
+    </div>
+
+    ---
+
+    <h2 id="cost-comparison">💰 コスト比較（Slack・Teams等との比較）</h2>
+
+    <h3>📊 1000人規模の年間費用比較</h3>
+
+    <p>
+      本アプリは<strong>完全無料</strong>で利用できますが、他の法人向けビジネスチャットツールを導入した場合、以下のような費用がかかります。
+    </p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>ツール名</th>
+          <th>月額単価（1人）</th>
+          <th>1000人の月額費用</th>
+          <th>1000人の年間費用</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>本アプリ</strong></td>
+          <td><strong>0円</strong></td>
+          <td><strong>0円</strong></td>
+          <td><strong>0円</strong></td>
+        </tr>
+        <tr>
+          <td>Slack（プロプラン）</td>
+          <td>1,050円</td>
+          <td>1,050,000円</td>
+          <td>12,600,000円</td>
+        </tr>
+        <tr>
+          <td>Slack（ビジネスプラス）</td>
+          <td>1,920円</td>
+          <td>1,920,000円</td>
+          <td>23,040,000円</td>
+        </tr>
+        <tr>
+          <td>Microsoft Teams（E3）</td>
+          <td>約4,000円</td>
+          <td>4,000,000円</td>
+          <td>48,000,000円</td>
+        </tr>
+        <tr>
+          <td>Microsoft Teams（E5）</td>
+          <td>約6,000円</td>
+          <td>6,000,000円</td>
+          <td>72,000,000円</td>
+        </tr>
+        <tr>
+          <td>LINE WORKS（スタンダード）</td>
+          <td>540円</td>
+          <td>540,000円</td>
+          <td>6,480,000円</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p style="font-size: 0.85em; color: #999;">
+      ※ 料金は2025年11月時点の情報です。詳細は各サービスの公式サイトをご確認ください。<br>
+      参考情報：<a href="https://www.eesel.ai/ja/blog/microsoft-teams-pricing" target="_blank">Microsoft Teams料金プラン</a> | 
+      <a href="https://saas.imitsu.jp/cate-business-chat/article/h-97" target="_blank">ビジネスチャットツール料金比較</a>
+    </p>
+
+    <div class="success">
+      <h3>✅ 本アプリのメリット</h3>
+      <p>
+        本アプリは<strong>完全無料</strong>で利用できるため、<strong>年間で数百万円〜数千万円のコスト削減</strong>が可能です。
+      </p>
+      <p>
+        <strong>試験運用を通じて、最低限の機能で業務が回るかを検証</strong>し、本格導入時の予算規模を判断する材料とします。
+      </p>
+    </div>
+
+    <div class="note">
+      <strong>📌 注意:</strong>
+      <p>
+        本アプリは<strong>最低限の機能</strong>しか提供していません。LINEやSlackのような高度な機能（リアルタイム通信、ビデオ会議、高度な検索機能など）は実装されていません。
+      </p>
+      <p>
+        <strong>試験運用の結果、より高度な機能が必要と判断された場合は、有料ツールの導入を検討します。</strong>
+      </p>
+    </div>
+
+    ---
+
+    <h2 id="system-architecture">⚙️ システムの仕組みと制約</h2>
+
+    <h3>📊 データの保存と更新の仕組み</h3>
+
+    <p>
+      本アプリは、<strong>Googleスプレッドシート</strong>をデータベースとして使用しています。これにより、以下のような特徴があります：
+    </p>
+
+    <h4>✅ メリット</h4>
+    <ul>
+      <li>💰 <strong>完全無料</strong>で利用可能</li>
+      <li>🔧 <strong>管理が簡単</strong>（Googleスプレッドシートで直接確認・編集可能）</li>
+      <li>☁️ <strong>クラウドベース</strong>でどこからでもアクセス可能</li>
+    </ul>
+
+    <h4>⚠️ デメリット（制約）</h4>
+    <ul>
+      <li>⏱️ <strong>レスポンスが遅い</strong>（LINEやSlackのようなリアルタイム性はありません）</li>
+      <li>📡 <strong>データの取得に時間がかかる</strong>（Googleスプレッドシートへのアクセスに数秒かかる場合があります）</li>
+      <li>🔄 <strong>自動更新は2秒ごと</strong>（新しいメッセージが表示されるまで最大2秒かかります）</li>
+    </ul>
+
+    <div class="important">
+      <h3>🔄 データの更新の流れ</h3>
+      <p>
+        本アプリのデータ更新は、以下のような流れで行われます：
+      </p>
+      <ol>
+        <li><strong>メッセージを投稿</strong> → Googleスプレッドシートに書き込み（約1～3秒）</li>
+        <li><strong>自動更新</strong> → 2秒ごとにGoogleスプレッドシートからデータを取得</li>
+        <li><strong>画面に表示</strong> → 取得したデータを画面に反映</li>
+      </ol>
+      <p>
+        このため、<strong>メッセージを投稿してから他のユーザーに表示されるまで、最大5秒程度かかる場合があります。</strong>
+      </p>
+    </div>
+
+    <div class="warning">
+      <strong>⚠️ LINEやSlackとの違い</strong>
+      <p>
+        LINEやSlackは、<strong>専用のサーバー</strong>と<strong>リアルタイム通信技術（WebSocket）</strong>を使用しているため、メッセージが瞬時に表示されます。
+      </p>
+      <p>
+        一方、本アプリは<strong>Googleスプレッドシート</strong>を使用しているため、<strong>技術的にリアルタイム性を実現することは困難</strong>です。
+      </p>
+      <p>
+        <strong>本アプリは、緊急性の高いコミュニケーションには適していません。</strong>
+      </p>
+    </div>
+
+    <h3>🚀 初回接続時の注意事項</h3>
+
+    <div class="warning">
+      <strong>⚠️ 初回接続時は読み込みに時間がかかります</strong>
+      <p>
+        アプリに初めて接続する際、以下のような問題が発生する場合があります：
+      </p>
+      <ul>
+        <li>⏳ <strong>チーム一覧が表示されない</strong>（読み込みに時間がかかる）</li>
+        <li>❌ <strong>「読み込みエラー」が表示される</strong>（タイムアウトやTTLオーバー）</li>
+        <li>🔄 <strong>画面が白いままになる</strong>（データの取得に失敗）</li>
+      </ul>
+      <p>
+        <strong>対処法：</strong>
+      </p>
+      <ol>
+        <li><strong>しばらく待つ</strong>（30秒～1分程度）</li>
+        <li><strong>ブラウザをリロード</strong>（F5キーまたは更新ボタン）</li>
+        <li><strong>キャッシュをクリア</strong>してから再度アクセス</li>
+      </ol>
+      <p>
+        <strong>2回目以降は、ブラウザのキャッシュにより、読み込みが速くなります。</strong>
+      </p>
+    </div>
+
+    <div class="tip">
+      <strong>💡 ヒント:</strong>
+      <ul>
+        <li>初回接続時は、<strong>時間に余裕を持ってアクセス</strong>してください</li>
+        <li>読み込みエラーが発生した場合は、<strong>焦らずにリロード</strong>してください</li>
+        <li>Google Chromeを使用すると、比較的安定して動作します</li>
+      </ul>
+    </div>
+
+    ---
+
+    <h2 id="security">🔐 セキュリティについて</h2>
+
+    <h3>⚠️ 現在のセキュリティリスク</h3>
+
+    <div class="warning">
+      <strong>🔓 認証機能が簡易的</strong>
+      <p>
+        本アプリは<strong>チームキーのみ</strong>で保護されており、多要素認証（MFA）やIPアドレス制限などの高度なセキュリティ機能はありません。
+      </p>
+      <p>
+        <strong>対策：</strong> チームキーを定期的に変更し、関係者のみに共有してください。
+      </p>
+    </div>
+
+    <div class="warning">
+      <strong>🔓 データが平文で保存</strong>
+      <p>
+        メッセージやファイルは<strong>Googleスプレッドシート・Googleドライブに平文で保存</strong>されます。暗号化されていないため、Googleアカウントが漏洩すると情報が流出する可能性があります。
+      </p>
+      <p>
+        <strong>対策：</strong> 個人情報や機密情報は投稿しないでください。
+      </p>
+    </div>
+
+    <div class="warning">
+      <strong>🔓 URLを知っていれば誰でもアクセス可能</strong>
+      <p>
+        本アプリのURLを知っていれば、<strong>誰でもアクセス可能</strong>です。URLが外部に漏れると、不正アクセスのリスクが高まります。
+      </p>
+      <p>
+        <strong>対策：</strong> URLを外部に共有しないでください。
+      </p>
+    </div>
+
+    <div class="warning">
+      <strong>🔓 アクセスログの記録なし</strong>
+      <p>
+        本アプリは<strong>アクセスログを記録していません</strong>。不正アクセスがあっても検知できません。
+      </p>
+      <p>
+        <strong>対策：</strong> 不審な動作があれば、すぐにデジタル推進課に報告してください。
+      </p>
+    </div>
+
+    <h3>✅ 本格運用時に必要な対策</h3>
+    <p>
+      本アプリを本格運用する場合、以下のセキュリティ対策が必要と考えています：
+    </p>
+    <ul>
+      <li>🔐 <strong>多要素認証（MFA）の導入</strong></li>
+      <li>🔐 <strong>IPアドレス制限</strong></li>
+      <li>🔐 <strong>データの暗号化</strong>（AES256ビット暗号化など）</li>
+      <li>🔐 <strong>アクセスログの記録</strong></li>
+      <li>🔐 <strong>定期的なセキュリティ監査</strong></li>
+    </ul>
+
+    <div class="note">
+      <strong>📌 参考情報:</strong>
+      <ul>
+        <li><a href="https://www.soumu.go.jp/main_sosiki/cybersecurity/kokumin/index.html" target="_blank">総務省 国民のためのサイバーセキュリティサイト</a></li>
+        <li><a href="https://www.ppc.go.jp/" target="_blank">個人情報保護委員会</a></li>
+      </ul>
+    </div>
+
+    ---
+
+    <h2 id="getting-started">🚀 はじめに</h2>
+
+    <h3>1️⃣ チームを選択</h3>
+    <ol>
+      <li>アプリを開くと、<strong>チーム選択画面</strong>が表示されます</li>
+      <li>ドロップダウンから参加したいチームを選択</li>
+      <li><span class="button-example">参加</span>ボタンをクリック</li>
+    </ol>
+
+    <div class="note">
+      <strong>📌 注意:</strong> 🔒マークが付いているチームは保護されています。キーの入力が必要です。
+    </div>
+
+    <div class="warning">
+      <strong>⚠️ 初回接続時の注意</strong>
+      <p>
+        初めてアプリにアクセスする場合、<strong>チーム一覧の読み込みに時間がかかる</strong>場合があります。
+      </p>
+      <p>
+        <strong>しばらく待ってから</strong>、チームを選択してください。
+      </p>
+    </div>
+
+    <h3>2️⃣ チームキーの入力（保護チームの場合）</h3>
+    <ol>
+      <li>保護されたチームを選択すると、<strong>キー入力画面</strong>が表示されます</li>
+      <li>チームキーを入力</li>
+      <li><span class="button-example">認証</span>ボタンをクリック</li>
+    </ol>
+
+    <div class="warning">
+      <strong>⚠️ 注意:</strong> チームキーを忘れた場合、チーム作成者に確認してください。
+    </div>
+
+    <h3>3️⃣ チームを新規作成</h3>
+    <ol>
+      <li><span class="button-example">新規作成</span>ボタンをクリック</li>
+      <li>チーム名を入力（例：「〇〇課」「イベント名」）</li>
+      <li>チームキーを設定（空白にすると保護なし）</li>
+      <li>確認ダイアログで「OK」をクリック</li>
+    </ol>
+
+    <div class="tip">
+      <strong>💡 ヒント:</strong> チームキーを設定すると、キーを知っている人だけがアクセスできます。
+    </div>
+
+    ---
+
+    <h2 id="team-management">⚙️ チーム管理</h2>
+
+    <p>
+      チーム作成者（チームキーを持っている人）は、チームの設定を変更できます。
+    </p>
+
+    <h3>チーム管理画面を開く</h3>
+    <ol>
+      <li>チームに参加後、<span class="button-example" style="background: #9E9E9E;">チーム管理</span>ボタンをクリック</li>
+      <li>チーム管理モーダルが表示されます</li>
+    </ol>
+
+    <h3>🔧 チーム名を変更</h3>
+    <ol>
+      <li>「新しいチーム名」欄に新しい名前を入力</li>
+      <li><span class="button-example">変更</span>ボタンをクリック</li>
+      <li>確認ダイアログで「OK」をクリック</li>
+    </ol>
+
+    <h3>🔑 チームキーを変更</h3>
+    <ol>
+      <li>「新しいチームキー」欄に新しいキーを入力</li>
+      <li><span class="button-example">変更</span>ボタンをクリック</li>
+      <li>確認ダイアログで「OK」をクリック</li>
+    </ol>
+
+    <div class="note">
+      <strong>📌 注意:</strong> チームキーを空白にすると、保護が解除されます。
+    </div>
+
+    <h3>🗑️ チームを削除</h3>
+    <ol>
+      <li><span class="button-example danger">チームを削除</span>ボタンをクリック</li>
+      <li>確認ダイアログで「OK」をクリック（2回確認されます）</li>
+    </ol>
+
+    <div class="warning">
+      <strong>⚠️ 警告:</strong> チームを削除すると、すべてのメッセージとセグメントも削除されます。この操作は取り消せません。
+    </div>
+
+    ---
+
+    <h2 id="segment-management">📂 セグメント管理</h2>
+
+    <p>
+      <strong>セグメント</strong>は、チーム内でメッセージをカテゴリ分けする機能です。
+    </p>
+
+    <h3>セグメントの例</h3>
+    <ul>
+      <li>📂 <strong>ALL</strong> - すべてのメッセージ（デフォルト）</li>
+      <li>📂 <strong>会議</strong> - 会議に関するメッセージ</li>
+      <li>📂 <strong>住民対応</strong> - 住民対応に関するメッセージ</li>
+      <li>📂 <strong>個別周知</strong> - 個別の連絡事項</li>
+    </ul>
+
+    <h3>セグメント管理画面を開く</h3>
+    <ol>
+      <li><span class="button-example" style="background: #9E9E9E;">セグメント管理</span>ボタンをクリック</li>
+      <li>セグメント管理モーダルが表示されます</li>
+    </ol>
+
+    <h3>➕ セグメントを作成</h3>
+    <ol>
+      <li>「新しいセグメントを作成」欄にセグメント名を入力</li>
+      <li><span class="button-example">作成</span>ボタンをクリック</li>
+    </ol>
+
+    <div class="note">
+      <strong>📌 注意:</strong> セグメントの作成・削除にはチームキーが必要です。
+    </div>
+
+    <h3>🗑️ セグメントを削除</h3>
+    <ol>
+      <li>削除したいセグメントの<span class="button-example danger">削除</span>ボタンをクリック</li>
+      <li>確認ダイアログで「OK」をクリック</li>
+    </ol>
+
+    <div class="warning">
+      <strong>⚠️ 警告:</strong> セグメントを削除すると、そのセグメントのメッセージもすべて削除されます。
+    </div>
+
+    <h3>🔍 セグメントでフィルタリング</h3>
+    <ol>
+      <li>「📂 セグメント」ドロップダウンから表示したいセグメントを選択</li>
+      <li>選択したセグメントのメッセージのみが表示されます</li>
+    </ol>
+
+    <div class="tip">
+      <strong>💡 ヒント:</strong> 「ALL」を選択すると、すべてのセグメントのメッセージが表示されます。
+    </div>
+
+    ---
+
+    <h2 id="posting-messages">💬 メッセージの投稿</h2>
+
+    <h3>基本的な投稿方法</h3>
+    <ol>
+      <li>「名前」欄に自分の名前を入力</li>
+      <li>「セグメント」を選択（デフォルトは「ALL」）</li>
+      <li>「メッセージを入力」欄にメッセージを入力</li>
+      <li><span class="button-example">投稿</span>ボタンをクリック</li>
+    </ol>
+
+    <div class="danger">
+      <h3>⚠️ 投稿時の注意事項</h3>
+      <ul>
+        <li>❌ <strong>個人情報を含むメッセージは投稿しないでください</strong></li>
+        <li>❌ <strong>機密情報を含むメッセージは投稿しないでください</strong></li>
+        <li>❌ <strong>業務以外の目的で利用しないでください</strong></li>
+      </ul>
+    </div>
+
+    <div class="warning">
+      <strong>⚠️ メッセージの表示に時間がかかる場合があります</strong>
+      <p>
+        メッセージを投稿してから、他のユーザーに表示されるまで<strong>最大5秒程度かかる場合があります。</strong>
+      </p>
+      <p>
+        これは、Googleスプレッドシートへのデータ書き込みと、自動更新（2秒ごと）の仕組みによるものです。
+      </p>
+    </div>
+
+    <div class="tip">
+      <strong>💡 ヒント:</strong> セグメントフィルターを変更すると、投稿先のセグメントも自動的に変更されます。
+    </div>
+
+    <h3>🗑️ メッセージを削除</h3>
+    <ol>
+      <li>削除したいメッセージの<span class="button-example danger">削除</span>ボタンをクリック</li>
+      <li>確認ダイアログで「OK」をクリック</li>
+    </ol>
+
+    <div class="note">
+      <strong>📌 注意:</strong> 削除したメッセージは復元できません。
+    </div>
+
+    ---
+
+    <h2 id="file-attachment">📎 ファイル添付</h2>
+
+    <p>
+      メッセージにファイルを添付できます。画像、PDF、Officeファイルなど、さまざまなファイル形式に対応しています。
+    </p>
+
+    <h3>ファイルを添付する</h3>
+    <ol>
+      <li><span class="button-example yellow">📎</span>ボタン（薄い黄色）をクリック</li>
+      <li>ファイルを選択</li>
+      <li>ファイル名が表示されます</li>
+      <li>メッセージを入力して<span class="button-example">投稿</span>ボタンをクリック</li>
+    </ol>
+
+    <div class="note">
+      <strong>📌 注意:</strong> ファイルサイズは<strong>10MB以下</strong>にしてください。
+    </div>
+
+    <div class="danger">
+      <h3>⚠️ ファイル添付時の注意事項</h3>
+      <ul>
+        <li>❌ <strong>個人情報を含むファイルは添付しないでください</strong></li>
+        <li>❌ <strong>機密情報を含むファイルは添付しないでください</strong></li>
+        <li>❌ <strong>ファイルはGoogleドライブに保存されます</strong>（平文保存）</li>
+      </ul>
+    </div>
+
+    <div class="warning">
+      <strong>⚠️ ファイルのアップロードに時間がかかる場合があります</strong>
+      <p>
+        ファイルサイズが大きい場合、<strong>アップロードに数秒～数十秒かかる場合があります。</strong>
+      </p>
+      <p>
+        アップロード中は、<strong>画面を閉じたり、他のページに移動しないでください。</strong>
+      </p>
+    </div>
+
+    <h3>ファイルの添付を取り消す</h3>
+    <ol>
+      <li>ファイル名の横にある<span class="button-example danger">×</span>ボタンをクリック</li>
+      <li>ファイルの選択が解除されます</li>
+    </ol>
+
+    <h3>添付されたファイルを開く</h3>
+    <ol>
+      <li>メッセージに表示されているファイル名をクリック</li>
+      <li>Googleドライブで開きます</li>
+    </ol>
+
+    <div class="tip">
+      <strong>💡 ヒント:</strong> 画像ファイルは🖼️アイコン、その他のファイルは📎アイコンで表示されます。
+    </div>
+
+    ---
+
+    <h2 id="reply-function">↩️ 返信機能</h2>
+
+    <p>
+      メッセージに対してスレッド形式で返信できます。
+    </p>
+
+    <h3>メッセージに返信する</h3>
+    <ol>
+      <li>返信したいメッセージの<span class="button-example info">返信</span>ボタンをクリック</li>
+      <li>返信先のプレビューが表示されます</li>
+      <li>メッセージを入力して<span class="button-example">投稿</span>ボタンをクリック</li>
+    </ol>
+
+    <div class="note">
+      <strong>📌 注意:</strong> 返信時は、元のメッセージと同じセグメントに投稿されます（変更不可）。
+    </div>
+
+    <h3>返信をキャンセル</h3>
+    <ol>
+      <li>返信プレビューの右上にある<span class="button-example danger">×</span>ボタンをクリック</li>
+      <li>返信がキャンセルされます</li>
+    </ol>
+
+    ---
+
+    <h2 id="read-function">✅ 既読機能</h2>
+
+    <p>
+      メッセージを既読にすることで、誰が読んだかを確認できます。
+    </p>
+
+    <h3>メッセージを既読にする</h3>
+    <ol>
+      <li>メッセージの<span class="button-example success">既読</span>ボタンをクリック</li>
+      <li>自分の名前が既読者リストに追加されます</li>
+    </ol>
+
+    <div class="tip">
+      <strong>💡 ヒント:</strong> 既読者リストは、メッセージの下部に「既読: 名前1, 名前2」と表示されます。
+    </div>
+
+    ---
+
+    <h2 id="mobile-ui">📱 スマホ版の使い方</h2>
+
+    <h3>スマホ版の画面構成</h3>
+    <p>
+      スマホ版では、画面を広く使うために<strong>コンパクトなレイアウト</strong>と<strong>折りたたみ機能</strong>があります。
+    </p>
+
+    <h3>📂 セグメント管理エリアの折りたたみ</h3>
+    <p>
+      スマホ版では、画面上部に「チーム: [チーム名] チームを退出 ▶」というヘッダーが表示されます。
+    </p>
+    <ol>
+      <li>右端の<strong>▶</strong>ボタンをタップ</li>
+      <li>セグメント管理エリアが展開されます（ボタンが<strong>▼</strong>に変わります）</li>
+      <li>もう一度タップすると折りたたまれます（ボタンが<strong>▶</strong>に戻ります）</li>
+    </ol>
+
+    <div class="tip">
+      <strong>💡 ヒント:</strong>
+      <ul>
+        <li><strong>▶</strong>：セグメント管理エリアが展開されている状態</li>
+        <li><strong>▼</strong>：セグメント管理エリアが折りたたまれている状態</li>
+      </ul>
+    </div>
+
+    <h3>📝 投稿UIの折りたたみ</h3>
+    <p>
+      スマホ版では、投稿UIが画面下部に固定されています。
+    </p>
+    <ol>
+      <li>画面下部の「📝 投稿」の<strong>▼</strong>をタップ</li>
+      <li>投稿UIが折りたたまれます（ボタンが<strong>▶</strong>に変わります）</li>
+      <li>もう一度タップすると展開されます（ボタンが<strong>▼</strong>に戻ります）</li>
+    </ol>
+
+    <div class="tip">
+      <strong>💡 ヒント:</strong> メッセージを読むときは投稿UIを折りたたむと、画面が広く使えます！
+    </div>
+
+    ---
+
+    <h2 id="troubleshooting">🔧 トラブルシューティング</h2>
+
+    <h3>❓ メッセージが表示されない</h3>
+    <ul>
+      <li>✅ チームに正しく参加しているか確認</li>
+      <li>✅ セグメントフィルターが「ALL」になっているか確認</li>
+      <li>✅ ブラウザをリロード（F5キー）</li>
+      <li>✅ しばらく待ってから再度確認（自動更新は2秒ごと）</li>
+    </ul>
+
+    <h3>❓ チーム一覧が表示されない</h3>
+    <ul>
+      <li>✅ <strong>初回接続時は読み込みに時間がかかります</strong>（30秒～1分程度待つ）</li>
+      <li>✅ ブラウザをリロード（F5キー）</li>
+      <li>✅ キャッシュをクリアしてから再度アクセス</li>
+      <li>✅ Google Chromeを使用してみる</li>
+    </ul>
+
+    <h3>❓ 「読み込みエラー」が表示される</h3>
+    <ul>
+      <li>✅ <strong>タイムアウトやTTLオーバーが原因</strong>の可能性があります</li>
+      <li>✅ しばらく待ってからブラウザをリロード</li>
+      <li>✅ インターネット接続を確認</li>
+      <li>✅ Google Chromeを使用してみる</li>
+    </ul>
+
+    <h3>❓ チームキーを忘れた</h3>
+    <ul>
+      <li>✅ チーム作成者に確認してください</li>
+      <li>✅ チームキーは変更できません（チーム作成者のみ変更可能）</li>
+    </ul>
+
+    <h3>❓ ファイルがアップロードできない</h3>
+    <ul>
+      <li>✅ ファイルサイズが10MB以下か確認</li>
+      <li>✅ インターネット接続を確認</li>
+      <li>✅ ブラウザを変更（Google Chrome推奨）</li>
+      <li>✅ アップロード中は画面を閉じない</li>
+    </ul>
+
+    <h3>❓ スマホで動作しない</h3>
+    <ul>
+      <li>✅ ブラウザを最新版に更新</li>
+      <li>✅ Google Chromeを使用（推奨）</li>
+      <li>✅ Safari/Firefoxの場合、トラッキング防止を無効にする</li>
+    </ul>
+
+    <h3>❓ スマホ版の折りたたみボタンが動作しない</h3>
+    <ul>
+      <li>✅ ブラウザをリロード（F5キー）</li>
+      <li>✅ JavaScriptが有効になっているか確認</li>
+      <li>✅ ブラウザのキャッシュをクリア</li>
+    </ul>
+
+    <div class="note">
+      <strong>📌 推奨ブラウザ:</strong>
+      <ul>
+        <li>⭐⭐⭐⭐⭐ Google Chrome</li>
+        <li>⭐⭐⭐⭐ Microsoft Edge</li>
+        <li>⭐⭐ Firefox（トラッキング防止を無効にする必要あり）</li>
+        <li>⭐⭐ Safari（トラッキング防止を無効にする必要あり）</li>
+      </ul>
+    </div>
+
+    ---
+
+    <h2>🎯 よくある質問（FAQ）</h2>
+
+    <h3>Q1. チームキーは後から変更できますか？</h3>
+    <p>
+      <strong>A.</strong> はい、チーム作成者（チームキーを持っている人）は、チーム管理画面から変更できます。
+    </p>
+
+    <h3>Q2. メッセージは何件まで投稿できますか？</h3>
+    <p>
+      <strong>A.</strong> 制限はありません。ただし、Googleスプレッドシートの行数制限（500万行）があります。
+    </p>
+
+    <h3>Q3. メッセージは自動的に更新されますか？</h3>
+    <p>
+      <strong>A.</strong> はい、2秒ごとに自動的に更新されます。
+    </p>
+
+    <h3>Q4. 複数のチームに同時に参加できますか？</h3>
+    <p>
+      <strong>A.</strong> いいえ、一度に1つのチームにしか参加できません。チームを切り替えるには、「チームを退出」ボタンをクリックしてください。
+    </p>
+
+    <h3>Q5. 個人情報や機密情報を投稿してしまった場合はどうすればいいですか？</h3>
+    <p>
+      <strong>A.</strong> すぐに<strong>デジタル推進課</strong>に報告してください。メッセージを削除しても、Googleスプレッドシートにはデータが残っている可能性があります。
+    </p>
+
+    <h3>Q6. スマホ版の▶ボタンと▼ボタンの違いは？</h3>
+    <p>
+      <strong>A.</strong>
+      <ul>
+        <li><strong>▶</strong>：セグメント管理エリアが展開されている状態（タップすると折りたたまれます）</li>
+        <li><strong>▼</strong>：セグメント管理エリアが折りたたまれている状態（タップすると展開されます）</li>
+      </ul>
+    </p>
+
+    <h3>Q7. なぜLINEやSlackのようにリアルタイムで表示されないのですか？</h3>
+    <p>
+      <strong>A.</strong> 本アプリは<strong>Googleスプレッドシート</strong>をデータベースとして使用しているため、技術的にリアルタイム性を実現することは困難です。LINEやSlackは専用のサーバーとリアルタイム通信技術（WebSocket）を使用しているため、瞬時にメッセージが表示されます。
+    </p>
+
+    <h3>Q8. 初回接続時にチーム一覧が表示されないのはなぜですか？</h3>
+    <p>
+      <strong>A.</strong> 初回接続時は、Googleスプレッドシートからデータを取得するため、読み込みに時間がかかります。<strong>30秒～1分程度待ってから</strong>、ブラウザをリロードしてください。2回目以降は、ブラウザのキャッシュにより、読み込みが速くなります。
+    </p>
+
+    <h3>Q9. 外部業者や市民との連絡に使ってもいいですか？</h3>
+    <p>
+      <strong>A.</strong> <strong>絶対に使用しないでください。</strong>本アプリは<strong>総社市役所職員間での連絡にのみ使用</strong>してください。外部との連絡に使用した場合、<strong>直ちに試験運用を終了します。</strong>
+    </p>
+
+    ---
+
+    <h2>✉ お問い合わせ</h2>
+
+    <p>
+      ご不明な点やバグ報告は、以下までご連絡ください：
+    </p>
+
+    <ul>
+      <li>📧 メール: <strong>digital@city.soja.okayama.jp</strong></li>
+      <li>🏢 担当部署: <strong>あたたか市民部デジタル推進課</strong></li>
+    </ul>
+
+    <div class="warning">
+      <strong>⚠️ セキュリティインシデント発生時:</strong>
+      <p>
+        個人情報や機密情報の漏洩、不正アクセスなどのセキュリティインシデントが発生した場合は、<strong>直ちにデジタル推進課に報告</strong>してください。
+      </p>
+    </div>
+
+    <div class="danger">
+      <strong>🚫 外部との連絡に使用した場合:</strong>
+      <p>
+        本アプリを<strong>外部業者・市民・他自治体職員との連絡に使用した場合</strong>、<strong>直ちに試験運用を終了</strong>します。
+      </p>
+      <p>
+        該当する利用実態が明らかになった場合は、<strong>すぐにデジタル推進課に報告</strong>してください。
+      </p>
+    </div>
+
+    ---
+
+    <div class="footer">
+      <p>© 2025 総社市デジタル推進課 | 効果検証用　伝言板アプリ v2.1.2</p>
+      <p>GitHub Pages + Google Apps Script + Googleスプレッドシート</p>
+      <p style="margin-top: 10px;">
+        <strong>参考情報:</strong>
+        <a href="https://www.soumu.go.jp/main_sosiki/cybersecurity/kokumin/index.html" target="_blank">総務省 国民のためのサイバーセキュリティサイト</a> |
+        <a href="https://www.ppc.go.jp/" target="_blank">個人情報保護委員会</a>
+      </p>
+    </div>
+  </div>
+</body>
+</html>

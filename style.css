@@ -692,22 +692,22 @@ button:hover {
 
 /* ファイル選択ボタンのスタイル改善 */
 .file-input-label {
-  background: #FFF9C4; /* 薄めの黄色 */
-  color: #333; /* テキストを黒に変更 */
-  padding: 6px 10px;
-  border-radius: 5px;
+  background: #2196F3; /* より目立つ青色に変更 */
+  color: white;
+  padding: 10px 16px; /* パディングを増やして大きく */
+  border-radius: 8px; /* 角を丸く */
   cursor: pointer;
-  font-size: 0.9em;
+  font-size: 1.1em; /* フォントサイズを大きく */
   transition: all 0.3s;
   white-space: nowrap;
   flex-shrink: 0;
-  box-shadow: 0 2px 5px rgba(255, 249, 196, 0.5); /* 影の色も調整 */
+  box-shadow: 0 2px 5px rgba(33, 150, 243, 0.3); /* 影を追加 */
 }
 
 .file-input-label:hover {
-  background: #FFF59D; /* ホバー時に少し濃い黄色 */
-  transform: scale(1.05);
-  box-shadow: 0 4px 10px rgba(255, 245, 157, 0.7);
+  background: #1976D2;
+  transform: scale(1.05); /* ホバー時に少し拡大 */
+  box-shadow: 0 4px 10px rgba(33, 150, 243, 0.5);
 }
 
 /* ファイル名表示の改善 */
@@ -819,15 +819,15 @@ button:hover {
 
 /* ============= レスポンシブ対応（スマホ・タブレット） ============= */
 @media screen and (max-width: 1024px) {
-  /* (1) タイトルとチーム表記の間を詰める */
+  /* タイトルをコンパクトに */
   header {
-    margin-bottom: 5px; /* 12px → 5px に変更 */
-    padding: 5px 0; /* 8px → 5px に変更 */
+    margin-bottom: 12px;
+    padding: 8px 0;
   }
   
   h1 {
     font-size: 1.4em;
-    margin-bottom: 3px; /* 5px → 3px に変更 */
+    margin-bottom: 5px;
   }
   
   /* チーム選択エリアをコンパクトに */
@@ -931,61 +931,27 @@ button:hover {
   
   .segment-controls-header {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 6px; /* 8px → 6px に変更 */
-    margin-bottom: 5px; /* 6px → 5px に変更 */
+    padding: 8px;
+    margin-bottom: 6px;
   }
   
   .segment-controls-header h3 {
     font-size: 0.9em;
-    margin: 0; /* マージンを削除 */
-    flex: 1; /* 左側に配置 */
-  }
-  
-  .segment-controls-toggle {
-    font-size: 1.2em;
-    color: #666;
-    margin-left: auto; /* 右側に配置 */
-  }
-  
-  /* メッセージヘッダーバーを詰める */
-  .message-header-bar {
-    margin-bottom: 5px; /* 10px → 5px に変更 */
-    padding: 5px 0; /* 8px → 5px に変更 */
-  }
-  
-  .message-header-bar h2 {
-    font-size: 1em; /* 1.1em → 1em に変更 */
-    margin-bottom: 0;
-  }
-  
-  .message-header-bar button {
-    padding: 5px 10px; /* 6px 12px → 5px 10px に変更 */
-    font-size: 0.8em; /* 0.85em → 0.8em に変更 */
-  }
-  
-  /* セグメントコントロールを詰める */
-  .segment-controls {
-    padding: 6px; /* 8px → 6px に変更 */
-    margin-bottom: 5px; /* 10px → 5px に変更 */
-    gap: 5px; /* 6px → 5px に変更 */
   }
   
   .segment-filter label {
-    font-size: 0.75em; /* 0.8em → 0.75em に変更 */
+    font-size: 0.8em;
   }
   
   .segment-filter select {
-    font-size: 0.8em; /* 0.85em → 0.8em に変更 */
-    padding: 5px; /* 6px → 5px に変更 */
+    font-size: 0.85em;
+    padding: 6px;
   }
   
   .secondary-btn {
-    font-size: 0.75em; /* 0.8em → 0.75em に変更 */
-    padding: 5px 8px; /* 6px 10px → 5px 8px に変更 */
+    font-size: 0.8em;
+    padding: 6px 10px;
   }
-}
   
   /* ★投稿フォームを画面下に固定 */
   .post-form {

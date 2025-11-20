@@ -985,13 +985,16 @@ function uploadFileViaIframe(data) {
 function toggleSegmentControls() {
   const content = document.getElementById('segment-controls-content');
   const toggle = document.querySelector('.segment-controls-toggle');
+  const toggleBtn = document.getElementById('toggle-segment-btn'); // ★追加
   
   if (content.classList.contains('collapsed')) {
     content.classList.remove('collapsed');
     toggle.textContent = '▼';
+    if (toggleBtn) toggleBtn.textContent = '▶'; // ★追加：展開時は▶
   } else {
     content.classList.add('collapsed');
     toggle.textContent = '▶';
+    if (toggleBtn) toggleBtn.textContent = '▼'; // ★追加：折りたたみ時は▼
   }
 }
 

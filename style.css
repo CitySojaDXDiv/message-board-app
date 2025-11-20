@@ -692,22 +692,22 @@ button:hover {
 
 /* ファイル選択ボタンのスタイル改善 */
 .file-input-label {
-  background: #2196F3; /* より目立つ青色に変更 */
-  color: white;
-  padding: 10px 16px; /* パディングを増やして大きく */
-  border-radius: 8px; /* 角を丸く */
+  background: #FFF9C4; /* 薄めの黄色 */
+  color: #333; /* テキストを黒に変更 */
+  padding: 6px 10px;
+  border-radius: 5px;
   cursor: pointer;
-  font-size: 1.1em; /* フォントサイズを大きく */
+  font-size: 0.9em;
   transition: all 0.3s;
   white-space: nowrap;
   flex-shrink: 0;
-  box-shadow: 0 2px 5px rgba(33, 150, 243, 0.3); /* 影を追加 */
+  box-shadow: 0 2px 5px rgba(255, 249, 196, 0.5); /* 影の色も調整 */
 }
 
 .file-input-label:hover {
-  background: #1976D2;
-  transform: scale(1.05); /* ホバー時に少し拡大 */
-  box-shadow: 0 4px 10px rgba(33, 150, 243, 0.5);
+  background: #FFF59D; /* ホバー時に少し濃い黄色 */
+  transform: scale(1.05);
+  box-shadow: 0 4px 10px rgba(255, 245, 157, 0.7);
 }
 
 /* ファイル名表示の改善 */

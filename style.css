@@ -756,14 +756,24 @@ button:hover {
 
 /* ============= 折りたたみヘッダー（スマホ版） ============= */
 .segment-controls-header {
-  display: none;
-  justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
-  padding: 10px;
-  background: #e0e0e0;
+  display: none; /* ★完全に非表示 */
+}
+
+/* ★スマホ版の折りたたみボタン */
+.toggle-segment-btn {
+  display: none; /* PC版では非表示 */
+  background: #9E9E9E;
+  color: white;
+  border: none;
+  padding: 5px 10px;
   border-radius: 5px;
-  margin-bottom: 10px;
+  font-size: 1.2em;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.toggle-segment-btn:hover {
+  background: #757575;
 }
 
 .segment-controls-header h3 {
@@ -874,6 +884,10 @@ button:hover {
   
   /* メッセージヘッダーバーをコンパクトに */
   .message-header-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 5px;
     margin-bottom: 10px;
     padding: 3px 0;
   }
@@ -881,11 +895,22 @@ button:hover {
   .message-header-bar h2 {
     font-size: 1.1em;
     margin-bottom: 0;
+    flex: 1; /* 左側に配置 */
   }
   
   .message-header-bar button {
     padding: 6px 12px;
     font-size: 0.85em;
+  }
+  
+  /* ★スマホ版の折りたたみボタンを表示 */
+  .toggle-segment-btn {
+    display: inline-block;
+  }
+  
+  /* ★元の折りたたみヘッダーを非表示 */
+  .segment-controls-header {
+    display: none !important;
   }
   
   /* ★スマホ版：2カラムレイアウトを縦並びに変更 */
@@ -1107,6 +1132,7 @@ button:hover {
   
   /* メッセージヘッダーバー */
   .message-header-bar {
+    display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
@@ -1118,12 +1144,21 @@ button:hover {
   .message-header-bar h2 {
     font-size: 1em;
     margin-bottom: 0;
+    flex: 1; /* 左側に配置 */
   }
   
   .message-header-bar button {
     padding: 5px 10px;
     font-size: 0.8em;
   }
+  
+  /* ★スマホ版の折りたたみボタン */
+  .toggle-segment-btn {
+    display: inline-block;
+    padding: 5px 10px;
+    font-size: 1em;
+  }
+}
   
   /* セグメントコントロール */
   .segment-controls {

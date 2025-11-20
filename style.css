@@ -821,13 +821,13 @@ button:hover {
 @media screen and (max-width: 1024px) {
   /* タイトルをコンパクトに */
   header {
-    margin-bottom: 12px;
-    padding: 8px 0;
+    margin-bottom: 5px;
+    padding: 5px 0;
   }
   
   h1 {
     font-size: 1.4em;
-    margin-bottom: 5px;
+    margin-bottom: 2px;
   }
   
   /* チーム選択エリアをコンパクトに */

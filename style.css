@@ -663,70 +663,70 @@ button:hover {
   margin-bottom: 8px;
 }
 
+/* ============= 添付ファイル用アイコンの視認性改善 ============= */
+
+/* ファイル選択ボタンのスタイル改善 */
 .file-input-label {
-  background: #9E9E9E;
+  background: #2196F3; /* より目立つ青色に変更 */
   color: white;
-  padding: 8px 12px;
-  border-radius: 5px;
+  padding: 10px 16px; /* パディングを増やして大きく */
+  border-radius: 8px; /* 角を丸く */
   cursor: pointer;
-  font-size: 0.9em;
-  transition: background 0.3s;
+  font-size: 1.1em; /* フォントサイズを大きく */
+  transition: all 0.3s;
   white-space: nowrap;
   flex-shrink: 0;
+  box-shadow: 0 2px 5px rgba(33, 150, 243, 0.3); /* 影を追加 */
 }
 
 .file-input-label:hover {
-  background: #757575;
+  background: #1976D2;
+  transform: scale(1.05); /* ホバー時に少し拡大 */
+  box-shadow: 0 4px 10px rgba(33, 150, 243, 0.5);
 }
 
-/* ★[×]ボタンをテキスト形式に変更（正方形に近い形） */
-.clear-file-btn-text {
-  background: #e74c3c;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  padding: 4px 8px;
-  cursor: pointer;
-  font-size: 0.9em;
-  font-weight: bold;
-  transition: background 0.3s;
-  flex-shrink: 0;
-  min-width: 30px;
-  text-align: center;
-}
-
-.clear-file-btn-text:hover {
-  background: #c0392b;
-}
-
+/* ファイル名表示の改善 */
 .file-name-display {
   flex: 1;
-  font-size: 0.85em;
+  font-size: 0.9em;
   color: #333;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  background: #e3f2fd; /* 背景色を追加 */
+  padding: 8px 12px; /* パディングを追加 */
+  border-radius: 5px;
+  border: 1px solid #2196F3; /* 枠線を追加 */
 }
 
-/* ファイル添付表示 */
+/* ファイル添付表示の改善 */
 .file-attachment {
   margin: 8px 0;
-  padding: 8px;
-  background: #f5f5f5;
-  border-radius: 5px;
-  border: 1px solid #ddd;
+  padding: 12px;
+  background: #e3f2fd; /* より目立つ背景色 */
+  border-radius: 8px;
+  border: 2px solid #2196F3; /* 枠線を太く */
 }
 
 .file-link {
-  color: #2196F3;
+  color: #1976D2;
   text-decoration: none;
   font-weight: bold;
-  display: inline-block;
-  padding: 5px 0;
+  font-size: 1em; /* フォントサイズを大きく */
+  display: inline-flex; /* アイコンとテキストを横並びに */
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: white;
+  border-radius: 5px;
+  transition: all 0.3s;
 }
 
 .file-link:hover {
-  text-decoration: underline;
+  background: #2196F3;
+  color: white;
+  text-decoration: none;
+  transform: translateX(5px); /* ホバー時に右に移動 */
 }
 
 /* ============= 折りたたみヘッダー（スマホ版） ============= */
@@ -792,245 +792,96 @@ button:hover {
   display: none;
 }
 
-/* ============= レスポンシブ対応（スマホ・タブレット） ============= */
+/* ============= スマホ版のヘッダー部分をコンパクト化 ============= */
+
 @media screen and (max-width: 1024px) {
-  /* ★スマホ版：投稿UIを画面下に固定 */
-  .two-column-layout {
-    display: flex;
-    flex-direction: column;
-    height: auto;
-    max-height: none;
-    position: relative;
-    padding-bottom: 200px; /* 投稿UIの高さ分の余白 */
-  }
-  
-  .left-column {
-    width: 100%;
-    order: 1;
-  }
-  
-  .right-column {
-    width: 100%;
-    order: 2;
-    flex: 1;
-  }
-  
-  #messages-list {
-    height: 400px;
-    max-height: 400px;
-  }
-  
-  /* ★投稿フォームを画面下に固定 */
-  .post-form {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    margin: 0;
-    padding: 0;
-    border-radius: 0;
-    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
-    z-index: 100;
-    max-height: 250px;
-    overflow-y: auto;
-  }
-  
-  /* ★投稿フォームの折りたたみヘッダーを表示 */
-  .post-form-header {
-    display: flex;
-  }
-  
-  .post-form-content {
-    padding: 10px;
-  }
-  
-  /* ★スマホ版：投稿フォームをコンパクトに */
-  .post-form-row {
-    flex-direction: row;
-    gap: 6px;
-    margin-bottom: 6px;
-  }
-  
-  .post-form-row .name-input {
-    flex: 1;
-  }
-  
-  .post-form-row .segment-wrapper {
-    flex: 1;
-  }
-  
-  .post-form-row input,
-  .post-form-row select {
-    font-size: 0.85em;
-    padding: 8px;
-    margin-bottom: 0;
-  }
-  
-  .post-form textarea {
-    font-size: 0.85em;
-    padding: 8px;
-    margin-bottom: 6px;
-    min-height: 60px;
-  }
-  
-  .file-input-wrapper {
-    flex-direction: row;
-    gap: 6px;
-    margin-bottom: 6px;
-  }
-  
-  .file-input-label {
-    font-size: 0.85em;
-    padding: 6px 10px;
-  }
-  
-  .file-name-display {
-    font-size: 0.8em;
-  }
-  
-  .clear-file-btn-text {
-    font-size: 0.85em;
-    padding: 4px 8px;
-  }
-  
-  .post-form button {
-    font-size: 0.9em;
-    padding: 8px 12px;
-  }
-  
-  /* ★折りたたみヘッダーを表示 */
-  .segment-controls-header {
-    display: flex;
-  }
-  
-  /* ★セグメントコントロールを折りたたみ可能に */
-  .segment-controls {
-    margin-bottom: 15px;
-  }
-}
-
-
-@media screen and (max-width: 600px) {
-  body {
-    padding: 8px;
-  }
-  
-  .container {
-    padding: 12px;
-    border-radius: 8px;
+  /* タイトルをコンパクトに */
+  header {
+    margin-bottom: 12px; /* 余白を削減 */
+    padding: 8px 0; /* パディングを削減 */
   }
   
   h1 {
-    font-size: 1.6em;
+    font-size: 1.4em; /* フォントサイズを縮小 */
+    margin-bottom: 5px;
+  }
+  
+  /* チーム選択エリアをコンパクトに */
+  #team-selection {
     margin-bottom: 12px;
   }
   
-  h2 {
-    font-size: 1.1em;
-    margin-bottom: 10px;
-  }
-  
-  /* メッセージカード */
-  .message {
-    padding: 8px 10px;
+  #team-selection h2 {
+    font-size: 1em;
     margin-bottom: 8px;
-    border-radius: 8px;
   }
   
-  /* メッセージヘッダー */
-  .message-header {
-    margin-bottom: 4px;
-  }
-  
-  .message-info {
-    gap: 2px;
-  }
-  
-  .message-name {
+  #team-selection select {
+    padding: 8px;
     font-size: 0.9em;
-    line-height: 1.2;
-  }
-  
-  .message-time {
-    font-size: 0.7em;
-    line-height: 1.2;
-  }
-  
-  /* メッセージテキスト */
-  .message-text {
-    font-size: 0.85em;
-    line-height: 1.4;
     margin-bottom: 6px;
   }
   
-  /* ボタン */
-  .message-actions {
-    gap: 4px;
+  #team-selection button {
+    padding: 8px 14px;
+    font-size: 0.9em;
   }
   
-  .message-actions button {
-    font-size: 0.7em;
-    padding: 4px 8px;
-    border-radius: 4px;
+  /* キー入力エリアをコンパクトに */
+  #key-input {
+    margin-bottom: 12px;
   }
   
-  /* 返信メッセージのインデント */
-  .message.reply {
-    margin-left: 12px;
-    padding-left: 6px;
-    border-left-width: 2px;
-  }
-  
-  /* 返信プレビュー */
-  #reply-preview {
-    padding: 6px 8px;
-    font-size: 0.8em;
+  #key-input h2 {
+    font-size: 1em;
     margin-bottom: 8px;
   }
   
-  #cancel-reply {
-    width: 20px;
-    height: 20px;
-    font-size: 12px;
-    top: 3px;
-    right: 3px;
+  #key-input input {
+    padding: 8px;
+    font-size: 0.9em;
+    margin-bottom: 6px;
   }
   
-  #reply-content {
-    padding-right: 25px;
+  #key-input button {
+    padding: 8px 14px;
+    font-size: 0.9em;
   }
   
-  /* 既読者リスト */
-  .readers {
-    font-size: 0.7em;
-    padding: 4px 6px;
-    margin-top: 6px;
-    border-radius: 4px;
+  /* メッセージヘッダーバーをコンパクトに */
+  .message-header-bar {
+    margin-bottom: 10px;
+    padding: 8px 0;
   }
   
-  /* 返信先の引用 */
-  .reply-to-quote {
-    font-size: 0.75em;
-    padding: 4px 6px;
-    margin: 4px 0;
-    border-radius: 4px;
+  .message-header-bar h2 {
+    font-size: 1.1em;
+    margin-bottom: 0;
   }
   
-  /* 退出ボタン */
-  #leave-team-btn {
-    padding: 8px 12px;
+  .message-header-bar button {
+    padding: 6px 12px;
     font-size: 0.85em;
   }
   
-  /* セグメント関連 */
+  /* セグメントコントロールをコンパクトに */
   .segment-controls {
-    padding: 10px;
+    padding: 8px;
     margin-bottom: 10px;
-    gap: 8px;
+    gap: 6px;
+  }
+  
+  .segment-controls-header {
+    padding: 8px;
+    margin-bottom: 6px;
+  }
+  
+  .segment-controls-header h3 {
+    font-size: 0.9em;
   }
   
   .segment-filter label {
-    font-size: 0.85em;
+    font-size: 0.8em;
   }
   
   .segment-filter select {
@@ -1039,104 +890,150 @@ button:hover {
   }
   
   .secondary-btn {
-    font-size: 0.85em;
-    padding: 6px 12px;
+    font-size: 0.8em;
+    padding: 6px 10px;
   }
   
-  .modal-content {
-    padding: 15px;
-    width: 95%;
+  /* コンテナの余白を削減 */
+  .container {
+    padding: 10px;
   }
   
-  .modal-content h3 {
-    font-size: 1.2em;
-    margin-bottom: 15px;
-  }
-  
-  .modal-content h4 {
-    font-size: 1em;
-    margin-top: 15px;
-    margin-bottom: 8px;
-  }
-  
-  .segment-item {
+  /* 投稿フォームのヘッダーをコンパクトに */
+  .post-form-header {
     padding: 8px;
-    margin-bottom: 6px;
   }
   
-  .segment-name {
+  .post-form-toggle-title {
     font-size: 0.9em;
-  }
-  
-  .delete-segment-btn {
-    font-size: 0.75em;
-    padding: 4px 8px;
-  }
-  
-  .segment-create input {
-    font-size: 0.85em;
-    padding: 8px;
-    margin-bottom: 8px;
-  }
-  
-  .segment-create button {
-    font-size: 0.85em;
-    padding: 8px;
-  }
-  
-  .segment-select-wrapper {
-    gap: 4px;
-  }
-  
-  .segment-select-wrapper label {
-    font-size: 0.8em;
-  }
-  
-  .segment-select-wrapper select {
-    font-size: 0.8em;
-    padding: 6px;
-  }
-  
-  .segment-badge {
-    font-size: 0.65em;
-    padding: 2px 5px;
-    margin-left: 4px;
-  }
-  
-  .message-header-bar {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-    margin-bottom: 10px;
-  }
-  
-  .message-header-bar h2 {
-    font-size: 1.1em;
-  }
-  
-  /* フォーム要素 */
-  select, input, textarea {
-    padding: 8px;
-    margin-bottom: 6px;
-    font-size: 0.85em;
-    border-radius: 6px;
-  }
-  
-  /* ボタン全般 */
-  button {
-    padding: 8px 16px;
-    font-size: 0.85em;
-    border-radius: 6px;
-  }
-  
-  /* セクション */
-  section {
-    margin-bottom: 20px;
-  }
-  
-  .file-thumbnail {
-    max-height: 150px;
   }
 }
 
-
+@media screen and (max-width: 600px) {
+  /* さらに小さい画面用の調整 */
+  body {
+    padding: 5px;
+  }
+  
+  .container {
+    padding: 8px;
+    border-radius: 5px;
+  }
+  
+  h1 {
+    font-size: 1.2em;
+    margin-bottom: 5px;
+  }
+  
+  h2 {
+    font-size: 0.95em;
+    margin-bottom: 6px;
+  }
+  
+  /* チーム選択エリア */
+  #team-selection {
+    margin-bottom: 10px;
+  }
+  
+  #team-selection h2 {
+    font-size: 0.9em;
+    margin-bottom: 6px;
+  }
+  
+  #team-selection select {
+    padding: 6px;
+    font-size: 0.85em;
+    margin-bottom: 5px;
+  }
+  
+  #team-selection button {
+    padding: 6px 12px;
+    font-size: 0.85em;
+  }
+  
+  /* キー入力エリア */
+  #key-input {
+    margin-bottom: 10px;
+  }
+  
+  #key-input h2 {
+    font-size: 0.9em;
+    margin-bottom: 6px;
+  }
+  
+  #key-input input {
+    padding: 6px;
+    font-size: 0.85em;
+    margin-bottom: 5px;
+  }
+  
+  #key-input button {
+    padding: 6px 12px;
+    font-size: 0.85em;
+  }
+  
+  /* メッセージヘッダーバー */
+  .message-header-bar {
+    flex-direction: row; /* 横並びに変更 */
+    justify-content: space-between;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 8px;
+    padding: 5px 0;
+  }
+  
+  .message-header-bar h2 {
+    font-size: 1em;
+    margin-bottom: 0;
+  }
+  
+  .message-header-bar button {
+    padding: 5px 10px;
+    font-size: 0.8em;
+  }
+  
+  /* セグメントコントロール */
+  .segment-controls {
+    padding: 6px;
+    margin-bottom: 8px;
+    gap: 5px;
+  }
+  
+  .segment-controls-header {
+    padding: 6px;
+    margin-bottom: 5px;
+  }
+  
+  .segment-controls-header h3 {
+    font-size: 0.85em;
+  }
+  
+  .segment-filter label {
+    font-size: 0.75em;
+  }
+  
+  .segment-filter select {
+    font-size: 0.8em;
+    padding: 5px;
+  }
+  
+  .secondary-btn {
+    font-size: 0.75em;
+    padding: 5px 8px;
+  }
+  
+  /* 投稿フォームのヘッダー */
+  .post-form-header {
+    padding: 6px;
+  }
+  
+  .post-form-toggle-title {
+    font-size: 0.85em;
+  }
+  
+  /* ファイル選択ボタン（スマホ版） */
+  .file-input-label {
+    font-size: 1em;
+    padding: 8px 12px;
+  }
+}

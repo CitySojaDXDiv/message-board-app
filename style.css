@@ -875,7 +875,7 @@ button:hover {
   /* メッセージヘッダーバーをコンパクトに */
   .message-header-bar {
     margin-bottom: 10px;
-    padding: 8px 0;
+    padding: 3px 0;
   }
   
   .message-header-bar h2 {
@@ -1055,7 +1055,7 @@ button:hover {
   
   h1 {
     font-size: 1.2em;
-    margin-bottom: 5px;
+    margin-bottom: 2px;
   }
   
   h2 {

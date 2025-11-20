@@ -663,6 +663,31 @@ button:hover {
   margin-bottom: 8px;
 }
 
+/* ×ボタンの幅を強制的に縮小 */
+#clear-file-btn,
+.clear-file-btn-text {
+  width: auto !important; /* 幅を自動調整 */
+  max-width: 40px !important; /* 最大幅を設定 */
+  min-width: auto !important; /* 最小幅を解除 */
+  padding: 6px 10px !important; /* パディングを調整 */
+  background: #e74c3c !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 4px !important;
+  cursor: pointer !important;
+  font-size: 0.9em !important;
+  font-weight: bold !important;
+  transition: background 0.3s !important;
+  flex-shrink: 0 !important;
+  text-align: center !important;
+}
+
+#clear-file-btn:hover,
+.clear-file-btn-text:hover {
+  background: #c0392b !important;
+}
+
+
 /* ============= 添付ファイル用アイコンの視認性改善 ============= */
 
 /* ファイル選択ボタンのスタイル改善 */

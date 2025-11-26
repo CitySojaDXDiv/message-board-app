@@ -197,6 +197,12 @@ async function createTeam() {
   if (!teamName) return;
   
   const teamKey = prompt('チームキーを設定しますか？（空白=保護なし）:');
+
+  // ★2バイト文字チェックを追加
+  if (teamKey && !isValidTeamKey(teamKey)) {
+    alert('チームキーは半角英数字のみ使用できます');
+    return;
+  }
   
   try {
     const result = await jsonpPost(GAS_URL, {
@@ -214,6 +220,12 @@ async function createTeam() {
   } catch (error) {
     alert('チーム作成に失敗しました: ' + error);
   }
+}
+
+function isValidTeamKey(key) {
+  // 半角英数字 + 一般的な記号を許可
+  const regex = /^[a-zA-Z0-9_\-!@#$%^&*()+=[\]{}|;:'",.<>?/]+$/;
+  return regex.test(key);
 }
 
 // ============= セグメント管理 =============
@@ -858,6 +870,12 @@ async function editTeamName() {
 
 async function editTeamKey() {
   const newTeamKey = document.getElementById('new-team-key').value;
+
+  // ★2バイト文字チェックを追加
+  if (newTeamKey && !isValidTeamKey(newTeamKey)) {
+    alert('チームキーは半角英数字のみ使用できます');
+    return;
+  }
   
   const message = newTeamKey 
     ? `チームキーを変更しますか？\n\n新しいキー: ${newTeamKey}` 
